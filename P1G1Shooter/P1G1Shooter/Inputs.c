@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "Vector.h"
 #include <Windows.h>
 
@@ -93,7 +92,6 @@ void PrintAllInputs(Inputs* inputs, KeyState keystate)
 		}
 	}
 }
-
 
 char IsKeyDown(Inputs inputs, KEYCODE keycode)
 {
