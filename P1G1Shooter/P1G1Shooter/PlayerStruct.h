@@ -9,6 +9,6 @@ typedef struct Player
 } Player;
 
 void Player_TakeDamage(Player* player, int damages);
-void Player_ReceiveHeal(Player* player, int damages);
+void Player_ReceiveHeal(Player* player, int heal);
 
 
