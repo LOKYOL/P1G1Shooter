@@ -19,26 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ConsoleDisplay.c" />
-    <ClCompile Include="DisplayZoneDrawing.c" />
     <ClCompile Include="Entity.c" />
     <ClCompile Include="Inputs.c" />
     <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
     <ClCompile Include="projectile.c" />
-    <ClCompile Include="TimeManagement.c" />
     <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConsoleDisplay.h" />
-    <ClInclude Include="DisplayZoneDrawing.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
     <ClInclude Include="projectile.h" />
-    <ClInclude Include="TimeManagement.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -139,6 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>./Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
