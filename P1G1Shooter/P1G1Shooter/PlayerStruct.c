@@ -6,12 +6,9 @@ void InitPlayer(Player** _player)
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	*_player = newPlayer;
 
-	InitDisplayZone(&newPlayer->displayZone, 0, 0, 3, 3, 1);
+	InitDisplayZone(&newPlayer->entity.displayZone, 0, 0, 3, 3, 1);
 
-	newPlayer->current_hp = 10;
-	newPlayer->max_hp = 10;
-
-	newPlayer->damages = 1;
+	Entity_Initialize(&newPlayer->entity, 10, 1, 1);
 }
 
 void Player_UpdateMovement(Player* _player, Inputs _inputs, double _deltaTime)
@@ -20,41 +17,30 @@ void Player_UpdateMovement(Player* _player, Inputs _inputs, double _deltaTime)
 
 	if (IsKeyDown(_inputs, VK_LEFT))
 	{
-		move_x -= _deltaTime * _player->vitesse;
+		move_x -= _deltaTime * _player->entity.speed;
 	}
 	if (IsKeyDown(_inputs, VK_UP))
 	{
-		move_y -= _deltaTime * _player->vitesse;
+		move_y -= _deltaTime * _player->entity.speed;
 	}
 	if (IsKeyDown(_inputs, VK_RIGHT))
 	{
-		move_x += _deltaTime * _player->vitesse;
+		move_x += _deltaTime * _player->entity.speed;
 	}
 	if (IsKeyDown(_inputs, VK_DOWN))
 	{
-		move_y += _deltaTime * _player->vitesse;
+		move_y += _deltaTime * _player->entity.speed;
 	}
 }
 
 void Player_TakeDamage(Player* _player, int _damages)
 {
-	_player->current_hp -= _damages;
-
-	if (_player->current_hp < 0)
-	{
-		_player->current_hp = 0;
-		Player_Die(_player);
-	}
+	Entity_TakeDamage(&_player->entity, _damages);
 }
 
 void Player_ReceiveHeal(Player* _player, int _heal)
 {
-	_player->current_hp += _heal;
-
-	if (_player->current_hp > _player->max_hp)
-	{
-		_player->current_hp = _player->max_hp;
-	}
+	Entity_ReceiveHeal(&_player->entity, _heal);
 }
 
 void Player_Die(Player* _player)

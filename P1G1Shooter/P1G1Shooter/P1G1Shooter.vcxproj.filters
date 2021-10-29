@@ -48,20 +48,11 @@
     <ClCompile Include="Vector.c">
       <Filter>Essentials\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="ConsoleDisplay.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayZoneDrawing.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="projectile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TimeManagement.c">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Entity.c">
+      <Filter>Entities\Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,22 +65,13 @@
     <ClInclude Include="Vector.h">
       <Filter>Essentials\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Inputs.h">
-      <Filter>Essentials\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleDisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayZoneDrawing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeManagement.h">
+    <ClInclude Include="Entity.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Inputs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

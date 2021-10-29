@@ -12,5 +12,12 @@ typedef struct Entity
 
 	int	damages;
 
-	int vitesse;
+	int speed;
 } Entity;
+
+void Entity_Initialize(Entity* entity, int health, int damages, int speed);
+
+void Entity_TakeDamage(Entity* entity, int damages);
+void Entity_ReceiveHeal(Entity* entity, int heal);
+
+void Entity_Die(Entity* entity);
