@@ -8,7 +8,7 @@ void InitPlayer(Player** _player)
 
 	InitDisplayZone(&newPlayer->entity.displayZone, 0, 0, 3, 3, 1);
 
-	Entity_Initialize(&newPlayer->entity, 10, 1, 1);
+	Entity_Initialize(&newPlayer->entity, 10, 1, 1, Player_Update);
 }
 
 void Player_UpdateMovement(Player* _player, Inputs _inputs, double _deltaTime)
