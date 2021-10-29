@@ -2,17 +2,11 @@
 
 #include "ConsoleDisplay.h"
 #include "Inputs.h"
+#include "Entity.h"
 
 typedef struct Player
 {
-	DisplayZone displayZone;
-
-	int	current_hp;
-	int	max_hp;
-
-	int	damages;
-
-	int vitesse;
+	Entity entity;
 } Player;
 
 void InitPlayer(Player** player);
