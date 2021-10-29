@@ -1,5 +1,13 @@
 #include "PlayerStruct.h"
 
+void InitPlayer(Player** player)
+{
+	Player* newPlayer = (Player*)malloc(sizeof(Player));
+	*player = newPlayer;
+
+	//InitDisplayZone(&newPlayer->displayZone, 0, 0, )
+}
+
 void Player_TakeDamage(Player* _player, int _damages)
 {
 	_player->current_hp -= _damages;
