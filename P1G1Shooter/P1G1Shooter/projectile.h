@@ -8,6 +8,6 @@ typedef struct projectile {
 	char Color;
 }projectile;
 
-void InitProj(projectile proj, int speed, int direction, int PosX, int PosY, int SizeX, int SizeY, char Color);
+void InitProj(projectile** proj, int speed, int direction, int PosX, int PosY, int SizeX, int SizeY, char Color);
 
 void lzshf();
