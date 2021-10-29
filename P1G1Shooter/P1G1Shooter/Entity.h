@@ -3,7 +3,7 @@
 #include "ConsoleDisplay.h"
 #include "Inputs.h"
 
-typedef void(*Update)(void* entity);
+typedef void(*Update)(void* entity, Inputs* inputs, double deltaTime);
 
 typedef struct Entity
 {
