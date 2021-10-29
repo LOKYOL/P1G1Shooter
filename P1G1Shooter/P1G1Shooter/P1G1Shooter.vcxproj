@@ -19,24 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\bitmap.cpp" />
-    <ClCompile Include="Engine\ConsoleDisplay.c" />
-    <ClCompile Include="Engine\DisplayZoneDrawing.c" />
-    <ClCompile Include="Engine\TimeManagement.c" />
     <ClCompile Include="Inputs.c" />
+    <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
-    <ClCompile Include="projectile.c" />
     <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\bitmap.h" />
-    <ClInclude Include="Engine\ConsoleDisplay.h" />
-    <ClInclude Include="Engine\DisplayZoneDrawing.h" />
-    <ClInclude Include="Engine\TimeManagement.h" />
     <ClInclude Include="Inputs.h" />
+    <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
-    <ClInclude Include="projectile.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -137,7 +129,6 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>./Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
