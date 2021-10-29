@@ -19,24 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bitmap.cpp" />
-    <ClCompile Include="ConsoleDisplay.c" />
-    <ClCompile Include="DisplayZoneDrawing.c" />
     <ClCompile Include="Inputs.c" />
     <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
-    <ClCompile Include="TimeManagement.c" />
     <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bitmap.h" />
-    <ClInclude Include="ConsoleDisplay.h" />
-    <ClInclude Include="DisplayZoneDrawing.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
-    <ClInclude Include="TimeManagement.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

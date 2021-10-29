@@ -13,60 +13,54 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{8eaf0fa5-2e06-4ff2-8f0f-fe4a570520db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Headers">
+      <UniqueIdentifier>{f6e0d724-1b22-4a2d-9859-949b03ec9065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Sources">
+      <UniqueIdentifier>{c2844ccc-36e4-4a73-82cc-e4e8fc1d6d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Essentials">
+      <UniqueIdentifier>{502990ac-c047-4e38-be2a-7c6bf2a4c6ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Essentials\Headers">
+      <UniqueIdentifier>{457d0c6b-c21b-414f-bd85-baec1671cd8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Essentials\Sources">
+      <UniqueIdentifier>{ba065ba9-bc9f-4145-89b8-afd6985f45c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Inputs.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="P1G1ShooterMain.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Obstacle.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
     <ClCompile Include="PlayerStruct.c">
-      <Filter>Source Files</Filter>
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Inputs.c">
+      <Filter>Essentials\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Vector.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bitmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ConsoleDisplay.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayZoneDrawing.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeManagement.c">
-      <Filter>Source Files</Filter>
+      <Filter>Essentials\Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Inputs.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="PlayerStruct.h">
-      <Filter>Header Files</Filter>
+      <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
-      <Filter>Header Files</Filter>
+      <Filter>Essentials\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bitmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsoleDisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayZoneDrawing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TimeManagement.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Inputs.h">
+      <Filter>Essentials\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
