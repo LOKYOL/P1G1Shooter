@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Entity.c" />
-    <ClCompile Include="Inputs.c" />
     <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
@@ -28,7 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="Inputs.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
     <ClInclude Include="Vector.h" />

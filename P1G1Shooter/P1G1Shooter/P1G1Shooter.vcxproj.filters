@@ -42,9 +42,6 @@
     <ClCompile Include="PlayerStruct.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Inputs.c">
-      <Filter>Essentials\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Vector.c">
       <Filter>Essentials\Sources</Filter>
     </ClCompile>
@@ -60,9 +57,6 @@
       <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
-      <Filter>Essentials\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Inputs.h">
       <Filter>Essentials\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
