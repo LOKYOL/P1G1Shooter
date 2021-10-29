@@ -14,5 +14,3 @@ typedef struct Entity
 
 	int vitesse;
 } Entity;
-
-void Entity_Initialize(Entity** entity);
