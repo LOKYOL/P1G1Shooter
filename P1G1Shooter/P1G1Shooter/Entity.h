@@ -3,21 +3,23 @@
 #include "ConsoleDisplay.h"
 #include "Inputs.h"
 
+typedef void(*Move)(Entity* entity);
+
 typedef struct Entity
 {
-	DisplayZone displayZone;
+	DisplayZone	displayZone;
 
-	int	current_hp;
-	int	max_hp;
+	unsigned int	health;
+	// int	max_hp;
 
 	int	damages;
 
-	int speed;
+	int	speed;
+
+	Move	Move;
 } Entity;
 
-void Entity_Initialize(Entity* entity, int health, int damages, int speed);
+void	Entity_Initialize(Entity* entity, int health, int damages, int speed, Move Move);
 
-void Entity_TakeDamage(Entity* entity, int damages);
-void Entity_ReceiveHeal(Entity* entity, int heal);
-
-void Entity_Die(Entity* entity);
+unsigned int	GetHealth(Entity* entity);
+unsigned int	SetHealth(Entity* entity, unsigned int health);

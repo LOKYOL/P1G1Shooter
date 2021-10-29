@@ -1,32 +1,24 @@
 #include "Entity.h"
 
-void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed)
+void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, Move _Move)
 {
 	Entity newEntity;
-	newEntity.max_hp = _health;
-	newEntity.current_hp = _health;
+	//newEntity.max_hp = _health;
+	newEntity.health = _health;
 	newEntity.damages = _damages;
 	newEntity.speed = _speed;
+
+	newEntity.Move = _Move;
 
 	_entity = &newEntity;
 }
 
-void Entity_TakeDamage(Entity* _entity, int _damages)
+unsigned int GetHealth(Entity* _entity)
 {
-	_entity->current_hp -= _damages;
-
-	if (_entity->current_hp < 0)
-	{
-		_entity->current_hp = 0;
-	}
+	return _entity->health;
 }
 
-void Entity_ReceiveHeal(Entity* _entity, int _heal)
+unsigned int SetHealth(Entity* _entity, unsigned int _health)
 {
-	_entity->current_hp += _heal;
-
-	if (_entity->current_hp > _entity->max_hp)
-	{
-		_entity->current_hp = _entity->max_hp;
-	}
+	return (_entity->health = _health);
 }
