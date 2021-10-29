@@ -1,13 +1,14 @@
 #pragma once
+#include "Entity.h"
 
 typedef struct projectile {
-	int speed;
-	int direction; //0->360
-	int PosX, PosY;
+	Entity* projEntity;
+	unsigned char direction; //0 = left, 1 = right
+	int PosX;
 	int SizeX, SizeY;
 	char Color;
 }projectile;
 
 void InitProj(projectile** proj, int speed, int direction, int PosX, int PosY, int SizeX, int SizeY, char Color);
 
-void lzshf();
+void RefreshProjMovement(projectile** proj, int deltatime);

@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "Inputs.h"
 #include "ConsoleDisplay.h"
 #include "bitmap.h"
@@ -11,7 +12,7 @@
 
 int main()
 {
-
+    int deltatime = 0, tempdeltatime = 0;
     DisplayZone* dz = (DisplayZone*)malloc(sizeof(DisplayZone));
     InitDisplayZone(dz, 0, 0, 100, 100, NULL);
 
@@ -27,8 +28,12 @@ int main()
 
     do
     {
+        tempdeltatime = clock();
 
 
+        //code
+
+        deltatime = clock() - tempdeltatime;
         Update(myInputs);
     } while (1);
 }
