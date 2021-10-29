@@ -1,6 +1,6 @@
 #include "Entity.h"
 
-void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, Move _Move)
+void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, Update _Update)
 {
 	Entity newEntity;
 	//newEntity.max_hp = _health;
@@ -8,7 +8,7 @@ void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, M
 	newEntity.damages = _damages;
 	newEntity.speed = _speed;
 
-	newEntity.Move = _Move;
+	newEntity.Update = _Update;
 
 	_entity = &newEntity;
 }

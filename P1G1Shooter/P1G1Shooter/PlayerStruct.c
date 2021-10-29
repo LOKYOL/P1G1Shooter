@@ -1,5 +1,6 @@
 #include "PlayerStruct.h"
 #include "TimeManagement.h"
+#include "projectile.h"
 
 void InitPlayer(Player** _player)
 {
@@ -11,26 +12,47 @@ void InitPlayer(Player** _player)
 	Entity_Initialize(&newPlayer->entity, 10, 1, 1, Player_Update);
 }
 
-void Player_UpdateMovement(Player* _player, Inputs _inputs, double _deltaTime)
+void Player_Update(void* _player, Inputs* _inputs, double _deltaTime) // pyerre top 1 <3
 {
-	double move_x = 0, move_y = 0;
+	Player* myPlayer = (Player*)_player;
 
-	if (IsKeyDown(_inputs, VK_LEFT))
+	Player_UpdateMovement(myPlayer, _inputs, _deltaTime);
+
+	if (KeyPressStart(*_inputs, VK_SPACE))
+	{
+		Player_Shoot(myPlayer);
+	}
+}
+
+void Player_UpdateMovement(Player* _player, Inputs* _inputs, double _deltaTime)
+{
+	double 
+		move_x = _player->entity.displayZone.mPosX, 
+		move_y = _player->entity.displayZone.mPosY;
+
+	if (IsKeyDown(*_inputs, VK_LEFT) || IsKeyDown(*_inputs, 'Q'))
 	{
 		move_x -= _deltaTime * _player->entity.speed;
 	}
-	if (IsKeyDown(_inputs, VK_UP))
+	if (IsKeyDown(*_inputs, VK_UP) || IsKeyDown(*_inputs, 'Z'))
 	{
 		move_y -= _deltaTime * _player->entity.speed;
 	}
-	if (IsKeyDown(_inputs, VK_RIGHT))
+	if (IsKeyDown(*_inputs, VK_RIGHT) || IsKeyDown(*_inputs, 'D'))
 	{
 		move_x += _deltaTime * _player->entity.speed;
 	}
-	if (IsKeyDown(_inputs, VK_DOWN))
+	if (IsKeyDown(*_inputs, VK_DOWN) || IsKeyDown(*_inputs, 'S'))
 	{
 		move_y += _deltaTime * _player->entity.speed;
 	}
+
+	MoveDisplayZone(&_player->entity.displayZone, move_x, move_y);
+}
+
+void Player_Shoot(Player* _player)
+{
+	// A FAIRE
 }
 
 void Player_TakeDamage(Player* _player, int _damages)
