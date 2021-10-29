@@ -1,6 +1,9 @@
 #include "PlayerStruct.h"
-#include "TimeManagement.h"
+
+#include "Entity.h"
+#include "Inputs.h"
 #include "projectile.h"
+#include "Engine/ConsoleDisplay.h"
 
 void InitPlayer(Player** _player)
 {
@@ -30,22 +33,22 @@ void Player_UpdateMovement(Player* _player, Inputs* _inputs, double _deltaTime)
 		move_x = _player->entity.displayZone.mPosX, 
 		move_y = _player->entity.displayZone.mPosY;
 
-	if (IsKeyDown(*_inputs, VK_LEFT) || IsKeyDown(*_inputs, 'Q'))
-	{
-		move_x -= _deltaTime * _player->entity.speed;
-	}
 	if (IsKeyDown(*_inputs, VK_UP) || IsKeyDown(*_inputs, 'Z'))
 	{
 		move_y -= _deltaTime * _player->entity.speed;
-	}
-	if (IsKeyDown(*_inputs, VK_RIGHT) || IsKeyDown(*_inputs, 'D'))
-	{
-		move_x += _deltaTime * _player->entity.speed;
 	}
 	if (IsKeyDown(*_inputs, VK_DOWN) || IsKeyDown(*_inputs, 'S'))
 	{
 		move_y += _deltaTime * _player->entity.speed;
 	}
+	/*if (IsKeyDown(*_inputs, VK_LEFT) || IsKeyDown(*_inputs, 'Q'))
+	{
+		move_x -= _deltaTime * _player->entity.speed;
+	}*/
+	/*if (IsKeyDown(*_inputs, VK_RIGHT) || IsKeyDown(*_inputs, 'D'))
+	{
+		move_x += _deltaTime * _player->entity.speed;
+	}*/
 
 	MoveDisplayZone(&_player->entity.displayZone, move_x, move_y);
 }
@@ -57,12 +60,12 @@ void Player_Shoot(Player* _player)
 
 void Player_TakeDamage(Player* _player, int _damages)
 {
-	Entity_TakeDamage(&_player->entity, _damages);
+	_player->entity.health -= _damages;
 }
 
 void Player_ReceiveHeal(Player* _player, int _heal)
 {
-	Entity_ReceiveHeal(&_player->entity, _heal);
+	_player->entity.health += _heal;
 }
 
 void Player_Die(Player* _player)

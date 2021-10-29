@@ -3,7 +3,7 @@
 #include "ConsoleDisplay.h"
 #include "Inputs.h"
 
-typedef void(*Update)(void* entity, Inputs* inputs, double deltaTime);
+typedef void(*EntityUpdate)(void* entity, Inputs* inputs, double deltaTime);
 
 typedef struct Entity
 {
@@ -16,10 +16,7 @@ typedef struct Entity
 
 	int	speed;
 
-	Update	Update;
+	EntityUpdate	update;
 } Entity;
 
-void	Entity_Initialize(Entity* entity, int health, int damages, int speed, Update Update);
-
-unsigned int	GetHealth(Entity* entity);
-unsigned int	SetHealth(Entity* entity, unsigned int health);
+void Entity_Initialize(Entity* entity, int health, int damages, int speed, EntityUpdate Update);

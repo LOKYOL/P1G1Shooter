@@ -1,8 +1,11 @@
 #pragma once
 
+#include "Entity.h"
 #include "ConsoleDisplay.h"
 #include "Inputs.h"
-#include "Entity.h"
+
+#define PlayerUpdate(player, inputs, deltaTime) \
+	Player_Update((void*)player, &inputs, deltaTime)
 
 typedef struct Player
 {

@@ -14,10 +14,10 @@ int main()
 {
     int deltatime = 0, tempdeltatime = 0;
     DisplayZone* dz = (DisplayZone*)malloc(sizeof(DisplayZone));
-    InitDisplayZone(dz, 0, 0, 100, 100, NULL);
+    InitDisplayZone(dz, 0, 0, 100, 100, 1);
 
-    projectile* proj;
-    InitProj(&proj, 1, 90, 0, 0, 54324, 3543543, 1);
+    //projectile* proj = NULL;
+    //InitProj(&proj, 1, 90, 0, 0, 54324, 3543543, 1);
 
     while (1) {
 
@@ -34,6 +34,6 @@ int main()
         //code
 
         deltatime = clock() - tempdeltatime;
-        Update(myInputs);
+        EntityUpdate(myInputs);
     } while (1);
 }

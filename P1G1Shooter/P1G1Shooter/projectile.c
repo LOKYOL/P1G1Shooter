@@ -5,7 +5,7 @@
 void InitProj(projectile** proj, int speed, int direction, int PosX, int PosY, int SizeX, int SizeY, char Color)
 {
 	(*proj) = (projectile*)malloc(sizeof(projectile));
-	(*proj)->projEntity->vitesse = speed;
+	(*proj)->projEntity->speed = speed;
 	(*proj)->direction = direction;
 	(*proj)->PosX = PosX;
 	(*proj)->SizeX = SizeX;
@@ -17,10 +17,10 @@ void RefreshProjMovement(projectile** proj, int deltatime)
 {
 	if ((*proj)->direction)
 	{
-		(*proj)->PosX += (*proj)->projEntity->vitesse * deltatime;
+		(*proj)->PosX += (*proj)->projEntity->speed * deltatime;
 	}
 	else
 	{
-		(*proj)->PosX += -(*proj)->projEntity->vitesse * deltatime;
+		(*proj)->PosX += -(*proj)->projEntity->speed * deltatime;
 	}
 }
