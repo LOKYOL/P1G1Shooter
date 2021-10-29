@@ -42,12 +42,10 @@
     <ClCompile Include="PlayerStruct.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Inputs.c">
-      <Filter>Essentials\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Vector.c">
       <Filter>Essentials\Sources</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ConsoleDisplay.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -62,6 +60,10 @@
     </ClCompile>
     <ClCompile Include="TimeManagement.c">
       <Filter>Source Files</Filter>
+=======
+    <ClCompile Include="Entity.c">
+      <Filter>Entities\Sources</Filter>
+>>>>>>> 20fbb9cd0bfb1bed90f6b842c9e1d2fe2360a070
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,8 +76,8 @@
     <ClInclude Include="Vector.h">
       <Filter>Essentials\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Inputs.h">
-      <Filter>Essentials\Headers</Filter>
+    <ClInclude Include="Entity.h">
+      <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="ConsoleDisplay.h">
       <Filter>Header Files</Filter>
