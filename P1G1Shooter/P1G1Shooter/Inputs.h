@@ -24,7 +24,7 @@ typedef struct Inputs
 
 void InitInputs(Inputs** inputs);
 
-void Update(Inputs* inputs);
+void UpdateAllInputs(Inputs* inputs);
 void UpdateInput(Inputs* inputs, KEYCODE input);
 
 void AddInput(Inputs* inputs, KEYCODE input);

@@ -16,6 +16,8 @@ int main()
 	Game	game;
 	InitGame(&game);
 
+
+
 	while (MainLoop(&game) == 0)
 	{
 		Sleep(1);

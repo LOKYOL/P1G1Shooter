@@ -1,21 +1,28 @@
 #pragma once
 #include "ConsoleDisplay.h"
 #include "TimeManagement.h"
-#include "DVector.h"
 #include "GameState.h"
+#include "../Inputs.h"
+#include "../Entity.h"
 
+#define WINDOW_HEIGHT		50
+#define WINDOW_WIDTH		100
+#define WINDOW_FONT_SIZE	13
+#define WINDOW_FONT_SQUARED	1
 
 typedef struct Game
 {
 	DisplaySettings*	mDisplaySettings;
 
+	Inputs*				mInputs;
+
 	DVector*			mStateStack;
+
+	DVector*			mAllEntities;
 
 	double				mGameTime;
 	double				mGameDt;
 }Game;
-
-
 
 void	InitGame(Game* game);
 void	CloseGame(Game* game);
@@ -25,3 +32,5 @@ void	PushGameState(Game* game, GameState state);
 void	PopGameState(Game* game);
 void	ChangeGameState(Game* game, GameState state);
 
+void	PushEntity(Game* game, Entity** entity);
+void	PopEntity(Game* game, Entity* entity);

@@ -8,11 +8,12 @@
 void InitInputs(Inputs** inputs)
 {
 	*inputs = (Inputs*)malloc(sizeof(Inputs));
+	memset(*inputs, 0, sizeof(Inputs));
 		
 	DVectorInit(&(*inputs)->list, sizeof(Key), NULL, 0);
 }
 
-void Update(Inputs* inputs)
+void UpdateAllInputs(Inputs* inputs)
 {
 	for (int i = 0; i < 256; i++)
 	{

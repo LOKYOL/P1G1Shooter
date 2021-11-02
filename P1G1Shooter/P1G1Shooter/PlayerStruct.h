@@ -1,8 +1,6 @@
 #pragma once
 
-#include "Entity.h"
-#include "Engine/ConsoleDisplay.h"
-#include "Inputs.h"
+#include "Game.h"
 
 #define PlayerUpdate(player, inputs, deltaTime) \
 	Player_Update((void*)player, &inputs, deltaTime)
@@ -14,9 +12,9 @@ typedef struct Player
 
 void InitPlayer(Player** player);
 
-void Player_Update(void* player, Inputs* inputs, double deltaTime);
+void Player_Update(void* player, Game* game);
 
-void Player_UpdateMovement(Player* player, Inputs* inputs, double deltaTime);
+void Player_UpdateMovement(Player* player, Game* game);
 
 void Player_Shoot(Player* player);
 
