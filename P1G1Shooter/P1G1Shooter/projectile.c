@@ -2,25 +2,41 @@
 #include <stdlib.h>
 #include "projectile.h"
 
-void InitProj(projectile** proj, int speed, int direction, int PosX, int PosY, int SizeX, int SizeY, char Color)
+void InitProj(Projectile** proj, int speed, int direction/*, int PosX, int PosY, int SizeX, int SizeY*/)
 {
-	(*proj) = (projectile*)malloc(sizeof(projectile));
+	(*proj) = (Projectile*)malloc(sizeof(Projectile));
+	(*proj)->projEntity = (Entity*)malloc(sizeof(Entity));
+	InitDisplayZone(&(*proj)->projEntity->displayZone, 0, 0, 2, 1, 1);
+	(*proj)->projEntity->health = 1;
+	(*proj)->projEntity->damages = 1;
 	(*proj)->projEntity->speed = speed;
-	(*proj)->direction = direction;
-	(*proj)->PosX = PosX;
-	(*proj)->SizeX = SizeX;
-	(*proj)->SizeY = SizeY;
-	(*proj)->Color = Color;
+	(*proj)->projEntity->update = UpdateProjMovement;
+	(*proj)->direction = 1;
+	/*(*proj)->position.x = PosX;
+	(*proj)->position.y = PosY;
+	(*proj)->size.x = SizeX;
+	(*proj)->size.y = SizeY;*/
 }
 
-void RefreshProjMovement(projectile** proj, int deltatime)
+void UpdateProjMovement(Projectile** proj, int deltatime)
 {
 	if ((*proj)->direction)
 	{
-		(*proj)->PosX += (*proj)->projEntity->speed * deltatime;
+		(*proj)->projEntity->displayZone.mPosX += (*proj)->projEntity->speed * deltatime;
 	}
 	else
 	{
-		(*proj)->PosX += -(*proj)->projEntity->speed * deltatime;
+		(*proj)->projEntity->displayZone.mPosX -= (*proj)->projEntity->speed * deltatime;
 	}
+}
+
+void DestroyProjectile(Projectile* projectile)
+{
+	free(projectile->projEntity);
+	free(projectile);
+}
+
+int InRange(int value, int min, int max)
+{
+	return (value >= min && value <= max) ? 1 : 0;
 }
