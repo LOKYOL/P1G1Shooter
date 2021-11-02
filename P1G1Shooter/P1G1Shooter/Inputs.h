@@ -1,9 +1,6 @@
 #pragma once
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "Vector.h"
+#include "DVector.h"
 
 typedef unsigned char KEYCODE;
 
@@ -22,7 +19,7 @@ typedef struct Key
 
 typedef struct Inputs
 {
-	VectorD list;
+	DVector list;
 } Inputs;
 
 void InitInputs(Inputs** inputs);

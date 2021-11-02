@@ -1,7 +1,7 @@
 #pragma once
-#include "Engine/ConsoleDisplay.h"
-#include "Engine/TimeManagement.h"
-#include "Engine/DVector.h"
+#include "ConsoleDisplay.h"
+#include "TimeManagement.h"
+#include "DVector.h"
 #include "GameState.h"
 
 

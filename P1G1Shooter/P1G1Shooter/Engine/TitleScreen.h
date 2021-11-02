@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameState.h"
-#include "Engine/ConsoleDisplay.h"
+#include "ConsoleDisplay.h"
 
 typedef struct TitleScreenData
 {

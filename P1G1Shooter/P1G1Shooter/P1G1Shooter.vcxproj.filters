@@ -54,9 +54,6 @@
     <ClCompile Include="Inputs.c">
       <Filter>Essentials\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.c">
-      <Filter>Essentials\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Entity.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
@@ -73,6 +70,9 @@
       <Filter>Engine\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\DisplayZoneDrawing.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DVector.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Game.c">
@@ -98,9 +98,6 @@
     <ClInclude Include="PlayerStruct.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Essentials\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
@@ -110,10 +107,19 @@
     <ClInclude Include="Inputs.h">
       <Filter>Essentials\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\TitleScreen.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\bitmap.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ConsoleDisplay.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\DisplayZoneDrawing.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\DVector.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Game.h">
@@ -129,12 +135,6 @@
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\TimeManagement.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TitleScreen.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\bitmap.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,14 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "Vector.h"
+#include "Engine/DVector.h"
 #include <Windows.h>
 
 void InitInputs(Inputs** inputs)
 {
 	*inputs = (Inputs*)malloc(sizeof(Inputs));
 		
-	(*inputs)->list = Vector_Create_Vector(Key);
+	DVectorInit(&(*inputs)->list, sizeof(Key), NULL, 0);
 }
 
 void Update(Inputs* inputs)
@@ -35,9 +35,9 @@ void UpdateInput(Inputs* inputs, KEYCODE input)
 void AddInput(Inputs* inputs, KEYCODE input)
 {
 	Key* inp = NULL;
-	for (int i = 0; i < inputs->list._length; i++)
+	for (int i = 0; i < inputs->list.mCurrentSize; i++)
 	{
-		inp = &Vector_Data(inputs->list, i, Key);
+		inp = &(DVectorGetTyped(&inputs->list, Key, i));
 
 		if (inp->keycode == input)
 		{
@@ -54,21 +54,21 @@ void AddInput(Inputs* inputs, KEYCODE input)
 	newInput.keycode = input;
 	newInput.keystate = KeyPressed;
 
-	Vector_Push_back(inputs->list, newInput);
+	DVectorPushBack(&inputs->list, &newInput);
 }
 
 void DeleteInput(Inputs* inputs, KEYCODE input)
 {
 	Key* inp = NULL;
-	for (int i = 0; i < inputs->list._length; i++)
+	for (int i = 0; i < inputs->list.mCurrentSize; i++)
 	{
-		inp = &Vector_Data(inputs->list, i, Key);
+		inp = &(DVectorGetTyped(&inputs->list, Key, i));
 
 		if (inp->keycode == input)
 		{
 			if (inp->keystate == KeyUp)
 			{
-				Vector_Erase(inputs->list, i);
+				DVectorErase(&inputs->list, i);
 			}
 			else
 			{
@@ -83,9 +83,9 @@ void PrintAllInputs(Inputs* inputs, KeyState keystate)
 {
 	Key* currentKey = NULL;
 
-	for (int i = 0; i < inputs->list._length; i++)
+	for (int i = 0; i < inputs->list.mCurrentSize; i++)
 	{
-		currentKey = &Vector_Data(inputs->list, i, Key);
+		currentKey = &(DVectorGetTyped(&inputs->list, Key, i));
 		if (currentKey->keystate == keystate)
 		{
 			printf("| %c |", currentKey->keycode);
@@ -96,9 +96,9 @@ void PrintAllInputs(Inputs* inputs, KeyState keystate)
 char IsKeyDown(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list._length; i++)
+	for (int i = 0; i < inputs.list.mCurrentSize; i++)
 	{
-		inp = Vector_Data(inputs.list, i, Key);
+		inp = DVectorGetTyped(&inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate <= KeyDown)
 		{
@@ -111,9 +111,9 @@ char IsKeyDown(Inputs inputs, KEYCODE keycode)
 char IsKeyUp(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list._length; i++)
+	for (int i = 0; i < inputs.list.mCurrentSize; i++)
 	{
-		inp = Vector_Data(inputs.list, i, Key);
+		inp = DVectorGetTyped(&inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate <= KeyDown)
 		{
@@ -126,9 +126,9 @@ char IsKeyUp(Inputs inputs, KEYCODE keycode)
 char WasKeyPressed(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list._length; i++)
+	for (int i = 0; i < inputs.list.mCurrentSize; i++)
 	{
-		inp = Vector_Data(inputs.list, i, Key);
+		inp = DVectorGetTyped(&inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate == KeyUp)
 		{
@@ -141,9 +141,9 @@ char WasKeyPressed(Inputs inputs, KEYCODE keycode)
 char KeyPressStart(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list._length; i++)
+	for (int i = 0; i < inputs.list.mCurrentSize; i++)
 	{
-		inp = Vector_Data(inputs.list, i, Key);
+		inp = DVectorGetTyped(&inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate == KeyPressed)
 		{

@@ -22,6 +22,7 @@
     <ClCompile Include="Engine\bitmap.c" />
     <ClCompile Include="Engine\ConsoleDisplay.c" />
     <ClCompile Include="Engine\DisplayZoneDrawing.c" />
+    <ClCompile Include="Engine\DVector.c" />
     <ClCompile Include="Engine\Game.c" />
     <ClCompile Include="Engine\GameState.c" />
     <ClCompile Include="Engine\ini.c" />
@@ -34,12 +35,12 @@
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
     <ClCompile Include="projectile.c" />
-    <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h" />
     <ClInclude Include="Engine\ConsoleDisplay.h" />
     <ClInclude Include="Engine\DisplayZoneDrawing.h" />
+    <ClInclude Include="Engine\DVector.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GameState.h" />
     <ClInclude Include="Engine\ini.h" />
@@ -51,7 +52,6 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
     <ClInclude Include="projectile.h" />
-    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
