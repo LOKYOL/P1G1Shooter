@@ -19,10 +19,6 @@ int main()
     //projectile* proj = NULL;
     //InitProj(&proj, 1, 90, 0, 0, 54324, 3543543, 1);
 
-    while (1) {
-
-    }
-
     Inputs* myInputs;
     InitInputs(&myInputs);
 

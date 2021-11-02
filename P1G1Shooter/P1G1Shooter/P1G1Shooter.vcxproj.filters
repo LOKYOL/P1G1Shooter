@@ -74,9 +74,6 @@
     <ClInclude Include="Inputs.h">
       <Filter>Essentials\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\ConsoleDisplay.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\DisplayZoneDrawing.h">
       <Filter>Header Files</Filter>
     </ClInclude>

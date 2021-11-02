@@ -29,7 +29,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h" />
-    <ClInclude Include="Engine\ConsoleDisplay.h" />
     <ClInclude Include="Engine\DisplayZoneDrawing.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Inputs.h" />
