@@ -2,30 +2,34 @@
 #include <stdlib.h>
 #include "projectile.h"
 
-void InitProj(Projectile** proj, int speed, int direction/*, int PosX, int PosY, int SizeX, int SizeY*/)
+void InitProj(Projectile** proj, int speed, int direction)
 {
 	(*proj) = (Projectile*)malloc(sizeof(Projectile));
 	InitDisplayZone(&(*proj)->projEntity.displayZone, 0, 0, 2, 1, 1);
-	(*proj)->projEntity.health = 1;
-	(*proj)->projEntity.damages = 1;
-	(*proj)->projEntity.speed = speed;
-	(*proj)->projEntity.update = UpdateProjMovement;
 	(*proj)->direction = 1;
-	/*(*proj)->position.x = PosX;
-	(*proj)->position.y = PosY;
-	(*proj)->size.x = SizeX;
-	(*proj)->size.y = SizeY;*/
 }
 
-void UpdateProjMovement(Projectile** proj, int deltatime)
+void Projectile_Update(Projectile ** _proj, Game* _game) {
+	Projectile* myProjectile = (Projectile*)_proj;
+
+	Projectile_UpdateMovement(myProjectile, _game);
+	FlushDisplayZone(_game->mDisplaySettings, &myProjectile->projEntity.displayZone);
+
+	if (KeyPressStart(*_game->mInputs, VK_SPACE))
+	{
+		Player_Shoot(myProjectile);
+	}
+}
+
+void Projectile_UpdateMovement(Projectile** proj, Game* _game)
 {
 	if ((*proj)->direction)
 	{
-		(*proj)->projEntity.displayZone.mPosX += (*proj)->projEntity.speed * deltatime;
+		(*proj)->projEntity.displayZone.mPosX += (*proj)->projEntity.speed * _game->mGameDt;
 	}
 	else
 	{
-		(*proj)->projEntity.displayZone.mPosX -= (*proj)->projEntity.speed * deltatime;
+		(*proj)->projEntity.displayZone.mPosX -= (*proj)->projEntity.speed * _game->mGameDt;
 	}
 }
 

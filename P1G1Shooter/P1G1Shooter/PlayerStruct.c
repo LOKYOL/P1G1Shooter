@@ -1,4 +1,5 @@
 #include "PlayerStruct.h"
+#include "projectile.h"
 
 #include "Game.h"
 
@@ -57,6 +58,8 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 		move_x += _game->mGameDt * _player->entity.speed;
 	}*/
 
+
+
 	if (newpos_x < 0)
 	{
 		newpos_x = 0;
@@ -80,7 +83,11 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 
 void Player_Shoot(Player* _player)
 {
-	// A FAIRE
+	Projectile newProjectile;
+	InitProj(&newProjectile, 2, 0);
+	Entity_Initialize(&(newProjectile.projEntity), 10, 1, WINDOW_WIDTH / 6, Projectile_Update);
+
+	
 }
 
 void Player_TakeDamage(Player* _player, int _damages)
