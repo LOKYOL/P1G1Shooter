@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ConsoleDisplay.h"
+#include "Engine/ConsoleDisplay.h"
 #include "Inputs.h"
 
 typedef void(*EntityUpdate)(void* entity, Inputs* inputs, double deltaTime);

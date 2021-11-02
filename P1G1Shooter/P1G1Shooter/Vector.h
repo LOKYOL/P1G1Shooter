@@ -17,6 +17,56 @@
 
 #define ADDED_CAPACITY 10
 
+#define DVectorPushBackTyped(darray,type,value) \
+{ \
+	type toPush=value; \
+	Vd_Push_Back(darray,&toPush);\
+}
+#define DVectorPushBack(darray,value) \
+{ \
+	Vd_Push_Back(darray,&value);\
+}
+
+#define DVectorGetTyped(darray,type,i) \
+	*(type*)Vd_Data(darray,i)
+#define DVectorGet(darray,i) \
+	Vd_Data(darray,i)
+
+#define DVectorBackTyped(darray,type) \
+	*(type*)Vd_Back(darray)
+#define DVectorBack(darray) \
+	Vd_Back(darray)
+
+#define DVectorInitTyped(darray,type,defaultvalue,elemCount) \
+{ \
+	type toPush=defaultvalue; \
+	*darray = Vector_Create_Vector(sizeof(type)); \
+	for (int i = 0; i < elemCount, i++) \
+	{ \
+		Vd_Push_Back(darray, &toPush); \
+	} \
+}
+#define DVectorInit(darray,type,defaultvalue,elemCount) \
+{ \
+	*darray = Vector_Create_Vector(sizeof(type)); \
+	for (int i = 0; i < elemCount, i++) \
+	{ \
+		Vd_Push_Back(darray, &defaultvalue); \
+	} \
+}
+
+#define DVectorInsertTyped(darray,type,value,i) \
+{ \
+	type toPush=value; \
+	Vd_Insert(darray,&toPush,i);\
+}
+
+#define DVectorResizeTyped(darray,type,defaultvalue,elemCount) \
+{ \
+	type toPush=defaultvalue; \
+	Vd_Resize(darray,elemCount,&toPush);\
+}
+
 #define Vector_Deallocate(vector) \
 	Vd_Deallocate(&vector)
 

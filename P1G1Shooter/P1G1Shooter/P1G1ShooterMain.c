@@ -5,31 +5,23 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Inputs.h"
-#include "ConsoleDisplay.h"
-#include "bitmap.h"
-#include "DisplayZoneDrawing.h"
+#include "Engine/ConsoleDisplay.h"
+#include "Engine/bitmap.h"
+#include "Engine/DisplayZoneDrawing.h"
 #include "projectile.h"
+#include "Engine/Game.h"
 
 int main()
 {
-    int deltatime = 0, tempdeltatime = 0;
-    DisplayZone* dz = (DisplayZone*)malloc(sizeof(DisplayZone));
-    InitDisplayZone(dz, 0, 0, 100, 100, 1);
+	Game	game;
+	InitGame(&game);
 
-    //projectile* proj = NULL;
-    //InitProj(&proj, 1, 90, 0, 0, 54324, 3543543, 1);
+	while (MainLoop(&game) == 0)
+	{
+		Sleep(1);
+	}
 
-    Inputs* myInputs;
-    InitInputs(&myInputs);
+	CloseGame(&game);
 
-    do
-    {
-        tempdeltatime = clock();
-
-
-        //code
-
-        deltatime = clock() - tempdeltatime;
-        EntityUpdate(myInputs);
-    } while (1);
+	return 0;
 }

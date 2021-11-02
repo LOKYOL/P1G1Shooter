@@ -19,6 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\bitmap.c" />
+    <ClCompile Include="Engine\ConsoleDisplay.c" />
+    <ClCompile Include="Engine\DisplayZoneDrawing.c" />
+    <ClCompile Include="Engine\Game.c" />
+    <ClCompile Include="Engine\GameState.c" />
+    <ClCompile Include="Engine\ini.c" />
+    <ClCompile Include="Engine\ParamsList.c" />
+    <ClCompile Include="Engine\TimeManagement.c" />
+    <ClCompile Include="Engine\TitleScreen.c" />
     <ClCompile Include="Entity.c" />
     <ClCompile Include="Inputs.c" />
     <ClCompile Include="Obstacle.c" />
@@ -29,7 +38,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h" />
+    <ClInclude Include="Engine\ConsoleDisplay.h" />
     <ClInclude Include="Engine\DisplayZoneDrawing.h" />
+    <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\GameState.h" />
+    <ClInclude Include="Engine\ini.h" />
+    <ClInclude Include="Engine\ParamsList.h" />
+    <ClInclude Include="Engine\TimeManagement.h" />
+    <ClInclude Include="Engine\TitleScreen.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="Obstacle.h" />

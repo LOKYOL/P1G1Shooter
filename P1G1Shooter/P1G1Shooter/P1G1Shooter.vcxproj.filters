@@ -31,6 +31,15 @@
     <Filter Include="Essentials\Sources">
       <UniqueIdentifier>{ba065ba9-bc9f-4145-89b8-afd6985f45c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{37f6432d-3284-4355-96e1-98edd24c092b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Headers">
+      <UniqueIdentifier>{0ed264a0-a64c-47d2-8923-58deff9331be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Sources">
+      <UniqueIdentifier>{454b3143-7ac1-4606-af65-4f9e95b42013}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="P1G1ShooterMain.c">
@@ -54,6 +63,33 @@
     <ClCompile Include="projectile.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\TitleScreen.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\bitmap.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ConsoleDisplay.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\DisplayZoneDrawing.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Game.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameState.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ini.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\ParamsList.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\TimeManagement.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Obstacle.h">
@@ -74,11 +110,32 @@
     <ClInclude Include="Inputs.h">
       <Filter>Essentials\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\ConsoleDisplay.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\DisplayZoneDrawing.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Game.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GameState.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ini.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\ParamsList.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\TimeManagement.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\TitleScreen.h">
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\bitmap.h">
-      <Filter>Header Files</Filter>
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

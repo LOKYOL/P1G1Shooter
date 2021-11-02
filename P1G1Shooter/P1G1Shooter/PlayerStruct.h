@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Entity.h"
-#include "ConsoleDisplay.h"
+#include "Engine/ConsoleDisplay.h"
 #include "Inputs.h"
 
 #define PlayerUpdate(player, inputs, deltaTime) \
