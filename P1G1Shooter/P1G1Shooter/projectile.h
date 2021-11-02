@@ -4,7 +4,7 @@
 
 typedef struct Projectile 
 {
-	Entity* projEntity;
+	Entity projEntity;
 	/*Vector2 position;
 	Vector2 size;*/
 
