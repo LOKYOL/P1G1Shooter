@@ -42,7 +42,9 @@ void	InitGame(Game* game)
 
 	PushGameState(game, title);
 
+	game->mGameSpawnObstacleTimer = 0;
 }
+
 void	CloseGame(Game* game)
 {
 	// clear stack
@@ -67,7 +69,7 @@ int		MainLoop(Game* game)
 	game->mGameDt = currentTime - game->mGameTime;
 	game->mGameTime = currentTime;
 
-	int updateResult=0;
+	int updateResult = 0;
 
 	if (DVectorSize(game->mStateStack))
 	{
@@ -75,16 +77,25 @@ int		MainLoop(Game* game)
 		updateResult = current.mStateUpdate(game, &current);
 	}
 
-	Entity* curEntity = NULL;
+	// SPAWN OBSTACLE
+	game->mGameSpawnObstacleTimer += game->mGameDt;
+	if (game->mGameSpawnObstacleTimer >= OBSTACLE_SPAWN_TIMER)
+	{
+		game->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
+
+		SpawnObstacle(game);
+	}
+
 
 	// FOR EACH ENTITY
+	Entity* curEntity = NULL;
 	for (int i = 0; i < game->mAllEntities->mCurrentSize; i++)
 	{
 		curEntity = *(Entity**)DVectorGet(game->mAllEntities, i);
 
 		if (curEntity->update != NULL)
 		{
-			curEntity->update(curEntity, game);
+			curEntity->update((void*)curEntity, game);
 		}
 	}
 
@@ -102,6 +113,7 @@ void	PushGameState(Game* game, GameState state)
 	currentState->mStateInit(game, currentState);
 
 }
+
 void	PopGameState(Game* game)
 {
 	if (DVectorSize(game->mStateStack))
@@ -112,10 +124,18 @@ void	PopGameState(Game* game)
 		DVectorPopBack(game->mStateStack);
 	}
 }
-void	ChangeGameState(Game* game, GameState state)
+
+void ChangeGameState(Game* _game, GameState _state)
 {
-	PopGameState(game);
-	PushGameState(game, state);
+	PopGameState(_game);
+	PushGameState(_game, _state);
+}
+
+void SpawnObstacle(Game* _game)
+{
+	Obstacle* newObstacle = NULL;
+	InitObstacle(&newObstacle);
+	PushEntity(_game, &newObstacle);
 }
 
 void PushEntity(Game* _game, Entity** _entity)
@@ -125,11 +145,15 @@ void PushEntity(Game* _game, Entity** _entity)
 
 void PopEntity(Game* _game, Entity* _entity)
 {
+	Entity* curEntity = NULL;
 	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
 	{
-		if (DVectorGet(_game->mAllEntities, i) == _entity)
+		if ((curEntity = (Entity*)DVectorGet(_game->mAllEntities, i)) == _entity)
 		{
-			DVectorErase(_game->mAllEntities, i);
+			if (DVectorErase(_game->mAllEntities, i) > 0)
+			{
+				free(curEntity);
+			}
 		}
 	}
 }
