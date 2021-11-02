@@ -59,7 +59,7 @@ void	CloseGame(Game* game)
 
 int		MainLoop(Game* game)
 {
-	ClearBuffer(game->mDisplaySettings, WHITE, BLACK);
+	ClearBuffer(game->mDisplaySettings, WHITE, DARKER | BLUE);
 
 	UpdateAllInputs(game->mInputs);
 
