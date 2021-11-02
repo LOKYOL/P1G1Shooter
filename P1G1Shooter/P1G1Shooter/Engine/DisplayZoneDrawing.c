@@ -8,6 +8,17 @@ unsigned char	greyRamp[] = " .:-=+*#%@";
 unsigned int	RGB_ConsoleColorsValues[16] = { 0x0C0C0C,0xC50F1F,0x13A1E0,0xC19C00,0x0037DA,0x881798,0x3A96DD,0xCCCCCC,
 												0x767676,0xE74856,0x16C60C,0xF9F1A5,0x3B78FF,0xB4009E,0x61D6D6,0xF2F2F2 };
 
+
+typedef struct rgbVect
+{
+	int R;
+	int G;
+	int B;
+
+}rgbVect;
+
+rgbVect	RGB_ConsoleColors[16];
+
 extern void	Blender(DisplayCharacter* src, DisplayCharacter* dst, DisplayCharacter* blender);
 
 // draw a filled rectangle with given pos, size, border and fill DisplayCharacter
@@ -152,13 +163,7 @@ void	DrawDiscInDisplayZone(DisplayZone* zone, int cx, int cy, int r, ConsoleColo
 	DrawDiscInDisplayZoneEx(zone, cx, cy, r, FG, BG, character, FG, BG, character);
 }
 
-typedef struct rgbVect
-{
-	float R;
-	float G;
-	float B;
 
-}rgbVect;
 
 rgbVect getRGBFromConsoleIndex(unsigned int index)
 {
@@ -168,7 +173,13 @@ rgbVect getRGBFromConsoleIndex(unsigned int index)
 	result.B = (int)(RGB_ConsoleColorsValues[index] & 0xFF);
 	return result;
 }
-
+void initRGBConsoleColor()
+{
+	for (int i = 0; i < 16; i++)
+	{
+		RGB_ConsoleColors[i] = getRGBFromConsoleIndex(i);
+	}
+}
 rgbVect getRGBFromValues(unsigned char R, unsigned char G, unsigned char B)
 {
 	rgbVect	result;
@@ -194,35 +205,26 @@ void RGBMult(rgbVect* c, float f)
 	c->B *= f;
 }
 
-float	getRGBSquaredNorm(rgbVect c)
+unsigned int	getRGBSquaredNorm(rgbVect c)
 {
 	return c.R * c.R + c.G * c.G + c.B * c.B;
 }
 
-float	getRGBDot(rgbVect c1,rgbVect c2)
+int	getRGBDot(rgbVect c1,rgbVect c2)
 {
 	return c1.R * c2.R + c1.G * c2.G + c1.B * c2.B;
 }
 
-float getRGBNorm(rgbVect c)
-{
-	return sqrtf(getRGBSquaredNorm(c));
-}
-
 // 3D distance, don't take visual distance into account
-unsigned int	getNearestConsoleColor(unsigned char R, unsigned char G, unsigned char B)
+unsigned int	getNearestConsoleColor(rgbVect input)
 {
-	rgbVect input = getRGBFromValues(R, G, B);
-	
-	float bestSquaredDist = 10000000.0f;
+	unsigned int bestSquaredDist = 3*255*255;
 	unsigned int bestIndex = -1;
 	for (int i = 0; i < 16; i++)
 	{
-		rgbVect rgbConsole = getRGBFromConsoleIndex(i);
-		
-		rgbVect diff = getRGBDirection(rgbConsole, input);
+		rgbVect diff = getRGBDirection(RGB_ConsoleColors[i], input);
 
-		float squaredDist = getRGBSquaredNorm(diff);
+		unsigned int squaredDist = getRGBSquaredNorm(diff);
 		if (squaredDist < bestSquaredDist)
 		{
 			bestSquaredDist = squaredDist;
@@ -233,52 +235,50 @@ unsigned int	getNearestConsoleColor(unsigned char R, unsigned char G, unsigned c
 }
 
 // 3D oriented distance, don't take visual distance into account
-unsigned int	getOrientedNearestConsoleColor(unsigned char R, unsigned char G, unsigned char B,unsigned int oppositeIndex)
+unsigned int	getOrientedNearestConsoleColor(rgbVect input,unsigned int nearestIndex)
 {
-	rgbVect input = getRGBFromValues(R, G, B);
-	rgbVect consoleOpposite = getRGBFromConsoleIndex(oppositeIndex);
-	
-	rgbVect direction = getRGBDirection(consoleOpposite, input);
+	rgbVect direction = getRGBDirection(RGB_ConsoleColors[nearestIndex], input);
 
 	unsigned int bestIndex = 16;
 
-	float norm = getRGBNorm(direction);
-	if (norm)
+	int sqrnorm = getRGBSquaredNorm(direction);
+	if (sqrnorm)
 	{
-		norm = 1.0f / norm;
-	
-		RGBMult(&direction, norm);
-
-		float bestSquaredDist = 10000000;
-	
+		unsigned int bestSquaredDist = 10000000;
+		
 		for (int i = 0; i < 16; i++)
 		{
+			if (i == nearestIndex)
+				continue;
 
-			rgbVect console = getRGBFromConsoleIndex(i);
-			rgbVect colorV = getRGBDirection(input, console);
+			rgbVect colorV = getRGBDirection(input, RGB_ConsoleColors[i]);
 
-			norm = getRGBNorm(colorV);
-
-			if (norm)
+			int dot = 256*getRGBDot(colorV, direction);
+			if (dot > 0.0)
 			{
-				float squaredDist = getRGBSquaredNorm(colorV);
+				dot /= sqrnorm;
+				rgbVect proj = direction;
+				proj.R *= dot;
+				proj.R /= 256;
+				proj.G *= dot;
+				proj.G /= 256;
+				proj.B *= dot;
+				proj.B /= 256;
 
-				norm = 1.0f / norm;
+				rgbVect perp = getRGBDirection(proj, colorV);
+				perp.R *= 4;
+				perp.G *= 4;
+				perp.B *= 4;
 
-				RGBMult(&colorV, norm);
-
-				float dot = getRGBDot(colorV, direction);
-				if (dot > 0.0)
+				unsigned int dist = getRGBSquaredNorm(proj) + getRGBSquaredNorm(perp);
+				
+				if (dist < bestSquaredDist)
 				{
-					squaredDist /= dot;
-
-					if (squaredDist < bestSquaredDist)
-					{
-						bestSquaredDist = squaredDist;
-						bestIndex = i;
-					}
+					bestSquaredDist = dist;
+					bestIndex = i;
 				}
 			}
+			
 		}
 	}
 	return bestIndex;
@@ -287,26 +287,23 @@ unsigned int	getOrientedNearestConsoleColor(unsigned char R, unsigned char G, un
 
 DisplayCharacter	GetAsciiArtFromRGB(unsigned char R, unsigned char G, unsigned char B)
 {
-	unsigned int nearest = getNearestConsoleColor(R, G, B);
+	rgbVect input = getRGBFromValues(R, G, B);
 
-	unsigned int opposite = getOrientedNearestConsoleColor(R, G, B, nearest);
+	unsigned int nearest = getNearestConsoleColor(input);
+	unsigned int opposite = getOrientedNearestConsoleColor(input, nearest);
 
 	DisplayCharacter result;
 	if(opposite != 16)
 	{
-		rgbVect current = getRGBFromValues(R, G, B);
-		rgbVect	nearestrgb = getRGBFromConsoleIndex(nearest);
-		rgbVect	oppositergb = getRGBFromConsoleIndex(opposite);
+		rgbVect	v1 = getRGBDirection(RGB_ConsoleColors[nearest], RGB_ConsoleColors[opposite]);
+		rgbVect	v2 = getRGBDirection(RGB_ConsoleColors[nearest], input);
 
-		rgbVect	v1 = getRGBDirection(nearestrgb, oppositergb);
-		rgbVect	v2 = getRGBDirection(nearestrgb, current);
-
-		float	dot = getRGBDot(v1, v2);
+		int	dot = 65536*getRGBDot(v1, v2);
 		dot /= getRGBSquaredNorm(v1);
 
 		// dot is in [0,0.5]
 
-		int blendIndex = 10.99f * 2.0f*dot;
+		int blendIndex = (11 * dot) / 32768;
 
 		DisplayCharacter blend =  ENCODE_DISPLAY_CHARACTER(opposite,nearest,greyRamp[blendIndex],0) ;
 		result = blend;

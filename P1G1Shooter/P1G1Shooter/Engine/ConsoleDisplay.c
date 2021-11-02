@@ -266,8 +266,12 @@ void	changeDisplaySize(DisplaySettings* displaysettings, unsigned int sx, unsign
 
 }
 
+extern void initRGBConsoleColor();
+
+
 DisplaySettings* InitDisplay(unsigned int sx, unsigned int sy,unsigned int newFontW,unsigned int squaredRasterFont)
 {
+	initRGBConsoleColor();
 	DisplaySettings* result =(DisplaySettings*) malloc(sizeof(DisplaySettings));
 	result->mConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	result->mConsoleHWND = GetConsoleWindow();

@@ -15,7 +15,7 @@ void InitPlayer(Player** _player)
 	Entity_Initialize(&newPlayer->entity, 10, 1, 1, Player_Update);
 }
 
-void Player_Update(void* _player, Inputs* _inputs, double _deltaTime) // pyerre top 1 <3
+void Player_Update(void* _player, Inputs* _inputs, double _deltaTime)
 {
 	Player* myPlayer = (Player*)_player;
 
