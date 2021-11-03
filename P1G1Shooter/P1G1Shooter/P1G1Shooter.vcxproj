@@ -30,6 +30,7 @@
     <ClCompile Include="Engine\TimeManagement.c" />
     <ClCompile Include="Engine\TitleScreen.c" />
     <ClCompile Include="Entity.c" />
+    <ClCompile Include="GameScreen.c" />
     <ClCompile Include="Inputs.c" />
     <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
@@ -48,6 +49,7 @@
     <ClInclude Include="Engine\TimeManagement.h" />
     <ClInclude Include="Engine\TitleScreen.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameScreen.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />

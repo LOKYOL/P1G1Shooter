@@ -90,6 +90,9 @@
     <ClCompile Include="Projectile.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="GameScreen.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Obstacle.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="Projectile.h">
       <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScreen.h">
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
