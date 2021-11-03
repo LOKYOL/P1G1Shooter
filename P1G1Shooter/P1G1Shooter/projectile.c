@@ -17,6 +17,7 @@ void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, d
 	(*proj)->projEntity.mPosition_x = (posPlayer_x + 3);
 	(*proj)->projEntity.mPosition_y = posPlayer_y;
 	(*proj)->direction = 1;
+	(*proj)->projEntity.mEntityType = TYPE_PROJECTILE;
 }
 
 void Projectile_Update(void* _proj, Game* _game) {

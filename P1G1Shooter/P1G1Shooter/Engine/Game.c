@@ -1,7 +1,9 @@
 #include "Game.h"
+#include "TimeManagement.h"
 #include "TitleScreen.h"
 #include "../PlayerStruct.h"
 #include "../Obstacle.h"
+#include "../Projectile.h"
 
 void	InitGame(Game* game)
 {
@@ -30,9 +32,7 @@ void	InitGame(Game* game)
 	// Create Player
 	Player* myPlayer;
 	InitPlayer(&myPlayer);
-	Entity* myEntity = &myPlayer->entity;
-	PushEntity(game, &myEntity);
-
+	DVectorPushBack(game->mAllEntities, &myPlayer);
 
 	GameState	title;
 	title.mStateInit = &TitleScreenInit;
@@ -60,13 +60,13 @@ void	CloseGame(Game* game)
 
 int		MainLoop(Game* game)
 {
-	ClearBuffer(game->mDisplaySettings, WHITE, DARKER | BLUE);
-
-	UpdateAllInputs(game->mInputs);
-
 	double currentTime = GetTime();
 	game->mGameDt = currentTime - game->mGameTime;
 	game->mGameTime = currentTime;
+
+	ClearBuffer(game->mDisplaySettings, WHITE, DARKER | BLUE);
+
+	UpdateAllInputs(game->mInputs);
 
 	int updateResult = 0;
 
@@ -99,17 +99,22 @@ int		MainLoop(Game* game)
 	}
 
 	// COLLISIONS
-	DVector PlayerList = GetAllEntityOfType(game, TYPE_PLAYER);
-	DVector ObstacleList = GetAllEntityOfType(game, TYPE_OBSTACLE);
-	DVector ProjectileList = GetAllEntityOfType(game, TYPE_PROJECTILE);
+	DVector* PlayerList = GetAllEntityOfType(game, TYPE_PLAYER);
+	DVector* ObstacleList = GetAllEntityOfType(game, TYPE_OBSTACLE);
+	DVector* ProjectileList = GetAllEntityOfType(game, TYPE_PROJECTILE);
 
 	Entity* curObstacle = NULL,* curProjectile = NULL;
-	Player* player = DVectorGet(&PlayerList, 0);
+	Player* player = *(Player**)DVectorGet(PlayerList, 0);
+
+	if (player == NULL)
+	{
+		return 1;
+	}
 
 	// FOR EACH OBSTACLE
-	for (int i = 0; i < ObstacleList.mCurrentSize; i++)
+	for (int i = 0; i < ObstacleList->mCurrentSize; i++)
 	{
-		curObstacle = DVectorGet(&ObstacleList, i);
+		curObstacle = *(Obstacle**)DVectorGet(&ObstacleList, i);
 
 		// COMPARE COLLISION WITH THE PLAYER
 		if (CompareCollision(curObstacle, &player->entity) > 0)
@@ -118,9 +123,9 @@ int		MainLoop(Game* game)
 		}
 
 		// COMPARE COLLISION WITH EACH PROJECTILE
-		for (int j = 0; j < ProjectileList.mCurrentSize; j++)
+		for (int j = 0; j < ProjectileList->mCurrentSize; j++)
 		{
-			curProjectile = DVectorGet(&ProjectileList, j);
+			curProjectile = *(Projectile**)DVectorGet(&ProjectileList, j);
 			if (CompareCollision(curObstacle, curProjectile) > 0)
 			{
 				Entity_TakeDamages(curObstacle, curProjectile->mDamages);
@@ -130,9 +135,9 @@ int		MainLoop(Game* game)
 	}
 
 	// FOREACH PROJECTILE
-	for (int i = 0; i < ProjectileList.mCurrentSize; i++)
+	for (int i = 0; i < ProjectileList->mCurrentSize; i++)
 	{
-		curProjectile = DVectorGet(&ProjectileList, i);
+		curProjectile = *(Projectile**)DVectorGet(&ProjectileList, i);
 
 		if (CompareCollision(curProjectile, &player->entity) > 0)
 		{
@@ -176,7 +181,7 @@ void SpawnObstacle(Game* _game)
 {
 	Obstacle* newObstacle = NULL;
 	InitObstacle(&newObstacle);
-	PushEntity(_game, &newObstacle);
+	DVectorPushBack(_game->mAllEntities, &newObstacle);
 }
 
 void PushEntity(Game* _game, Entity** _entity)
@@ -189,7 +194,7 @@ void PopEntity(Game* _game, Entity* _entity)
 	Entity* curEntity = NULL;
 	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
 	{
-		if ((curEntity = (Entity*)DVectorGet(_game->mAllEntities, i)) == _entity)
+		if ((curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i)) == _entity)
 		{
 			if (DVectorErase(_game->mAllEntities, i) > 0)
 			{
@@ -199,7 +204,7 @@ void PopEntity(Game* _game, Entity* _entity)
 	}
 }
 
-DVector GetAllEntityOfType(Game* _game, EntityType _type)
+DVector* GetAllEntityOfType(Game* _game, EntityType _type)
 {
 	DVector* list = DVectorCreate();
 	DVectorInit(list, sizeof(void*), 0, 0);
@@ -207,7 +212,7 @@ DVector GetAllEntityOfType(Game* _game, EntityType _type)
 	Entity* curEntity = NULL;
 	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
 	{
-		curEntity = DVectorGet(_game->mAllEntities, i);
+		curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i);
 
 		if (curEntity->mEntityType == _type)
 		{
@@ -215,7 +220,7 @@ DVector GetAllEntityOfType(Game* _game, EntityType _type)
 		}
 	}
 
-	return *list;
+	return list;
 }
 
 char	CompareCollision(Entity* _entityA, Entity* _entityB)

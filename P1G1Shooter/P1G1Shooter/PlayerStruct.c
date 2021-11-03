@@ -19,6 +19,7 @@ void InitPlayer(Player** _player)
 	Entity_Initialize(&newPlayer->entity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
 
 	newPlayer->entity.mPosition_x = 5;
+	newPlayer->entity.mEntityType = TYPE_PLAYER;
 }
 
 void Player_Update(void* _player, Game* _game)

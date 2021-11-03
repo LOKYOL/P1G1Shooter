@@ -10,7 +10,7 @@
 #define WINDOW_FONT_SIZE	13
 #define WINDOW_FONT_SQUARED	1
 
-#define OBSTACLE_SPAWN_TIMER	5
+#define OBSTACLE_SPAWN_TIMER	1000
 
 typedef struct Game
 {
@@ -41,7 +41,7 @@ void	SpawnObstacle(Game* game);
 void	PushEntity(Game* game, Entity** entity);
 void	PopEntity(Game* game, Entity* entity);
 
-DVector GetAllEntityOfType(Game* game, EntityType type);
+DVector* GetAllEntityOfType(Game* game, EntityType type);
 
 char	CompareCollision(Entity* entityA, Entity* entityB);
 

@@ -58,13 +58,13 @@ void Entity_Free(Entity* _entity)
 	switch (_entity->mEntityType)
 	{
 	case TYPE_PLAYER:
-		free((Player*)(_entity));
+		free(((Player*)_entity));
 		break;
 	case TYPE_OBSTACLE:
-		free((Obstacle*)(_entity));
+		free(((Obstacle*)_entity));
 		break;
 	case TYPE_PROJECTILE:
-		free((Projectile*)(_entity));
+		free(((Projectile*)_entity));
 		break;
 	default:
 		free(_entity);

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "ConsoleDisplay.h"
-
-struct Game;
+#include "Engine/ConsoleDisplay.h"
 
 typedef void(*EntityUpdate)(void* entity, struct Game* game);
 

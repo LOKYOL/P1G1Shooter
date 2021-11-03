@@ -34,7 +34,7 @@
     <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
-    <ClCompile Include="projectile.c" />
+    <ClCompile Include="Projectile.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h" />
@@ -51,7 +51,7 @@
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
-    <ClInclude Include="projectile.h" />
+    <ClInclude Include="Projectile.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
