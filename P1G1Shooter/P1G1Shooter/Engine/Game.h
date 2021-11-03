@@ -1,13 +1,9 @@
 #pragma once
-#include "ConsoleDisplay.h"
-#include "TimeManagement.h"
+
 #include "GameState.h"
-#include "TitleScreen.h"
+#include "ConsoleDisplay.h"
 #include "../Inputs.h"
 #include "../Entity.h"
-#include "../Obstacle.h"
-#include "../projectile.h"
-#include "../PlayerStruct.h"
 
 #define WINDOW_HEIGHT		50
 #define WINDOW_WIDTH		100

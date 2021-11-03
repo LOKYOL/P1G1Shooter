@@ -4,11 +4,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "Inputs.h"
-#include "Engine/ConsoleDisplay.h"
-#include "Engine/bitmap.h"
-#include "Engine/DisplayZoneDrawing.h"
-#include "projectile.h"
 #include "Engine/Game.h"
 
 int main()

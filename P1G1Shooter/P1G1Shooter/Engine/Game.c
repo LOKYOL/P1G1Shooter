@@ -1,5 +1,7 @@
 #include "Game.h"
-
+#include "TitleScreen.h"
+#include "../PlayerStruct.h"
+#include "../Obstacle.h"
 
 void	InitGame(Game* game)
 {
@@ -97,9 +99,9 @@ int		MainLoop(Game* game)
 	}
 
 	// COLLISIONS
-	DVector PlayerList = GetAllEntityOfType(game, PLAYER);
-	DVector ObstacleList = GetAllEntityOfType(game, OBSTACLE);
-	DVector ProjectileList = GetAllEntityOfType(game, PROJECTILE);
+	DVector PlayerList = GetAllEntityOfType(game, TYPE_PLAYER);
+	DVector ObstacleList = GetAllEntityOfType(game, TYPE_OBSTACLE);
+	DVector ProjectileList = GetAllEntityOfType(game, TYPE_PROJECTILE);
 
 	Entity* curObstacle = NULL,* curProjectile = NULL;
 	Player* player = DVectorGet(&PlayerList, 0);

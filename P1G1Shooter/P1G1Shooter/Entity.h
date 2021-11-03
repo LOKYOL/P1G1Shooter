@@ -1,15 +1,17 @@
 #pragma once
 
-#include "Engine/Game.h"
+#include "ConsoleDisplay.h"
+
+struct Game;
 
 typedef void(*EntityUpdate)(void* entity, struct Game* game);
 
 typedef enum EntityType
 {
-	ENTITY		= 0,
-	PLAYER		= 1,
-	OBSTACLE	= 2,
-	PROJECTILE	= 3
+	TYPE_ENTITY		= 0,
+	TYPE_PLAYER		= 1,
+	TYPE_OBSTACLE	= 2,
+	TYPE_PROJECTILE	= 3
 } EntityType;
 
 typedef struct Entity

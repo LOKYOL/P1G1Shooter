@@ -1,4 +1,5 @@
 #include "PlayerStruct.h"
+#include "Engine/Game.h"
 #include "projectile.h"
 
 void InitPlayer(Player** _player)

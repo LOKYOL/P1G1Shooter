@@ -1,4 +1,5 @@
 #include "Obstacle.h"
+#include "Engine/Game.h"
 
 void InitObstacle(Obstacle** _obstacle)
 {

@@ -1,6 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "projectile.h"
+#include "Engine/Game.h"
 
 void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, double posPlayer_y)
 {

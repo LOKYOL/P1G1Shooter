@@ -1,5 +1,8 @@
 #include "Entity.h"
-//#include "PlayerStruct.h"
+#include "Engine/Game.h"
+#include "PlayerStruct.h"
+#include "Obstacle.h"
+#include "projectile.h"
 
 void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, EntityUpdate _Update)
 {
@@ -54,13 +57,13 @@ void Entity_Free(Entity* _entity)
 {
 	switch (_entity->mEntityType)
 	{
-	case PLAYER:
+	case TYPE_PLAYER:
 		free((Player*)(_entity));
 		break;
-	case OBSTACLE:
+	case TYPE_OBSTACLE:
 		free((Obstacle*)(_entity));
 		break;
-	case PROJECTILE:
+	case TYPE_PROJECTILE:
 		free((Projectile*)(_entity));
 		break;
 	default:
