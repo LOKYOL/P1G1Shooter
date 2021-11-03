@@ -156,3 +156,22 @@ void PopEntity(Game* _game, Entity* _entity)
 		}
 	}
 }
+
+DVector GetAllEntityOfType(Game* _game, EntityType _type)
+{
+	DVector* list = DVectorCreate();
+	DVectorInit(list, sizeof(void*), 0, 0);
+
+	Entity* curEntity = NULL;
+	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
+	{
+		curEntity = DVectorGet(_game->mAllEntities, i);
+
+		if (curEntity->mEntityType == _type)
+		{
+			DVectorPushBack(list, &curEntity);
+		}
+	}
+
+	return *list;
+}

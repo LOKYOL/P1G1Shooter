@@ -5,6 +5,7 @@
 #include "../Inputs.h"
 #include "../Entity.h"
 #include "../Obstacle.h"
+#include "../projectile.h"
 
 #define WINDOW_HEIGHT		50
 #define WINDOW_WIDTH		100
@@ -41,3 +42,5 @@ void	SpawnObstacle(Game* game);
 
 void	PushEntity(Game* game, Entity** entity);
 void	PopEntity(Game* game, Entity* entity);
+
+DVector GetAllEntityOfType(Game* game, EntityType type);
