@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Engine/ConsoleDisplay.h"
-#include "Inputs.h"
+#include "Engine/Game.h"
 
 typedef void(*EntityUpdate)(void* entity, struct Game* game);
 
@@ -37,4 +36,8 @@ void Entity_Move(Entity* entity, double moveX, double moveY);
 void Entity_MoveTo(Entity* entity, double posX, double posY);
 void Entity_UpdateDisplayZone(Entity* entity);
 
+void Entity_TakeDamages(Entity* entity, int damages);
 
+char Entity_IsDead(Entity* entity);
+
+void Entity_Free(Entity* entity);

@@ -87,18 +87,3 @@ void Player_Shoot(Player* _player, Game* _game)
 
 	PushEntity(_game, &newProjectile);
 }
-
-void Player_TakeDamage(Player* _player, int _damages)
-{
-	_player->entity.mHealth -= _damages;
-}
-
-void Player_ReceiveHeal(Player* _player, int _heal)
-{
-	_player->entity.mHealth += _heal;
-}
-
-void Player_Die(Player* _player)
-{
-	// A FAIRE
-}
