@@ -21,19 +21,10 @@ void	InitGame(Game* game)
 	game->mGameTime = GetTime();
 	game->mGameDt = 0.0;
 
-
 	game->mStateStack = DVectorCreate();
 	DVectorInit(game->mStateStack, sizeof(GameState), 0, NULL);
 
-	game->mAllEntities = DVectorCreate();
-	DVectorInit(game->mAllEntities, sizeof(Entity*), 0, NULL);
-
 	InitInputs(&game->mInputs);
-
-	// Create Player
-	Player* myPlayer;
-	InitPlayer(&myPlayer);
-	DVectorPushBack(game->mAllEntities, &myPlayer);
 
 	GameState	title;
 	title.mStateInit = &TitleScreenInit;
@@ -48,8 +39,6 @@ void	InitGame(Game* game)
 	gameScreen.mStateUpdate = &GameScreenUpdate;
 
 	PushGameState(game, gameScreen);
-
-	game->mGameSpawnObstacleTimer = 0;
 }
 
 void	CloseGame(Game* game)
@@ -63,7 +52,6 @@ void	CloseGame(Game* game)
 	DVectorDestroy(game->mStateStack);
 
 	CloseDisplay(game->mDisplaySettings);
-
 }
 
 int		MainLoop(Game* game)
@@ -114,74 +102,4 @@ void ChangeGameState(Game* _game, GameState _state)
 {
 	PopGameState(_game);
 	PushGameState(_game, _state);
-}
-
-void SpawnObstacle(Game* _game)
-{
-	Obstacle* newObstacle = NULL;
-	InitObstacle(&newObstacle);
-	DVectorPushBack(_game->mAllEntities, &newObstacle);
-}
-
-void PushEntity(Game* _game, Entity** _entity)
-{
-	DVectorPushBack(_game->mAllEntities, _entity);
-}
-
-void PopEntity(Game* _game, Entity* _entity)
-{
-	Entity* curEntity = NULL;
-	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
-	{
-		if ((curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i)) == _entity)
-		{
-			DVectorErase(_game->mAllEntities, i);
-			return;
-		}
-	}
-}
-
-DVector* GetAllEntityOfType(Game* _game, EntityType _type)
-{
-	DVector* list = DVectorCreate();
-	DVectorInit(list, sizeof(void*), 0, 0);
-
-	Entity* curEntity = NULL;
-	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
-	{
-		curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i);
-
-		if (curEntity->mEntityType == _type)
-		{
-			DVectorPushBack(list, &curEntity);
-		}
-	}
-
-	return list;
-}
-
-char	CompareCollision(Entity* _entityA, Entity* _entityB)
-{
-	DisplayZone* zoneA = &_entityA->mDisplayZone, * zoneB = &_entityB->mDisplayZone;
-
-	if (zoneA->mPosX < zoneB->mPosX + zoneB->mSizeX &&
-		zoneA->mPosX + zoneA->mSizeX > zoneB->mPosX &&
-		zoneA->mPosY < zoneB->mPosY + zoneB->mSizeY &&
-		zoneA->mPosY + zoneA->mSizeY > zoneB->mPosY)
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-}
-
-void PopBackIfIsDead(Game* _game, Entity* _entity)
-{
-	if (Entity_IsDead(_entity))
-	{
-		PopEntity(_game, _entity);
-		Entity_Free(_entity);
-	}
 }

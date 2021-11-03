@@ -20,12 +20,8 @@ typedef struct Game
 
 	DVector*			mStateStack;
 
-	DVector*			mAllEntities;
-
-
 	double				mGameTime;
 	double				mGameDt;
-	double				mGameSpawnObstacleTimer;
 }Game;
 
 void	InitGame(Game* game);
@@ -36,13 +32,3 @@ void	PushGameState(Game* game, GameState state);
 void	PopGameState(Game* game);
 void	ChangeGameState(Game* game, GameState state);
 
-void	SpawnObstacle(Game* game);
-
-void	PushEntity(Game* game, Entity** entity);
-void	PopEntity(Game* game, Entity* entity);
-
-DVector* GetAllEntityOfType(Game* game, EntityType type);
-
-char	CompareCollision(Entity* entityA, Entity* entityB);
-
-void PopBackIfIsDead(Game* game, Entity* entity);

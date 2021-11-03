@@ -1,5 +1,5 @@
 #include "Obstacle.h"
-#include "Engine/Game.h"
+#include "GameScreen.h"
 #include "Engine/DisplayZoneDrawing.h"
 
 void InitObstacle(Obstacle** _obstacle)
@@ -31,7 +31,7 @@ void InitObstacle(Obstacle** _obstacle)
 	newObstacle->entity.mEntityType = TYPE_OBSTACLE;
 }
 
-void Obstacle_Update(Obstacle* _obstacle, Game* _game)
+void Obstacle_Update(Obstacle* _obstacle, Game* _game, GameScreenData* _gameScreen)
 {
 	//Obstacle_UpdateMovement(_obstacle, _game);
 	double newpos_x = 
@@ -41,7 +41,7 @@ void Obstacle_Update(Obstacle* _obstacle, Game* _game)
 	if (newpos_x + _obstacle->entity.mDisplayZone.mSizeX + 1 < 0)
 	{
 		// Free and delete from entity list if out of the screen
-		PopEntity(_game, _obstacle);
+		PopEntity(_gameScreen, _obstacle);
 		Entity_Free(_obstacle);
 	}
 	else
@@ -51,7 +51,7 @@ void Obstacle_Update(Obstacle* _obstacle, Game* _game)
 	}
 }
 
-void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
+void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game, GameScreenData* _gameScreen)
 {
 	double newpos_x = 
 		_obstacle->entity.mPosition_x -
@@ -60,7 +60,7 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 	if (newpos_x + _obstacle->entity.mDisplayZone.mSizeX + 1 < 0)
 	{
 		// Free and delete from entity list if out of the screen
-		PopEntity(_game, _obstacle);
+		PopEntity(_gameScreen, _obstacle);
 		Entity_Free(_obstacle);
 	}
 	else

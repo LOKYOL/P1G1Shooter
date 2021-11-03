@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Engine/Game.h"
+#include "GameScreen.h"
 
 typedef struct Projectile
 {
@@ -22,14 +23,14 @@ void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, d
 /// </summary>
 /// <param name="proj">Projectile to edit</param>
 /// <param name="deltatime">Deltatime of the game</param>
-void Projectile_Update(void* _proj, Game* _game);
+void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen);
 
 /// <summary>
 /// Change the position of a projectile
 /// </summary>
 /// <param name="proj">Projectile to edit</param>
 /// <param name="deltatime">Deltatime of the game</param>
-void Projectile_UpdateMovement(Projectile * proj, Game* _game);
+void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _gameScreen);
 
 /// <summary>
 /// Destroys a projectile and deallocate its memory

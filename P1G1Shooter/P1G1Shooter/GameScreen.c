@@ -7,50 +7,62 @@
 
 int GameScreenInit(Game* game, GameState* state)
 {
+	state->mData = malloc(sizeof(GameScreenData));
+	GameScreenData* data = state->mData;
+
+	data->mAllEntities = DVectorCreate();
+	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, NULL);
+
+	// Create Player
+	Player* myPlayer;
+	InitPlayer(&myPlayer);
+	DVectorPushBack(data->mAllEntities, &myPlayer);
+
+	data->mGameSpawnObstacleTimer = 0;
+
 	return 0;
 }
 
 int GameScreenClose(Game* game, GameState* state)
 {
+	GameScreenData* data = state->mData;
+
+	DVectorDestroy(data->mAllEntities);
 	return 0;
 }
 
 int GameScreenUpdate(Game* game, GameState* state)
 {
+	GameScreenData* data = state->mData;
+
 	// SPAWN OBSTACLE
-	game->mGameSpawnObstacleTimer += game->mGameDt;
-	if (game->mGameSpawnObstacleTimer >= OBSTACLE_SPAWN_TIMER)
+	data->mGameSpawnObstacleTimer += game->mGameDt;
+	if (data->mGameSpawnObstacleTimer >= OBSTACLE_SPAWN_TIMER)
 	{
-		game->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
+		data->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
 
-		SpawnObstacle(game);
+		SpawnObstacle(data);
 	}
-
 
 	// FOR EACH ENTITY
 	Entity* curEntity = NULL;
-	for (int i = 0; i < game->mAllEntities->mCurrentSize; i++)
+	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
 	{
-		curEntity = *(Entity**)DVectorGet(game->mAllEntities, i);
+		curEntity = *(Entity**)DVectorGet(data->mAllEntities, i);
 
 		if (curEntity->mUpdate != NULL)
 		{
-			curEntity->mUpdate((void*)curEntity, game);
+			curEntity->mUpdate((void*)curEntity, game, data);
 		}
 	}
 
 	// COLLISIONS
-	DVector* PlayerList = GetAllEntityOfType(game, TYPE_PLAYER);
-	DVector* ObstacleList = GetAllEntityOfType(game, TYPE_OBSTACLE);
-	DVector* ProjectileList = GetAllEntityOfType(game, TYPE_PROJECTILE);
+	DVector* PlayerList = GetAllEntityOfType(data, TYPE_PLAYER);
+	DVector* ObstacleList = GetAllEntityOfType(data, TYPE_OBSTACLE);
+	DVector* ProjectileList = GetAllEntityOfType(data, TYPE_PROJECTILE);
 
 	Entity* curObstacle = NULL, * curProjectile = NULL;
 	Player* player = *(Player**)DVectorGet(PlayerList, 0);
-
-	if (player == NULL)
-	{
-		return 1;
-	}
 
 	// FOR EACH OBSTACLE
 	for (int i = 0; i < ObstacleList->mCurrentSize; i++)
@@ -64,7 +76,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 			Entity_TakeDamages(curObstacle, INT_MAX);
 			if (curObstacle->mHealth <= 0)
 			{
-				PopEntity(game, curObstacle);
+				PopEntity(data, curObstacle);
 				DVectorErase(ObstacleList, i);
 				i--;
 			}
@@ -80,13 +92,13 @@ int GameScreenUpdate(Game* game, GameState* state)
 				Entity_TakeDamages(curProjectile, curObstacle->mDamages);
 				if (curObstacle->mHealth <= 0)
 				{
-					PopEntity(game, curObstacle);
+					PopEntity(data, curObstacle);
 					DVectorErase(ObstacleList, i);
 					i--;
 				}
 				if (curProjectile->mHealth <= 0)
 				{
-					PopEntity(game, curProjectile);
+					PopEntity(data, curProjectile);
 					DVectorErase(ProjectileList, j);
 					j--;
 				}
@@ -105,14 +117,82 @@ int GameScreenUpdate(Game* game, GameState* state)
 			Entity_TakeDamages(curProjectile, INT_MAX);
 			if (curProjectile->mHealth <= 0)
 			{
-				PopEntity(game, curProjectile);
+				PopEntity(data, curProjectile);
 				DVectorErase(ProjectileList, i);
 				i--;
 			}
-
 		}
 	}
 
-
 	return 0;
+}
+
+void PushEntity(GameScreenData* _game, Entity** _entity)
+{
+	DVectorPushBack(_game->mAllEntities, _entity);
+}
+
+void PopEntity(GameScreenData* _game, Entity* _entity)
+{
+	Entity* curEntity = NULL;
+	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
+	{
+		if ((curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i)) == _entity)
+		{
+			DVectorErase(_game->mAllEntities, i);
+			return;
+		}
+	}
+}
+
+DVector* GetAllEntityOfType(GameScreenData* _game, EntityType _type)
+{
+	DVector* list = DVectorCreate();
+	DVectorInit(list, sizeof(void*), 0, 0);
+
+	Entity* curEntity = NULL;
+	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
+	{
+		curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i);
+
+		if (curEntity->mEntityType == _type)
+		{
+			DVectorPushBack(list, &curEntity);
+		}
+	}
+
+	return list;
+}
+
+char	CompareCollision(Entity* _entityA, Entity* _entityB)
+{
+	DisplayZone* zoneA = &_entityA->mDisplayZone, * zoneB = &_entityB->mDisplayZone;
+
+	if (zoneA->mPosX < zoneB->mPosX + zoneB->mSizeX &&
+		zoneA->mPosX + zoneA->mSizeX > zoneB->mPosX &&
+		zoneA->mPosY < zoneB->mPosY + zoneB->mSizeY &&
+		zoneA->mPosY + zoneA->mSizeY > zoneB->mPosY)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
+{
+	if (Entity_IsDead(_entity))
+	{
+		PopEntity(_game, _entity);
+		Entity_Free(_entity);
+	}
+}
+
+void SpawnObstacle(GameScreenData* _game)
+{
+	Obstacle* newObstacle = NULL;
+	InitObstacle(&newObstacle);
+	DVectorPushBack(_game->mAllEntities, &newObstacle);
 }

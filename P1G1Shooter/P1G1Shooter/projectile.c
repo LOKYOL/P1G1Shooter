@@ -20,15 +20,15 @@ void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, d
 	(*proj)->projEntity.mEntityType = TYPE_PROJECTILE;
 }
 
-void Projectile_Update(void* _proj, Game* _game) {
+void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen) {
 
 	Projectile* myProjectile = (Projectile*)_proj;
 
-	Projectile_UpdateMovement(myProjectile, _game);
+	Projectile_UpdateMovement(myProjectile, _game, _gameScreen);
 	FlushDisplayZone(_game->mDisplaySettings, &myProjectile->projEntity.mDisplayZone);
 }
 
-void Projectile_UpdateMovement(Projectile * proj, Game* _game)
+void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _gameScreen)
 {
 	double newpos_x = proj->projEntity.mPosition_x, newpos_y = proj->projEntity.mPosition_y;
 

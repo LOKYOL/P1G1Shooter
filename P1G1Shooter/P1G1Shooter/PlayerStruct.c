@@ -22,7 +22,7 @@ void InitPlayer(Player** _player)
 	newPlayer->entity.mEntityType = TYPE_PLAYER;
 }
 
-void Player_Update(void* _player, Game* _game)
+void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 {
 	Player* myPlayer = (Player*)_player;
 
@@ -31,7 +31,7 @@ void Player_Update(void* _player, Game* _game)
 
 	if (KeyPressStart(*_game->mInputs, VK_SPACE))
 	{
-		Player_Shoot(myPlayer, _game);
+		Player_Shoot(myPlayer, _gameScreen);
 	}
 }
 
@@ -81,10 +81,10 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	Entity_MoveTo(&_player->entity, newpos_x, newpos_y);
 }
 
-void Player_Shoot(Player* _player, Game* _game)
+void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
 	InitProj(&newProjectile, 2, 0, _player->entity.mPosition_x, _player->entity.mPosition_y);
 
-	PushEntity(_game, &newProjectile);
+	PushEntity(_gameScreen, &newProjectile);
 }

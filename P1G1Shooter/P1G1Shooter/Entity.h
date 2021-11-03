@@ -2,7 +2,7 @@
 
 #include "Engine/ConsoleDisplay.h"
 
-typedef void(*EntityUpdate)(void* entity, struct Game* game);
+typedef void(*EntityUpdate)(void* entity, struct Game* game, struct GameScreenData* gameScreen);
 
 typedef enum EntityType
 {
