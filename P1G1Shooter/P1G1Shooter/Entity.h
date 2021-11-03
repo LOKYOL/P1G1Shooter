@@ -10,7 +10,7 @@ typedef enum EntityType
 	ENTITY		= 0,
 	PLAYER		= 1,
 	OBSTACLE	= 2,
-	PROJECTILE	= 3,
+	PROJECTILE	= 3
 } EntityType;
 
 typedef struct Entity
