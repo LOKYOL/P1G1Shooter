@@ -23,6 +23,7 @@ typedef struct Game
 
 	DVector*			mAllEntities;
 
+
 	double				mGameTime;
 	double				mGameDt;
 	double				mGameSpawnObstacleTimer;

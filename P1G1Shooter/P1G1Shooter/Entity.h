@@ -5,20 +5,30 @@
 
 typedef void(*EntityUpdate)(void* entity, struct Game* game);
 
+typedef enum EntityType
+{
+	Entity		= 0,
+	Player		= 1,
+	Obstacle	= 2,
+	Projectile	= 3
+} EntityType;
+
 typedef struct Entity
 {
-	DisplayZone		displayZone;
+	DisplayZone		mDisplayZone;
 
-	double			position_x, 
-					position_y;
+	EntityType		mEntityType;
 
-	unsigned int	health;
+	double			mPosition_x, 
+					mPosition_y;
 
-	int				damages;
+	unsigned int	mHealth;
 
-	int				speed;
+	int				mDamages;
 
-	EntityUpdate	update;
+	int				mSpeed;
+
+	EntityUpdate	mUpdate;
 } Entity;
 
 void Entity_Initialize(Entity* entity, int health, int damages, int speed, EntityUpdate Update);
@@ -26,3 +36,5 @@ void Entity_Initialize(Entity* entity, int health, int damages, int speed, Entit
 void Entity_Move(Entity* entity, double moveX, double moveY);
 void Entity_MoveTo(Entity* entity, double posX, double posY);
 void Entity_UpdateDisplayZone(Entity* entity);
+
+

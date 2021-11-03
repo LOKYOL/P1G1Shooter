@@ -13,5 +13,3 @@ void InitObstacle(Obstacle** obstacle);
 void Obstacle_Update(Obstacle* obstacle, struct Game* game);
 
 void Obstacle_UpdateMovement(Obstacle* obstacle, struct Game* game);
-
-void Obstacle_DetectCollision(Obstacle* obstacle, struct Game* game);

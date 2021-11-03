@@ -48,11 +48,5 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 	else
 	{
 		Entity_MoveTo(&_obstacle->entity, newpos_x, _obstacle->entity.position_y);
-		Obstacle_DetectCollision(_obstacle, _game);
 	}
-}
-
-void Obstacle_DetectCollision(Obstacle* _obstacle, Game* _game)
-{
-
 }
