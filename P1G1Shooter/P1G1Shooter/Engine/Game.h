@@ -10,7 +10,7 @@
 #define WINDOW_FONT_SIZE	13
 #define WINDOW_FONT_SQUARED	1
 
-#define OBSTACLE_SPAWN_TIMER	1000
+#define OBSTACLE_SPAWN_TIMER	0.2
 
 typedef struct Game
 {

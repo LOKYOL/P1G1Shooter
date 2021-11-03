@@ -85,7 +85,6 @@ void Player_Shoot(Player* _player, Game* _game)
 {
 	Projectile* newProjectile;
 	InitProj(&newProjectile, 2, 0, _player->entity.mPosition_x, _player->entity.mPosition_y);
-	//Entity_Initialize(&(newProjectile->projEntity), 10, 1, WINDOW_WIDTH / 6, Projectile_Update);
 
 	PushEntity(_game, &newProjectile);
 }

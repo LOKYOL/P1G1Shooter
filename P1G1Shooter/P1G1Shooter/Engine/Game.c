@@ -114,22 +114,41 @@ int		MainLoop(Game* game)
 	// FOR EACH OBSTACLE
 	for (int i = 0; i < ObstacleList->mCurrentSize; i++)
 	{
-		curObstacle = *(Obstacle**)DVectorGet(&ObstacleList, i);
+		curObstacle = *(Obstacle**)DVectorGet(ObstacleList, i);
 
 		// COMPARE COLLISION WITH THE PLAYER
 		if (CompareCollision(curObstacle, &player->entity) > 0)
 		{
-			Entity_TakeDamages(&player->entity, curObstacle->mDamages);
+			Entity_TakeDamages(player, curObstacle->mDamages);
+			Entity_TakeDamages(curObstacle, INT_MAX);
+			if (curObstacle->mHealth <= 0)
+				{
+					PopEntity(game, curObstacle);
+					DVectorErase(ObstacleList, i);
+					i--;
+				}
 		}
 
 		// COMPARE COLLISION WITH EACH PROJECTILE
 		for (int j = 0; j < ProjectileList->mCurrentSize; j++)
 		{
-			curProjectile = *(Projectile**)DVectorGet(&ProjectileList, j);
+			curProjectile = *(Projectile**)DVectorGet(ProjectileList, j);
 			if (CompareCollision(curObstacle, curProjectile) > 0)
 			{
 				Entity_TakeDamages(curObstacle, curProjectile->mDamages);
 				Entity_TakeDamages(curProjectile, curObstacle->mDamages);
+				if (curObstacle->mHealth <= 0)
+				{
+					PopEntity(game, curObstacle);
+					DVectorErase(ObstacleList, i);
+					i--;
+				}
+				if (curProjectile->mHealth <= 0)
+				{
+					PopEntity(game, curProjectile);
+					DVectorErase(ProjectileList, j);
+					j--;
+				}
 			}
 		}
 	}
@@ -137,12 +156,19 @@ int		MainLoop(Game* game)
 	// FOREACH PROJECTILE
 	for (int i = 0; i < ProjectileList->mCurrentSize; i++)
 	{
-		curProjectile = *(Projectile**)DVectorGet(&ProjectileList, i);
+		curProjectile = *(Projectile**)DVectorGet(ProjectileList, i);
 
 		if (CompareCollision(curProjectile, &player->entity) > 0)
 		{
-			Entity_TakeDamages(&player->entity, curProjectile->mDamages);
+			Entity_TakeDamages(player, curProjectile->mDamages);
 			Entity_TakeDamages(curProjectile, INT_MAX);
+			if (curProjectile->mHealth <= 0)
+			{
+				PopEntity(game, curProjectile);
+				DVectorErase(ProjectileList, i);
+				i--;
+			}
+
 		}
 	}
 
@@ -196,10 +222,8 @@ void PopEntity(Game* _game, Entity* _entity)
 	{
 		if ((curEntity = *(Entity**)DVectorGet(_game->mAllEntities, i)) == _entity)
 		{
-			if (DVectorErase(_game->mAllEntities, i) > 0)
-			{
-				free(curEntity);
-			}
+			DVectorErase(_game->mAllEntities, i);
+			return;
 		}
 	}
 }
@@ -227,11 +251,17 @@ char	CompareCollision(Entity* _entityA, Entity* _entityB)
 {
 	DisplayZone* zoneA = &_entityA->mDisplayZone, * zoneB = &_entityB->mDisplayZone;
 
-	return
-		zoneA->mPosX < zoneB->mPosX + zoneB->mSizeX &&
+	if (zoneA->mPosX < zoneB->mPosX + zoneB->mSizeX &&
 		zoneA->mPosX + zoneA->mSizeX > zoneB->mPosX &&
 		zoneA->mPosY < zoneB->mPosY + zoneB->mSizeY &&
-		zoneA->mPosY + zoneA->mSizeY > zoneB->mPosY;
+		zoneA->mPosY + zoneA->mSizeY > zoneB->mPosY)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 void PopBackIfIsDead(Game* _game, Entity* _entity)

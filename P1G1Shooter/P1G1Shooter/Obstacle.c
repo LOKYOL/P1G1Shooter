@@ -9,13 +9,13 @@ void InitObstacle(Obstacle** _obstacle)
 
 	*_obstacle = newObstacle;
 
-	Entity_Initialize(&(*_obstacle)->entity, 1, 1, 5, Obstacle_Update);
+	Entity_Initialize(&(*_obstacle)->entity, 1, 1, (rand() % 5) + 3, Obstacle_Update);
 
 	InitDisplayZone // TEMPORARY
 	(
 		&newObstacle->entity.mDisplayZone,
 		WINDOW_WIDTH,
-		(rand() % WINDOW_HEIGHT) - 1,
+		(rand() % (WINDOW_HEIGHT - 2)) + 1,
 		2, 2, 1
 	);
 
@@ -33,8 +33,22 @@ void InitObstacle(Obstacle** _obstacle)
 
 void Obstacle_Update(Obstacle* _obstacle, Game* _game)
 {
-	Obstacle_UpdateMovement(_obstacle, _game);
-	FlushDisplayZone(_game->mDisplaySettings, &_obstacle->entity.mDisplayZone);
+	//Obstacle_UpdateMovement(_obstacle, _game);
+	double newpos_x = 
+		_obstacle->entity.mPosition_x -
+		(_obstacle->entity.mSpeed * _game->mGameDt * 10);
+
+	if (newpos_x + _obstacle->entity.mDisplayZone.mSizeX + 1 < 0)
+	{
+		// Free and delete from entity list if out of the screen
+		PopEntity(_game, _obstacle);
+		Entity_Free(_obstacle);
+	}
+	else
+	{
+		Entity_MoveTo(&_obstacle->entity, newpos_x, _obstacle->entity.mPosition_y);
+		FlushDisplayZone(_game->mDisplaySettings, &_obstacle->entity.mDisplayZone);
+	}
 }
 
 void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
@@ -46,7 +60,7 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 	if (newpos_x + _obstacle->entity.mDisplayZone.mSizeX + 1 < 0)
 	{
 		// Free and delete from entity list if out of the screen
-		PopEntity(_game, &_obstacle->entity);
+		PopEntity(_game, _obstacle);
 		Entity_Free(_obstacle);
 	}
 	else
