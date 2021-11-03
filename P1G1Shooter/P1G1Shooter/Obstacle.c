@@ -11,7 +11,7 @@ void InitObstacle(Obstacle** _obstacle)
 
 	InitDisplayZone // TEMPORARY
 	(
-		&newObstacle->entity.displayZone,
+		&newObstacle->entity.mDisplayZone,
 		WINDOW_WIDTH,
 		(rand() % WINDOW_HEIGHT) - 1,
 		2, 2, 1
@@ -19,34 +19,34 @@ void InitObstacle(Obstacle** _obstacle)
 
 	DrawRectangleInDisplayZone
 	(
-		&newObstacle->entity.displayZone,
+		&newObstacle->entity.mDisplayZone,
 		0, 0, 2, 2,
 		WHITE, YELLOW, ' '
 	);
 
-	newObstacle->entity.position_x = WINDOW_WIDTH;
-	newObstacle->entity.position_y = newObstacle->entity.displayZone.mPosY;
+	newObstacle->entity.mPosition_x = WINDOW_WIDTH;
+	newObstacle->entity.mPosition_y = newObstacle->entity.mDisplayZone.mPosY;
 }
 
 void Obstacle_Update(Obstacle* _obstacle, Game* _game)
 {
 	Obstacle_UpdateMovement(_obstacle, _game);
-	FlushDisplayZone(_game->mDisplaySettings, &_obstacle->entity.displayZone);
+	FlushDisplayZone(_game->mDisplaySettings, &_obstacle->entity.mDisplayZone);
 }
 
 void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 {
 	double newpos_x = 
-		_obstacle->entity.position_x -
-		(_obstacle->entity.speed * _game->mGameDt * 10);
+		_obstacle->entity.mPosition_x -
+		(_obstacle->entity.mSpeed * _game->mGameDt * 10);
 
-	if (newpos_x + _obstacle->entity.displayZone.mSizeX + 1 < 0)
+	if (newpos_x + _obstacle->entity.mDisplayZone.mSizeX + 1 < 0)
 	{
 		// Free and delete from entity list if out of the screen
 		PopEntity(_game, &_obstacle->entity);
 	}
 	else
 	{
-		Entity_MoveTo(&_obstacle->entity, newpos_x, _obstacle->entity.position_y);
+		Entity_MoveTo(&_obstacle->entity, newpos_x, _obstacle->entity.mPosition_y);
 	}
 }

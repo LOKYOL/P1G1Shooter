@@ -93,9 +93,9 @@ int		MainLoop(Game* game)
 	{
 		curEntity = *(Entity**)DVectorGet(game->mAllEntities, i);
 
-		if (curEntity->update != NULL)
+		if (curEntity->mUpdate != NULL)
 		{
-			curEntity->update((void*)curEntity, game);
+			curEntity->mUpdate((void*)curEntity, game);
 		}
 	}
 

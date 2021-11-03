@@ -9,17 +9,17 @@ void InitPlayer(Player** _player)
 	memset(newPlayer, 0, sizeof(Player));
 	*_player = newPlayer;
 
-	InitDisplayZone(&newPlayer->entity.displayZone, 5, 0, 3, 2, 1);
+	InitDisplayZone(&newPlayer->entity.mDisplayZone, 5, 0, 3, 2, 1);
 	DrawRectangleInDisplayZone
 	(
-		&newPlayer->entity.displayZone, 
+		&newPlayer->entity.mDisplayZone, 
 		0, 0, 3, 2, 
 		WHITE, BRIGHT_RED, ' '
 	);
 
 	Entity_Initialize(&newPlayer->entity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
 
-	newPlayer->entity.position_x = 5;
+	newPlayer->entity.mPosition_x = 5;
 }
 
 void Player_Update(void* _player, Game* _game)
@@ -27,7 +27,7 @@ void Player_Update(void* _player, Game* _game)
 	Player* myPlayer = (Player*)_player;
 
 	Player_UpdateMovement(myPlayer, _game);
-	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->entity.displayZone);
+	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->entity.mDisplayZone);
 
 	if (KeyPressStart(*_game->mInputs, VK_SPACE))
 	{
@@ -38,16 +38,16 @@ void Player_Update(void* _player, Game* _game)
 void Player_UpdateMovement(Player* _player, Game* _game)
 {
 	double 
-		newpos_x = _player->entity.position_x, 
-		newpos_y = _player->entity.position_y;
+		newpos_x = _player->entity.mPosition_x, 
+		newpos_y = _player->entity.mPosition_y;
 
 	if (IsKeyDown(*_game->mInputs, VK_UP) || IsKeyDown(*_game->mInputs, 'Z'))
 	{
-		newpos_y -= _game->mGameDt * _player->entity.speed;
+		newpos_y -= _game->mGameDt * _player->entity.mSpeed;
 	}
 	if (IsKeyDown(*_game->mInputs, VK_DOWN) || IsKeyDown(*_game->mInputs, 'S'))
 	{
-		newpos_y += _game->mGameDt * _player->entity.speed;
+		newpos_y += _game->mGameDt * _player->entity.mSpeed;
 	}
 	/*if (IsKeyDown(*_game->mInputs, VK_LEFT) || IsKeyDown(*_game->mInputs, 'Q'))
 	{
@@ -69,13 +69,13 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 		newpos_y = 0;
 	}
 
-	if (newpos_x > WINDOW_WIDTH - _player->entity.displayZone.mSizeX)
+	if (newpos_x > WINDOW_WIDTH - _player->entity.mDisplayZone.mSizeX)
 	{
-		newpos_x = WINDOW_WIDTH - _player->entity.displayZone.mSizeX;
+		newpos_x = WINDOW_WIDTH - _player->entity.mDisplayZone.mSizeX;
 	}
-	if (newpos_y > WINDOW_HEIGHT - _player->entity.displayZone.mSizeY)
+	if (newpos_y > WINDOW_HEIGHT - _player->entity.mDisplayZone.mSizeY)
 	{
-		newpos_y = WINDOW_HEIGHT - _player->entity.displayZone.mSizeY;
+		newpos_y = WINDOW_HEIGHT - _player->entity.mDisplayZone.mSizeY;
 	}
 
 	Entity_MoveTo(&_player->entity, newpos_x, newpos_y);
@@ -92,12 +92,12 @@ void Player_Shoot(Player* _player)
 
 void Player_TakeDamage(Player* _player, int _damages)
 {
-	_player->entity.health -= _damages;
+	_player->entity.mHealth -= _damages;
 }
 
 void Player_ReceiveHeal(Player* _player, int _heal)
 {
-	_player->entity.health += _heal;
+	_player->entity.mHealth += _heal;
 }
 
 void Player_Die(Player* _player)
