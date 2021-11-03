@@ -29,7 +29,7 @@ void Player_Update(void* _player, Game* _game)
 
 	if (KeyPressStart(*_game->mInputs, VK_SPACE))
 	{
-		Player_Shoot(myPlayer);
+		Player_Shoot(myPlayer, _game);
 	}
 }
 
@@ -79,13 +79,13 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	Entity_MoveTo(&_player->entity, newpos_x, newpos_y);
 }
 
-void Player_Shoot(Player* _player)
+void Player_Shoot(Player* _player, Game* _game)
 {
-	Projectile newProjectile;
-	InitProj(&newProjectile, 2, 0);
-	Entity_Initialize(&(newProjectile.projEntity), 10, 1, WINDOW_WIDTH / 6, Projectile_Update);
+	Projectile* newProjectile;
+	InitProj(&newProjectile, 2, 0, _player->entity.mPosition_x, _player->entity.mPosition_y);
+	//Entity_Initialize(&(newProjectile->projEntity), 10, 1, WINDOW_WIDTH / 6, Projectile_Update);
 
-	
+	PushEntity(_game, &newProjectile);
 }
 
 void Player_TakeDamage(Player* _player, int _damages)
