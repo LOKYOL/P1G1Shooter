@@ -1,6 +1,4 @@
 #include "Game.h"
-#include "TitleScreen.h"
-#include "../PlayerStruct.h"
 
 
 void	InitGame(Game* game)
@@ -98,6 +96,48 @@ int		MainLoop(Game* game)
 		}
 	}
 
+	// COLLISIONS
+	DVector PlayerList = GetAllEntityOfType(game, PLAYER);
+	DVector ObstacleList = GetAllEntityOfType(game, OBSTACLE);
+	DVector ProjectileList = GetAllEntityOfType(game, PROJECTILE);
+
+	Entity* curObstacle = NULL,* curProjectile = NULL;
+	Player* player = DVectorGet(&PlayerList, 0);
+
+	// FOR EACH OBSTACLE
+	for (int i = 0; i < ObstacleList.mCurrentSize; i++)
+	{
+		curObstacle = DVectorGet(&ObstacleList, i);
+
+		// COMPARE COLLISION WITH THE PLAYER
+		if (CompareCollision(curObstacle, &player->entity) > 0)
+		{
+			Entity_TakeDamages(&player->entity, curObstacle->mDamages);
+		}
+
+		// COMPARE COLLISION WITH EACH PROJECTILE
+		for (int j = 0; j < ProjectileList.mCurrentSize; j++)
+		{
+			curProjectile = DVectorGet(&ProjectileList, j);
+			if (CompareCollision(curObstacle, curProjectile) > 0)
+			{
+				Entity_TakeDamages(curObstacle, curProjectile->mDamages);
+				Entity_TakeDamages(curProjectile, curObstacle->mDamages);
+			}
+		}
+	}
+
+	// FOREACH PROJECTILE
+	for (int i = 0; i < ProjectileList.mCurrentSize; i++)
+	{
+		curProjectile = DVectorGet(&ProjectileList, i);
+
+		if (CompareCollision(curProjectile, &player->entity) > 0)
+		{
+			Entity_TakeDamages(&player->entity, curProjectile->mDamages);
+			Entity_TakeDamages(curProjectile, INT_MAX);
+		}
+	}
 
 	SwapBuffer(game->mDisplaySettings);
 
@@ -174,4 +214,24 @@ DVector GetAllEntityOfType(Game* _game, EntityType _type)
 	}
 
 	return *list;
+}
+
+char	CompareCollision(Entity* _entityA, Entity* _entityB)
+{
+	DisplayZone* zoneA = &_entityA->mDisplayZone, * zoneB = &_entityB->mDisplayZone;
+
+	return
+		zoneA->mPosX < zoneB->mPosX + zoneB->mSizeX &&
+		zoneA->mPosX + zoneA->mSizeX > zoneB->mPosX &&
+		zoneA->mPosY < zoneB->mPosY + zoneB->mSizeY &&
+		zoneA->mPosY + zoneA->mSizeY > zoneB->mPosY;
+}
+
+void PopBackIfIsDead(Game* _game, Entity* _entity)
+{
+	if (Entity_IsDead(_entity))
+	{
+		PopEntity(_game, _entity);
+		Entity_Free(_entity);
+	}
 }
