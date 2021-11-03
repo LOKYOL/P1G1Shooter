@@ -1,8 +1,6 @@
 #include "PlayerStruct.h"
 #include "projectile.h"
 
-#include "Game.h"
-
 void InitPlayer(Player** _player)
 {
 	Player* newPlayer = (Player*)malloc(sizeof(Player));

@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "TitleScreen.h"
-#include "../Entity.h"
 #include "../PlayerStruct.h"
 
 

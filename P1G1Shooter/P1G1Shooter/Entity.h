@@ -5,19 +5,19 @@
 
 typedef void(*EntityUpdate)(void* entity, struct Game* game);
 
-typedef enum EntityType
+/*typedef enum EntityType
 {
 	Entity		= 0,
 	Player		= 1,
 	Obstacle	= 2,
-	Projectile	= 3
-} EntityType;
+	Projectile	= 3,
+} EntityType;*/
 
 typedef struct Entity
 {
 	DisplayZone		mDisplayZone;
 
-	EntityType		mEntityType;
+	//EntityType		mEntityType;
 
 	double			mPosition_x, 
 					mPosition_y;
