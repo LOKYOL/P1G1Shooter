@@ -4,6 +4,7 @@
 #include "../PlayerStruct.h"
 #include "../Obstacle.h"
 #include "../Projectile.h"
+#include "../Enemy.h"
 
 int GameScreenInit(Game* game, GameState* state)
 {
@@ -19,6 +20,7 @@ int GameScreenInit(Game* game, GameState* state)
 	DVectorPushBack(data->mAllEntities, &myPlayer);
 
 	data->mGameSpawnObstacleTimer = 0;
+	data->mGameSpawnEnemyTimer = 0;
 
 	return 0;
 }
@@ -42,6 +44,15 @@ int GameScreenUpdate(Game* game, GameState* state)
 		data->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
 
 		SpawnObstacle(data);
+	}
+
+	// SPAWN ENEMY
+	data->mGameSpawnEnemyTimer += game->mGameDt;
+	if (data->mGameSpawnEnemyTimer >= ENEMY_SPAWN_TIMER)
+	{
+		data->mGameSpawnEnemyTimer -= ENEMY_SPAWN_TIMER;
+
+		SpawnEnemy(data);
 	}
 
 	// FOR EACH ENTITY
@@ -220,4 +231,11 @@ void SpawnObstacle(GameScreenData* _game)
 	Obstacle* newObstacle = NULL;
 	InitObstacle(&newObstacle);
 	DVectorPushBack(_game->mAllEntities, &newObstacle);
+}
+
+void	SpawnEnemy(GameScreenData* _game)
+{
+	Enemy* newEnemy = NULL;
+	InitEnemy(&newEnemy, 1, 1, (rand() % 5) + 3);
+	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }

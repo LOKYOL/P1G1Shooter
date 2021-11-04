@@ -44,11 +44,6 @@ void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _
 		Entity_MoveTo(&proj->mEntity, newpos_x, newpos_y);
 }
 
-void DestroyProjectile(Projectile* projectile)
-{
-	free(projectile);
-}
-
 int InRange(int value, int min, int max)
 {
 	return (value >= min && value <= max) ? 1 : 0;

@@ -10,6 +10,7 @@ typedef struct GameScreenData
 	DVector*			mAllEntities;
 
 	double				mGameSpawnObstacleTimer;
+	double				mGameSpawnEnemyTimer;
 }GameScreenData;
 
 int GameScreenInit(struct Game* game, struct GameState* state);
@@ -27,3 +28,5 @@ char	CompareCollision(Entity* entityA, Entity* entityB);
 void PopBackIfIsDead(GameScreenData* game, Entity* entity);
 
 void	SpawnObstacle(GameScreenData* game);
+
+void	SpawnEnemy(GameScreenData* game);
