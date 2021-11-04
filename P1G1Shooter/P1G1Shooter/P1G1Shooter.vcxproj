@@ -29,6 +29,7 @@
     <ClCompile Include="Engine\ParamsList.c" />
     <ClCompile Include="Engine\TimeManagement.c" />
     <ClCompile Include="Engine\TitleScreen.c" />
+    <ClCompile Include="Enemy.c" />
     <ClCompile Include="Entity.c" />
     <ClCompile Include="GameScreen.c" />
     <ClCompile Include="Inputs.c" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="Inputs.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="PlayerStruct.h" />
     <ClInclude Include="Projectile.h" />

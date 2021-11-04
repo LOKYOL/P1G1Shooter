@@ -3,6 +3,7 @@
 #include "PlayerStruct.h"
 #include "Obstacle.h"
 #include "projectile.h"
+#include "Enemy.h"
 
 void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, EntityUpdate _Update)
 {
@@ -65,6 +66,9 @@ void Entity_Free(Entity* _entity)
 		break;
 	case TYPE_PROJECTILE:
 		free(((Projectile*)_entity));
+		break;
+	case TYPE_ENEMY:
+		free(((Enemy*)_entity));
 		break;
 	default:
 		free(_entity);

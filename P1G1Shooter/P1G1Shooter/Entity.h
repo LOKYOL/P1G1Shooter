@@ -9,7 +9,8 @@ typedef enum EntityType
 	TYPE_ENTITY		= 0,
 	TYPE_PLAYER		= 1,
 	TYPE_OBSTACLE	= 2,
-	TYPE_PROJECTILE	= 3
+	TYPE_PROJECTILE	= 3,
+	TYPE_ENEMY		= 4
 } EntityType;
 
 typedef struct Entity
