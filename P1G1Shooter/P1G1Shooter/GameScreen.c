@@ -71,8 +71,9 @@ int GameScreenUpdate(Game* game, GameState* state)
 	DVector* PlayerList = GetAllEntityOfType(data, TYPE_PLAYER);
 	DVector* ObstacleList = GetAllEntityOfType(data, TYPE_OBSTACLE);
 	DVector* ProjectileList = GetAllEntityOfType(data, TYPE_PROJECTILE);
+	DVector* EnemiesList = GetAllEntityOfType(data, TYPE_ENEMY);
 
-	Entity* curObstacle = NULL, * curProjectile = NULL;
+	Entity* curObstacle = NULL, * curProjectile = NULL, *curEnemy = NULL;
 	Player* player = *(Player**)DVectorGet(PlayerList, 0);
 
 	// ENERGY RECHARGE
@@ -114,6 +115,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 			}
 		}
 
+
 		// COMPARE COLLISION WITH EACH PROJECTILE
 		for (int j = 0; j < ProjectileList->mCurrentSize; j++)
 		{
@@ -125,6 +127,49 @@ int GameScreenUpdate(Game* game, GameState* state)
 				if (curObstacle->mHealth <= 0)
 				{
 					PopEntity(data, curObstacle);
+					DVectorErase(ObstacleList, i);
+					i--;
+				}
+				if (curProjectile->mHealth <= 0)
+				{
+					PopEntity(data, curProjectile);
+					DVectorErase(ProjectileList, j);
+					j--;
+				}
+			}
+		}
+	}
+
+	// FOR EACH ENEMIES
+	for (int i = 0; i < EnemiesList->mCurrentSize; i++)
+	{
+		curEnemy = *(Enemy**)DVectorGet(EnemiesList, i);
+
+		// COMPARE COLLISION WITH THE PLAYER
+		if (CompareCollision(curEnemy, &player->mEntity) > 0)
+		{
+			Entity_TakeDamages(player, curEnemy->mDamages);
+			Entity_TakeDamages(curEnemy, INT_MAX);
+			if (curEnemy->mHealth <= 0)
+			{
+				PopEntity(data, curEnemy);
+				DVectorErase(EnemiesList, i);
+				i--;
+			}
+		}
+
+
+		// COMPARE COLLISION WITH EACH PROJECTILE
+		for (int j = 0; j < ProjectileList->mCurrentSize; j++)
+		{
+			curProjectile = *(Projectile**)DVectorGet(ProjectileList, j);
+			if (CompareCollision(curEnemy, curProjectile) > 0)
+			{
+				Entity_TakeDamages(curEnemy, curProjectile->mDamages);
+				Entity_TakeDamages(curProjectile, curEnemy->mDamages);
+				if (curEnemy->mHealth <= 0)
+				{
+					PopEntity(data, curEnemy);
 					DVectorErase(ObstacleList, i);
 					i--;
 				}
@@ -159,7 +204,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 	free(PlayerList);
 	free(ObstacleList);
 	free(ProjectileList);
-
+	free(EnemiesList);
 	return 0;
 }
 
@@ -236,6 +281,6 @@ void SpawnObstacle(GameScreenData* _game)
 void	SpawnEnemy(GameScreenData* _game)
 {
 	Enemy* newEnemy = NULL;
-	InitEnemy(&newEnemy, 1, 1, (rand() % 5) + 3);
+	InitEnemy(&newEnemy, 1, 1, (rand() % 1) + 1);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }
