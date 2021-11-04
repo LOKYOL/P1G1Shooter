@@ -46,12 +46,9 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen)
 		newpos_x = _enemy->mEntity.mPosition_x, 
 		newpos_y = _enemy->mEntity.mPosition_y;
 
-	DVector* maybePlayer = GetAllEntityOfType(_gameScreen, TYPE_PLAYER);
-	Player* currPlayer = *(Player**)DVectorGet(maybePlayer, 0);
-
 	double
-		posPlayer_x = currPlayer->mEntity.mPosition_x,
-		posPlayer_y = currPlayer->mEntity.mPosition_y;
+		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x,
+		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y;
 	
 	newpos_x--;
 	
