@@ -18,6 +18,9 @@ void InitPlayer(Player** _player)
 
 	Entity_Initialize(&newPlayer->mEntity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
 
+	InitDisplayZone(&newPlayer->mChargeZone, 0, 0, 5, 2, 1);
+	DrawBatteryInDisplayZone(&newPlayer->mChargeZone, 100);
+
 	newPlayer->mEntity.mPosition_x = 5;
 	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
 	newPlayer->mCurrentEnergy = MAX_ENERGY;
@@ -36,6 +39,9 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 	{
 		Player_Shoot(myPlayer, _gameScreen);
 	}
+
+	DrawBatteryInDisplayZone(myPlayer);
+	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mChargeZone);
 }
 
 void Player_UpdateMovement(Player* _player, Game* _game)
@@ -80,6 +86,7 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	}
 
 	Entity_MoveTo(&_player->mEntity, newpos_x, newpos_y);
+	UpdateBatteryDisplayZonePosition(_player);
 }
 
 void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
@@ -100,4 +107,54 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 			_player->mCurrentEnergy = 0;
 		}
 	}
+}
+
+void UpdateBatteryDisplayZonePosition(Player* _player)
+{
+	MoveDisplayZone(&_player->mChargeZone, 0, _player->mEntity.mPosition_y);
+}
+
+const float energy_divider = 100 / 2;
+const ConsoleColors ChargeColors[5] =
+{
+	BRIGHT_BLACK,
+	RED,
+	YELLOW,
+	GREEN,
+	BRIGHT_GREEN
+};
+
+void DrawBatteryInDisplayZone(Player* _player)
+{
+	DisplayCharacter* buffer = _player->mChargeZone.mBuffer;
+
+	ConsoleColors edgeColor =  
+		(_player->mShootCooldown > 0) ? 
+		RED : 
+		(DARKER | WHITE);
+
+	int colorLevel = 4;
+	
+	colorLevel -=
+		(_player->mCurrentEnergy < 100) +
+		(_player->mCurrentEnergy < 65) +
+		(_player->mCurrentEnergy < 30) +
+		(_player->mCurrentEnergy <= 0);
+
+	ConsoleColors 
+		rightFill	= colorLevel >= 3 ? ChargeColors[colorLevel] : ChargeColors[0],
+		middleFill	= colorLevel >= 2 ? ChargeColors[colorLevel] : ChargeColors[0],
+		leftFill	= colorLevel >= 1 ? ChargeColors[colorLevel] : ChargeColors[0];
+
+	buffer[0] = ENCODE_DISPLAY_CHARACTER(edgeColor, BLUE, 222, NO_FLAG);
+	buffer[1] = ENCODE_DISPLAY_CHARACTER(edgeColor, leftFill, 223, NO_FLAG);
+	buffer[2] = ENCODE_DISPLAY_CHARACTER(edgeColor, middleFill, 223, NO_FLAG);
+	buffer[3] = ENCODE_DISPLAY_CHARACTER(edgeColor, rightFill, 223, NO_FLAG);
+	buffer[4] = ENCODE_DISPLAY_CHARACTER(edgeColor, BLUE, 221, NO_FLAG);
+
+	buffer[5] = ENCODE_DISPLAY_CHARACTER(edgeColor, BLUE, 222, NO_FLAG);
+	buffer[6] = ENCODE_DISPLAY_CHARACTER(edgeColor, leftFill, 220, NO_FLAG);
+	buffer[7] = ENCODE_DISPLAY_CHARACTER(edgeColor, middleFill, 220, NO_FLAG);
+	buffer[8] = ENCODE_DISPLAY_CHARACTER(edgeColor, rightFill, 220, NO_FLAG);
+	buffer[9] = ENCODE_DISPLAY_CHARACTER(edgeColor, BLUE, 221, NO_FLAG);
 }
