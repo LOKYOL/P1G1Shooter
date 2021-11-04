@@ -64,6 +64,27 @@ int GameScreenUpdate(Game* game, GameState* state)
 	Entity* curObstacle = NULL, * curProjectile = NULL;
 	Player* player = *(Player**)DVectorGet(PlayerList, 0);
 
+	// ENERGY RECHARGE
+	if (player->mReloadCooldown > 0)
+	{
+		player->mReloadCooldown -= game->mGameDt;
+	}
+	else
+	{
+		player->mCurrentEnergy += game->mGameDt * RELOAD_SPEED;
+
+		if (player->mCurrentEnergy >= MAX_ENERGY)
+		{
+			player->mCurrentEnergy = MAX_ENERGY;
+		}
+	}
+
+	// SHOOT COOLDOWN
+	if (player->mShootCooldown > 0)
+	{
+		player->mShootCooldown -= game->mGameDt;
+	}
+
 	// FOR EACH OBSTACLE
 	for (int i = 0; i < ObstacleList->mCurrentSize; i++)
 	{
@@ -123,6 +144,10 @@ int GameScreenUpdate(Game* game, GameState* state)
 			}
 		}
 	}
+
+	free(PlayerList);
+	free(ObstacleList);
+	free(ProjectileList);
 
 	return 0;
 }
