@@ -5,7 +5,7 @@
 
 typedef struct Projectile
 {
-	Entity projEntity;
+	Entity mEntity;
 
 	unsigned char direction; //0 = left, 1 = right
 }Projectile;

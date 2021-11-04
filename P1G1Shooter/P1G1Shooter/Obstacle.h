@@ -5,7 +5,7 @@
 
 typedef struct Obstacle 
 {
-	Entity entity;
+	Entity mEntity;
 } Obstacle;
 
 void InitObstacle(Obstacle** obstacle);

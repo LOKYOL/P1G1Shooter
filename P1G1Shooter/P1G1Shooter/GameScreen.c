@@ -70,7 +70,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 		curObstacle = *(Obstacle**)DVectorGet(ObstacleList, i);
 
 		// COMPARE COLLISION WITH THE PLAYER
-		if (CompareCollision(curObstacle, &player->entity) > 0)
+		if (CompareCollision(curObstacle, &player->mEntity) > 0)
 		{
 			Entity_TakeDamages(player, curObstacle->mDamages);
 			Entity_TakeDamages(curObstacle, INT_MAX);
@@ -111,7 +111,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 	{
 		curProjectile = *(Projectile**)DVectorGet(ProjectileList, i);
 
-		if (CompareCollision(curProjectile, &player->entity) > 0)
+		if (CompareCollision(curProjectile, &player->mEntity) > 0)
 		{
 			Entity_TakeDamages(player, curProjectile->mDamages);
 			Entity_TakeDamages(curProjectile, INT_MAX);

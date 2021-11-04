@@ -8,18 +8,18 @@ void InitPlayer(Player** _player)
 	memset(newPlayer, 0, sizeof(Player));
 	*_player = newPlayer;
 
-	InitDisplayZone(&newPlayer->entity.mDisplayZone, 5, 0, 3, 2, 1);
+	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, 0, 3, 2, 1);
 	DrawRectangleInDisplayZone
 	(
-		&newPlayer->entity.mDisplayZone, 
+		&newPlayer->mEntity.mDisplayZone, 
 		0, 0, 3, 2, 
 		WHITE, BRIGHT_RED, ' '
 	);
 
-	Entity_Initialize(&newPlayer->entity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
+	Entity_Initialize(&newPlayer->mEntity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
 
-	newPlayer->entity.mPosition_x = 5;
-	newPlayer->entity.mEntityType = TYPE_PLAYER;
+	newPlayer->mEntity.mPosition_x = 5;
+	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
 }
 
 void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
@@ -27,7 +27,7 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 	Player* myPlayer = (Player*)_player;
 
 	Player_UpdateMovement(myPlayer, _game);
-	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->entity.mDisplayZone);
+	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mEntity.mDisplayZone);
 
 	if (KeyPressStart(*_game->mInputs, VK_SPACE))
 	{
@@ -38,16 +38,16 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 void Player_UpdateMovement(Player* _player, Game* _game)
 {
 	double 
-		newpos_x = _player->entity.mPosition_x, 
-		newpos_y = _player->entity.mPosition_y;
+		newpos_x = _player->mEntity.mPosition_x, 
+		newpos_y = _player->mEntity.mPosition_y;
 
 	if (IsKeyDown(*_game->mInputs, VK_UP) || IsKeyDown(*_game->mInputs, 'Z'))
 	{
-		newpos_y -= _game->mGameDt * _player->entity.mSpeed;
+		newpos_y -= _game->mGameDt * _player->mEntity.mSpeed;
 	}
 	if (IsKeyDown(*_game->mInputs, VK_DOWN) || IsKeyDown(*_game->mInputs, 'S'))
 	{
-		newpos_y += _game->mGameDt * _player->entity.mSpeed;
+		newpos_y += _game->mGameDt * _player->mEntity.mSpeed;
 	}
 	/*if (IsKeyDown(*_game->mInputs, VK_LEFT) || IsKeyDown(*_game->mInputs, 'Q'))
 	{
@@ -69,22 +69,22 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 		newpos_y = 0;
 	}
 
-	if (newpos_x > WINDOW_WIDTH - _player->entity.mDisplayZone.mSizeX)
+	if (newpos_x > WINDOW_WIDTH - _player->mEntity.mDisplayZone.mSizeX)
 	{
-		newpos_x = WINDOW_WIDTH - _player->entity.mDisplayZone.mSizeX;
+		newpos_x = WINDOW_WIDTH - _player->mEntity.mDisplayZone.mSizeX;
 	}
-	if (newpos_y > WINDOW_HEIGHT - _player->entity.mDisplayZone.mSizeY)
+	if (newpos_y > WINDOW_HEIGHT - _player->mEntity.mDisplayZone.mSizeY)
 	{
-		newpos_y = WINDOW_HEIGHT - _player->entity.mDisplayZone.mSizeY;
+		newpos_y = WINDOW_HEIGHT - _player->mEntity.mDisplayZone.mSizeY;
 	}
 
-	Entity_MoveTo(&_player->entity, newpos_x, newpos_y);
+	Entity_MoveTo(&_player->mEntity, newpos_x, newpos_y);
 }
 
 void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
-	InitProj(&newProjectile, 2, 0, _player->entity.mPosition_x, _player->entity.mPosition_y);
+	InitProj(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y);
 
 	PushEntity(_gameScreen, &newProjectile);
 }
