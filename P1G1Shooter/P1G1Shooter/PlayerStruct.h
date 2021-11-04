@@ -3,9 +3,11 @@
 #include "Entity.h"
 #include "GameScreen.h"
 
-#define MAX_ENERGIE		100
-#define SHOOT_COST		10
-#define RELOAD_SPEED	25
+#define MAX_ENERGY			100.f
+#define RELOAD_SPEED		25.f
+#define SHOOT_COST			10.f
+#define RELOAD_COOLDOWN		0.5f
+#define OVERHEAT_COOLDOWN	5.f
 
 #define PlayerUpdate(player, inputs, deltaTime) \
 	Player_Update((void*)player, &inputs, deltaTime)
@@ -14,8 +16,11 @@ typedef struct Player
 {
 	Entity mEntity;
 
-	float mCurrentEnergie;
-	unsigned char mCanShoot;
+	DisplayZone	mChargeZone;
+
+	float mCurrentEnergy;
+	float mReloadCooldown;
+	float mShootCooldown;
 } Player;
 
 void InitPlayer(Player** player);

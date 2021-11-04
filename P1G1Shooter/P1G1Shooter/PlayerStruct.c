@@ -20,6 +20,9 @@ void InitPlayer(Player** _player)
 
 	newPlayer->mEntity.mPosition_x = 5;
 	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
+	newPlayer->mCurrentEnergy = MAX_ENERGY;
+	newPlayer->mReloadCooldown = 0.f;
+	newPlayer->mShootCooldown = 0.f;
 }
 
 void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
@@ -58,8 +61,6 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 		move_x += _game->mGameDt * _player->entity.speed;
 	}*/
 
-
-
 	if (newpos_x < 0)
 	{
 		newpos_x = 0;
@@ -83,8 +84,20 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 
 void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 {
-	Projectile* newProjectile;
-	InitProj(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y);
+	if (_player->mShootCooldown <= 0)
+	{
+		Projectile* newProjectile;
+		InitProj(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y);
 
-	PushEntity(_gameScreen, &newProjectile);
+		PushEntity(_gameScreen, &newProjectile);
+
+		_player->mCurrentEnergy -= SHOOT_COST;
+		_player->mReloadCooldown = RELOAD_COOLDOWN;
+
+		if (_player->mCurrentEnergy <= 0)
+		{
+			_player->mShootCooldown = OVERHEAT_COOLDOWN;
+			_player->mCurrentEnergy = 0;
+		}
+	}
 }
