@@ -30,3 +30,7 @@ void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 void Player_UpdateMovement(Player* player, struct Game* game);
 
 void Player_Shoot(Player* player, GameScreenData* _gameScreen);
+
+void UpdateBatteryDisplayZonePosition(Player* player);
+
+void DrawBatteryInDisplayZone(Player* player);
