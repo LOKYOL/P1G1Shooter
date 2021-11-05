@@ -18,15 +18,17 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 		&newEnemy->mEntity.mDisplayZone,
 		WINDOW_WIDTH,
 		(rand() % (WINDOW_HEIGHT - 2)) + 1,
-		3, 2, 1
+		30, 20, 1
 	);
 
-	DrawRectangleInDisplayZone
+	/*DrawRectangleInDisplayZone
 	(
 		&newEnemy->mEntity.mDisplayZone,
 		0, 0, 3, 2,
 		WHITE, GREEN, ' '
-	);
+	);*/
+
+	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("enemy.bmp"));
 
 
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;

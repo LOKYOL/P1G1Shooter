@@ -8,14 +8,16 @@ void InitPlayer(Player** _player)
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	memset(newPlayer, 0, sizeof(Player));
 	*_player = newPlayer;
-	//InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, 0, 15, 10, 1);
-	*newPlayer->mChargeZone = CreateDisplayZoneFromBMP("test");
-	DrawRectangleInDisplayZone
+	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, 0, 2, 2, 1);
+	
+	/*DrawRectangleInDisplayZone
 	(
 		&newPlayer->mEntity.mDisplayZone, 
 		0, 0, 15, 10, 
 		WHITE, BRIGHT_RED, ' '
-	);
+	);*/
+
+	newPlayer->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("bubulle.bmp"));
 
 	Entity_Initialize(&newPlayer->mEntity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
 

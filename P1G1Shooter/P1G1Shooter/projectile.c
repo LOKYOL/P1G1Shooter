@@ -1,17 +1,19 @@
 #include "projectile.h"
 #include "Engine/Game.h"
+#include "Engine/DisplayZoneDrawing.h"
 
 void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, double posPlayer_y)
 {
 	(*proj) = (Projectile*)malloc(sizeof(Projectile));
 	InitDisplayZone(&(*proj)->mEntity.mDisplayZone, (posPlayer_x + 3), posPlayer_y, 2, 1, 1);
 
-	DrawRectangleInDisplayZone
+	/*DrawRectangleInDisplayZone
 	(
 		&(*proj)->mEntity.mDisplayZone,
 		0, 0, 2, 1,
 		WHITE, RED, ' '
-	);
+	);*/
+	(*proj)->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("bubulle.bmp"));
 
 	Entity_Initialize(&(*proj)->mEntity, 1, 1, WINDOW_WIDTH / 4, Projectile_Update);
 	(*proj)->mEntity.mPosition_x = (posPlayer_x + 3);
