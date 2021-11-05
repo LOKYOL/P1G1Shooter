@@ -6,11 +6,13 @@ typedef void(*EntityUpdate)(void* entity, struct Game* game, struct GameScreenDa
 
 typedef enum EntityType
 {
-	TYPE_ENTITY		= 0,
-	TYPE_PLAYER		= 1,
-	TYPE_OBSTACLE	= 2,
-	TYPE_PROJECTILE	= 3,
-	TYPE_ENEMY		= 4
+	TYPE_ENTITY				= -1,
+	TYPE_PLAYER				= 0,
+	TYPE_OBSTACLE			= 1,
+	TYPE_PLAYER_PROJECTILE	= 2,
+	TYPE_ENEMY_PROJECTILE	= 3,
+	TYPE_ENEMY				= 4,
+	TYPE_ENEMY_KAMIKAZE		= 5
 } EntityType;
 
 typedef struct Entity

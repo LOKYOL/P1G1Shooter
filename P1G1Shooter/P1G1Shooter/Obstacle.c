@@ -42,7 +42,6 @@ void Obstacle_Update(Obstacle* _obstacle, Game* _game, GameScreenData* _gameScre
 	{
 		// Free and delete from entity list if out of the screen
 		PopEntity(_gameScreen, _obstacle);
-		Entity_Free(_obstacle);
 	}
 	else
 	{
@@ -61,7 +60,6 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game, GameScreenData* _
 	{
 		// Free and delete from entity list if out of the screen
 		PopEntity(_gameScreen, _obstacle);
-		Entity_Free(_obstacle);
 	}
 	else
 	{

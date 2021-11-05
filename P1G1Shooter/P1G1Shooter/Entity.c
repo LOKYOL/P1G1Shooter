@@ -64,10 +64,12 @@ void Entity_Free(Entity* _entity)
 	case TYPE_OBSTACLE:
 		free(((Obstacle*)_entity));
 		break;
-	case TYPE_PROJECTILE:
+	case TYPE_PLAYER_PROJECTILE:
+	case TYPE_ENEMY_PROJECTILE:
 		free(((Projectile*)_entity));
 		break;
 	case TYPE_ENEMY:
+	case TYPE_ENEMY_KAMIKAZE:
 		free(((Enemy*)_entity));
 		break;
 	default:

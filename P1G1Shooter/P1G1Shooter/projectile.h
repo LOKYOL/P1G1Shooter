@@ -45,4 +45,4 @@ void DestroyProjectile(Projectile* projectile);
 /// <param name="min">Minimum value</param>
 /// <param name="max">Maximum value</param>
 /// <returns></returns>
-int InRange(int value, int min, int max);
+// int InRange(int value, int min, int max);

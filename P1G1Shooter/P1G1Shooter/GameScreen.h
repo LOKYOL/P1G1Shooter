@@ -26,9 +26,14 @@ void	PopEntity(GameScreenData* game, Entity* entity);
 
 DVector* GetAllEntityOfType(GameScreenData* game, EntityType type);
 
-char	CompareCollision(Entity* entityA, Entity* entityB);
+void HandleCollision(DVector* list);
+void HandleEntityCollision(Entity* entity, Entity** list, int length);
 
-void PopBackIfIsDead(GameScreenData* game, Entity* entity);
+char	CompareCollision(Entity* entityA, Entity* entityB);
+char	InRange(int value, int min, int max);
+char	CanCollide(Entity* entityA, Entity* entityB);
+
+void	PopBackIfIsDead(GameScreenData* game, Entity* entity);
 
 void	SpawnObstacle(GameScreenData* game);
 

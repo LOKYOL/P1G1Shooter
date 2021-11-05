@@ -28,7 +28,7 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 	);
 
 
-	newEnemy->mEntity.mEntityType = TYPE_ENEMY;
+	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
 	newEnemy->mEntity.mPosition_x = WINDOW_WIDTH;
 	newEnemy->mEntity.mPosition_y = newEnemy->mEntity.mDisplayZone.mPosY;
 }
@@ -36,11 +36,11 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)
 {
 	Enemy* myEnemy = (Enemy*)_enemy;
-	Enemy_UpdateMovement(myEnemy, _gameScreen);
+	Enemy_UpdateMovement(myEnemy, _gameScreen, _game->mGameDt);
 	FlushDisplayZone(_game->mDisplaySettings, &myEnemy->mEntity.mDisplayZone);
 }
 
-void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen)
+void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, double _deltaTime)
 {
 	double
 		newpos_x = _enemy->mEntity.mPosition_x, 
@@ -50,7 +50,7 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen)
 		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x,
 		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y;
 	
-	newpos_x = newpos_x + 0.4;
+	newpos_x -= _enemy->mEntity.mSpeed * _deltaTime;
 	
 	if (newpos_y < posPlayer_y - 0.5)
 	{

@@ -17,7 +17,7 @@ void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, d
 	(*proj)->mEntity.mPosition_x = (posPlayer_x + 3);
 	(*proj)->mEntity.mPosition_y = posPlayer_y;
 	(*proj)->direction = 1;
-	(*proj)->mEntity.mEntityType = TYPE_PROJECTILE;
+	(*proj)->mEntity.mEntityType = TYPE_PLAYER_PROJECTILE;
 }
 
 void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen) {
@@ -44,7 +44,7 @@ void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _
 		Entity_MoveTo(&proj->mEntity, newpos_x, newpos_y);
 }
 
-int InRange(int value, int min, int max)
-{
-	return (value >= min && value <= max) ? 1 : 0;
-}
+//int InRange(int value, int min, int max)
+//{
+//	return (value >= min && value <= max) ? 1 : 0;
+//}
