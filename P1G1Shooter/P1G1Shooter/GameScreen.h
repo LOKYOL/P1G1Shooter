@@ -5,9 +5,12 @@
 #include "DVector.h"
 #include "Entity.h"
 
+
 typedef struct GameScreenData
 {
 	DVector*			mAllEntities;
+
+	struct Player*				mPlayer;
 
 	double				mGameSpawnObstacleTimer;
 	double				mGameSpawnEnemyTimer;

@@ -5,9 +5,9 @@
 #include "../Inputs.h"
 #include "../Entity.h"
 
-#define WINDOW_HEIGHT		50
-#define WINDOW_WIDTH		100
-#define WINDOW_FONT_SIZE	13
+#define WINDOW_HEIGHT		120
+#define WINDOW_WIDTH		220
+#define WINDOW_FONT_SIZE	8
 #define WINDOW_FONT_SQUARED	1
 
 #define OBSTACLE_SPAWN_TIMER	0.4

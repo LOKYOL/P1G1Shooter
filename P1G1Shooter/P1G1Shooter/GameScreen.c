@@ -1,4 +1,4 @@
-#include "GameScreen.h"
+﻿#include "GameScreen.h"
 #include "Game.h"
 #include "TimeManagement.h"
 #include "../PlayerStruct.h"
@@ -17,7 +17,7 @@ int GameScreenInit(Game* game, GameState* state)
 	// Create Player
 	Player* myPlayer;
 	InitPlayer(&myPlayer);
-	DVectorPushBack(data->mAllEntities, &myPlayer);
+	data->mPlayer = myPlayer;
 
 	data->mGameSpawnObstacleTimer = 0;
 	data->mGameSpawnEnemyTimer = 0;
@@ -55,6 +55,8 @@ int GameScreenUpdate(Game* game, GameState* state)
 		SpawnEnemy(data);
 	}
 
+	data->mPlayer->mEntity.mUpdate(data->mPlayer, game, data);
+
 	// FOR EACH ENTITY
 	Entity* curEntity = NULL;
 	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
@@ -68,33 +70,31 @@ int GameScreenUpdate(Game* game, GameState* state)
 	}
 
 	// COLLISIONS
-	DVector* PlayerList = GetAllEntityOfType(data, TYPE_PLAYER);
 	DVector* ObstacleList = GetAllEntityOfType(data, TYPE_OBSTACLE);
 	DVector* ProjectileList = GetAllEntityOfType(data, TYPE_PROJECTILE);
 	DVector* EnemiesList = GetAllEntityOfType(data, TYPE_ENEMY);
 
 	Entity* curObstacle = NULL, * curProjectile = NULL, *curEnemy = NULL;
 	Player* player = *(Player**)DVectorGet(PlayerList, 0);
-
 	// ENERGY RECHARGE
-	if (player->mReloadCooldown > 0)
+	if (data->mPlayer->mReloadCooldown > 0)
 	{
-		player->mReloadCooldown -= game->mGameDt;
+		data->mPlayer->mReloadCooldown -= game->mGameDt;
 	}
 	else
 	{
-		player->mCurrentEnergy += game->mGameDt * RELOAD_SPEED;
+		data->mPlayer->mCurrentEnergy += game->mGameDt * RELOAD_SPEED;
 
-		if (player->mCurrentEnergy >= MAX_ENERGY)
+		if (data->mPlayer->mCurrentEnergy >= MAX_ENERGY)
 		{
-			player->mCurrentEnergy = MAX_ENERGY;
+			data->mPlayer->mCurrentEnergy = MAX_ENERGY;
 		}
 	}
 
 	// SHOOT COOLDOWN
-	if (player->mShootCooldown > 0)
+	if (data->mPlayer->mShootCooldown > 0)
 	{
-		player->mShootCooldown -= game->mGameDt;
+		data->mPlayer->mShootCooldown -= game->mGameDt;
 	}
 
 	// FOR EACH OBSTACLE
@@ -103,9 +103,9 @@ int GameScreenUpdate(Game* game, GameState* state)
 		curObstacle = *(Obstacle**)DVectorGet(ObstacleList, i);
 
 		// COMPARE COLLISION WITH THE PLAYER
-		if (CompareCollision(curObstacle, &player->mEntity) > 0)
+		if (CompareCollision(curObstacle, &data->mPlayer->mEntity) > 0)
 		{
-			Entity_TakeDamages(player, curObstacle->mDamages);
+			Entity_TakeDamages(data->mPlayer, curObstacle->mDamages);
 			Entity_TakeDamages(curObstacle, INT_MAX);
 			if (curObstacle->mHealth <= 0)
 			{
@@ -188,9 +188,9 @@ int GameScreenUpdate(Game* game, GameState* state)
 	{
 		curProjectile = *(Projectile**)DVectorGet(ProjectileList, i);
 
-		if (CompareCollision(curProjectile, &player->mEntity) > 0)
+		if (CompareCollision(curProjectile, &data->mPlayer->mEntity) > 0)
 		{
-			Entity_TakeDamages(player, curProjectile->mDamages);
+			Entity_TakeDamages(data->mPlayer, curProjectile->mDamages);
 			Entity_TakeDamages(curProjectile, INT_MAX);
 			if (curProjectile->mHealth <= 0)
 			{
@@ -201,7 +201,6 @@ int GameScreenUpdate(Game* game, GameState* state)
 		}
 	}
 
-	free(PlayerList);
 	free(ObstacleList);
 	free(ProjectileList);
 	free(EnemiesList);
