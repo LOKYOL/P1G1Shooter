@@ -11,11 +11,12 @@ int main()
 	Game	game;
 	InitGame(&game);
 
-
+	int tempclock = 0, ms = 50; //50ms per frame = 20fps
 
 	while (MainLoop(&game) == 0)
 	{
-		Sleep(1);
+		while(clock() < tempclock + ms){}
+		tempclock = clock();
 	}
 
 	CloseGame(&game);
