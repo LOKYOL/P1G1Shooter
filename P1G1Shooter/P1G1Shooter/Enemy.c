@@ -2,6 +2,7 @@
 #include "GameScreen.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "PlayerStruct.h"
+#include <math.h>
 
 void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 {
@@ -43,26 +44,30 @@ void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)
 void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, double _deltaTime)
 {
 	double
-		newpos_x = _enemy->mEntity.mPosition_x, 
-		newpos_y = _enemy->mEntity.mPosition_y;
+		move_x = 0,
+		move_y = 0;
 
 	double
 		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x,
 		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y;
 	
-	newpos_x -= _enemy->mEntity.mSpeed * _deltaTime;
+	move_x = -1;
 	
-	if (newpos_y < posPlayer_y - 0.5)
+	if (_enemy->mEntity.mPosition_y < posPlayer_y - 0.5)
 	{
-		newpos_y++;
+		move_y++;
 	}
-	else if(newpos_y > posPlayer_y + 0.5)
+	else if(_enemy->mEntity.mPosition_y > posPlayer_y + 0.5)
 	{
-		newpos_y--;
+		move_y--;
 	}
 
-	Entity_MoveTo(&_enemy->mEntity, newpos_x, newpos_y);
+	double movement = _enemy->mEntity.mSpeed * _deltaTime;
+	double magnitude = sqrt(pow(move_x, 2) + pow(move_y, 2));
+	move_x = move_x / magnitude * movement;
+	move_y = move_y / magnitude * movement;
 
+	Entity_Move(&_enemy->mEntity, move_x, move_y);
 }
 
 void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen)

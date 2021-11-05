@@ -18,8 +18,8 @@ void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, E
 
 void Entity_Move(Entity* _entity, double _moveX, double _moveY)
 {
-	_entity->mPosition_x += _moveX * _entity->mSpeed;
-	_entity->mPosition_y += _moveY * _entity->mSpeed;
+	_entity->mPosition_x += _moveX;
+	_entity->mPosition_y += _moveY;
 
 	Entity_UpdateDisplayZone(_entity);
 }
