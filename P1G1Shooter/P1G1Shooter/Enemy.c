@@ -50,13 +50,13 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen)
 		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x,
 		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y;
 	
-	newpos_x--;
+	newpos_x = newpos_x + 0.4;
 	
-	if (newpos_y < posPlayer_y)
+	if (newpos_y < posPlayer_y - 0.5)
 	{
 		newpos_y++;
 	}
-	else if(newpos_y > posPlayer_y)
+	else if(newpos_y > posPlayer_y + 0.5)
 	{
 		newpos_y--;
 	}
