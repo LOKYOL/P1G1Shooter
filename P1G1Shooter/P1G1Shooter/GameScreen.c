@@ -74,8 +74,8 @@ int GameScreenUpdate(Game* game, GameState* state)
 	DVector* ProjectileList = GetAllEntityOfType(data, TYPE_PROJECTILE);
 	DVector* EnemiesList = GetAllEntityOfType(data, TYPE_ENEMY);
 
-	Entity* curObstacle = NULL, * curProjectile = NULL, *curEnemy = NULL;
-	Player* player = *(Player**)DVectorGet(PlayerList, 0);
+	Entity* curObstacle = NULL, * curProjectile = NULL, * curEnemy = NULL;
+
 	// ENERGY RECHARGE
 	if (data->mPlayer->mReloadCooldown > 0)
 	{
@@ -146,9 +146,9 @@ int GameScreenUpdate(Game* game, GameState* state)
 		curEnemy = *(Enemy**)DVectorGet(EnemiesList, i);
 
 		// COMPARE COLLISION WITH THE PLAYER
-		if (CompareCollision(curEnemy, &player->mEntity) > 0)
+		if (CompareCollision(curEnemy, &data->mPlayer.mEntity) > 0)
 		{
-			Entity_TakeDamages(player, curEnemy->mDamages);
+			Entity_TakeDamages(data->mPlayer, curEnemy->mDamages);
 			Entity_TakeDamages(curEnemy, INT_MAX);
 			if (curEnemy->mHealth <= 0)
 			{
