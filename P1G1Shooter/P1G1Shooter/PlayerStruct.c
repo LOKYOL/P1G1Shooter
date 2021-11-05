@@ -144,7 +144,7 @@ void DrawBatteryInDisplayZone(Player* _player)
 	ConsoleColors 
 		rightFill	= colorLevel >= 3 ? ChargeColors[colorLevel] : ChargeColors[0],
 		middleFill	= colorLevel >= 2 ? ChargeColors[colorLevel] : ChargeColors[0],
-		leftFill	= colorLevel >= 1 ? ChargeColors[colorLevel] : ChargeColors[0];
+		leftFill	= ChargeColors[colorLevel];
 
 	buffer[0] = ENCODE_DISPLAY_CHARACTER(edgeColor, BLUE, 222, NO_FLAG);
 	buffer[1] = ENCODE_DISPLAY_CHARACTER(edgeColor, leftFill, 223, NO_FLAG);

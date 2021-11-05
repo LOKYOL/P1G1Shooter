@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GameState.h"
-#include "ConsoleDisplay.h"
-#include "DVector.h"
+#include "Engine/GameState.h"
+#include "Engine/ConsoleDisplay.h"
+#include "Engine/DVector.h"
 #include "Entity.h"
 
 
