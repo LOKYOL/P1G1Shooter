@@ -103,6 +103,10 @@ extern "C" {
 		unsigned char B;
 	}RGBPixel;
 
+
+	RGBPixel	BlendPixel(RGBPixel p1, RGBPixel p2, unsigned char blendFactor);
+
+
 	extern RGBPixel getBitmapRGB(BITMAPINFO* info, unsigned char* data, int px, int py);
 
 	extern int     SaveDIBitmap(const char *filename, BITMAPINFO *info,

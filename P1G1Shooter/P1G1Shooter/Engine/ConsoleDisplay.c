@@ -1,11 +1,7 @@
 #include "ConsoleDisplay.h"
 #include <stdio.h>
 #include <WinCon.h>
-
-//#define DISPLAY_FPS
-#ifdef DISPLAY_FPS
 #include "TimeManagement.h"
-#endif
 
 #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
 
@@ -19,6 +15,7 @@ struct DisplaySettings
 	unsigned int				mSquaredFont;
 	CONSOLE_CURSOR_INFO			mBackupCursorState;
 	struct DisplayCharacter*	mDrawBuffer;
+	unsigned int				mDisplayFPS;
 };
 
 const int OLD_CONSOLE_COLORS[16] = { 0 // BLACK
@@ -54,8 +51,8 @@ void HideCursor(DisplaySettings* settings)  // Hide the cursor
 
 const int DARKERCOLORS[16] = {	BLACK,
 								BLACK,
-								BLUE,
-								GREEN,
+								BLACK,
+								BLACK,
 								BLACK,
 								RED,
 								BLUE,
@@ -79,12 +76,12 @@ const int CLEARERCOLORS[16] = { BRIGHT_BLACK,
 								BRIGHT_CYAN,
 								BRIGHT_WHITE,
 								WHITE,
-								MAGENTA,
-								CYAN,
-								BRIGHT_WHITE,
+								BRIGHT_RED,
 								BRIGHT_CYAN,
 								BRIGHT_WHITE,
-								BRIGHT_WHITE,
+								BRIGHT_CYAN,
+								BRIGHT_RED,
+								BRIGHT_YELLOW,
 								BRIGHT_WHITE
 };
 
@@ -117,7 +114,7 @@ void	CodeColors(DisplayCharacter* color,ConsoleColors FG, ConsoleColors BG)
 }
 
 
-void			DecodeColors(DisplayCharacter* color, unsigned int* FG, unsigned int* BG)
+inline void			DecodeColors(DisplayCharacter* color, unsigned int* FG, unsigned int* BG)
 {
 	*FG = ((unsigned short)color->mColors & 0xF)|((color->mFlags&0xFF)<<4);
 	*BG = (((unsigned short)color->mColors & 0xF0)>>4) | ((color->mFlags & 0xFF00) >> 4); 
@@ -171,11 +168,17 @@ void	ManageColorFlags(unsigned int sourceColor, unsigned int* finalColor, unsign
 
 	if (sourceColor & DARKER)
 	{
-		*finalColor = DARKERCOLORS[(*finalColor) & 15];
+		if (((sourceColor & HALF) && ((*finalColor) & 15) >= 8) || !(sourceColor & HALF))
+		{
+			*finalColor = DARKERCOLORS[(*finalColor) & 15];
+		}
 	}
 	if (sourceColor & CLEARER)
 	{
-		*finalColor = CLEARERCOLORS[(*finalColor) & 15];
+		if (((sourceColor & HALF) && ((*finalColor) & 15) < 8) || !(sourceColor & HALF))
+		{
+			*finalColor = CLEARERCOLORS[(*finalColor) & 15];
+		}
 	}
 }
 
@@ -273,6 +276,7 @@ DisplaySettings* InitDisplay(unsigned int sx, unsigned int sy,unsigned int newFo
 {
 	initRGBConsoleColor();
 	DisplaySettings* result =(DisplaySettings*) malloc(sizeof(DisplaySettings));
+	result->mDisplayFPS = 0;
 	result->mConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
 	result->mConsoleHWND = GetConsoleWindow();
 	result->mSquaredFont = 0;
@@ -495,6 +499,11 @@ void	CopyDisplayZone(DisplayZone* dest, DisplayZone* src, int px, int py)
 	CopyDisplayZonePart(dest, src, px, py, 0, 0, src->mSizeX, src->mSizeY);
 }
 
+void	ShowFPS(DisplaySettings* settings, int show)
+{
+	settings->mDisplayFPS = show;
+}
+
 void	FlushDisplayZone(DisplaySettings* settings, DisplayZone* zone)
 {
 	if (!zone->mBuffer) 
@@ -541,39 +550,40 @@ void	FlushDisplayZone(DisplaySettings* settings, DisplayZone* zone)
 void	SwapBuffer(DisplaySettings* settings)
 {
 	// if display fps is set, then display FPS here
-#ifdef DISPLAY_FPS
-
-	// get previous loop time
-	static double lastSwapTime = 0.0;
-
-	static int fps = 0;
-	static int frameCount = 0;
-	frameCount++;
-
-	if (frameCount == 20)
+	if (settings->mDisplayFPS)
 	{
-		// get current time
-		double currentTime = GetTime();
-		double cumuldt = currentTime - lastSwapTime;
 
-		fps = (int)(20.0 / cumuldt);
+		// get previous loop time
+		static double lastSwapTime = 0.0;
 
-		lastSwapTime = currentTime;
+		static int fps = 0;
+		static int frameCount = 0;
+		frameCount++;
 
-		frameCount = 0;
-		cumuldt = 0.0;
+		if (frameCount == 20)
+		{
+			// get current time
+			double currentTime = GetTime();
+			double cumuldt = currentTime - lastSwapTime;
+
+			fps = (int)(20.0 / cumuldt);
+
+			lastSwapTime = currentTime;
+
+			frameCount = 0;
+			cumuldt = 0.0;
+		}
+
+
+		DisplayZone	fpsZone;
+		InitDisplayZone(&fpsZone, 5, 2, 16, 1, 0);
+		ClearDisplayZone(&fpsZone, FOREGROUND, BACKGROUND, ' ', NO_CHARACTER);
+		char	fpsString[16];
+
+		snprintf(fpsString, 32, "FPS:%d ", fps);
+		PrintInDisplayZone(&fpsZone, BACKGROUND | BRIGHT_WHITE | XOR_COLOR, BACKGROUND, 0, 0, fpsString, 0, NO_FLAG);
+		FlushDisplayZone(settings, &fpsZone);
 	}
-
-
-	DisplayZone	fpsZone;
-	InitDisplayZone(&fpsZone, 5, 2, 16, 1, 0);
-	ClearDisplayZone(&fpsZone, FOREGROUND , BACKGROUND,' ', NO_CHARACTER);
-	char	fpsString[16];
-
-	snprintf(fpsString, 32, "FPS:%d ", fps);
-	PrintInDisplayZone(&fpsZone, BACKGROUND|BRIGHT_WHITE|XOR_COLOR| CLEARER|NO_BLEND, BACKGROUND, 0, 0, fpsString, 0,NO_FLAG);
-	FlushDisplayZone(settings, &fpsZone);
-#endif
 
 
 	DisplayCharacter* frontBuffer = settings->mDrawBuffer;

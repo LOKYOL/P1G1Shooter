@@ -10,6 +10,23 @@
 //#include <errno.h>
 
 
+RGBPixel	BlendPixel(RGBPixel p1, RGBPixel p2, unsigned char blendFactor)
+{
+	unsigned int R = ((unsigned int)p1.R) * (255 - blendFactor) + ((unsigned int)p2.R) * blendFactor;
+	unsigned int G = ((unsigned int)p1.G) * (255 - blendFactor) + ((unsigned int)p2.G) * blendFactor;
+	unsigned int B = ((unsigned int)p1.B) * (255 - blendFactor) + ((unsigned int)p2.B) * blendFactor;
+
+	RGBPixel result;
+
+	result.R = (unsigned char)(R / 256);
+	result.G = (unsigned char)(G / 256);
+	result.B = (unsigned char)(B / 256);
+
+	return result;
+
+}
+
+
 #ifdef WIN32
 
 

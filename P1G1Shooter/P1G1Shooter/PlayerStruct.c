@@ -1,5 +1,6 @@
 #include "PlayerStruct.h"
 #include "Engine/Game.h"
+#include "Engine/DisplayZoneDrawing.h"
 #include "projectile.h"
 
 void InitPlayer(Player** _player)
@@ -7,12 +8,12 @@ void InitPlayer(Player** _player)
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	memset(newPlayer, 0, sizeof(Player));
 	*_player = newPlayer;
-
-	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, 0, 3, 2, 1);
+	//InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, 0, 15, 10, 1);
+	*newPlayer->mChargeZone = CreateDisplayZoneFromBMP("test");
 	DrawRectangleInDisplayZone
 	(
 		&newPlayer->mEntity.mDisplayZone, 
-		0, 0, 3, 2, 
+		0, 0, 15, 10, 
 		WHITE, BRIGHT_RED, ' '
 	);
 
