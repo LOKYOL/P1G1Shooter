@@ -146,7 +146,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 		curEnemy = *(Enemy**)DVectorGet(EnemiesList, i);
 
 		// COMPARE COLLISION WITH THE PLAYER
-		if (CompareCollision(curEnemy, &data->mPlayer.mEntity) > 0)
+		if (CompareCollision(curEnemy, &data->mPlayer->mEntity) > 0)
 		{
 			Entity_TakeDamages(data->mPlayer, curEnemy->mDamages);
 			Entity_TakeDamages(curEnemy, INT_MAX);
