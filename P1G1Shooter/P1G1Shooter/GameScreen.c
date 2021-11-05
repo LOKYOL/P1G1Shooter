@@ -1,10 +1,10 @@
 ﻿#include "GameScreen.h"
-#include "Game.h"
-#include "TimeManagement.h"
-#include "../PlayerStruct.h"
-#include "../Obstacle.h"
-#include "../Projectile.h"
-#include "../Enemy.h"
+#include "Engine/Game.h"
+#include "Engine/TimeManagement.h"
+#include "PlayerStruct.h"
+#include "Obstacle.h"
+#include "Projectile.h"
+#include "Enemy.h"
 
 int GameScreenInit(Game* game, GameState* state)
 {
