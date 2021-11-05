@@ -37,11 +37,11 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)
 {
 	Enemy* myEnemy = (Enemy*)_enemy;
-	Enemy_UpdateMovement(myEnemy, _gameScreen, _game->mGameDt);
+	Enemy_UpdateMovement(myEnemy, _gameScreen, _game);
 	FlushDisplayZone(_game->mDisplaySettings, &myEnemy->mEntity.mDisplayZone);
 }
 
-void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, double _deltaTime)
+void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _game)
 {
 	double
 		move_x = 0,
@@ -62,11 +62,47 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, double _de
 		move_y--;
 	}
 
-	double movement = _enemy->mEntity.mSpeed * _deltaTime;
+	Entity* mostNear = NULL;
+	double minDistance = 5;
+	Entity* curEntity = NULL;
+	double curDistance = 0;
+	for (int i = 0; i < _gameScreen->mAllEntities->mCurrentSize; i++)
+	{
+		if ((curEntity = DVectorGetTyped(_gameScreen->mAllEntities, Entity*, i))	&&
+				(curEntity->mEntityType == TYPE_OBSTACLE	|| 
+				curEntity->mEntityType == TYPE_PLAYER_PROJECTILE)					&&
+			InRange(_enemy->mEntity.mDisplayZone.mPosY, 
+			curEntity->mDisplayZone.mPosY - _enemy->mEntity.mDisplayZone.mSizeY - 2, 
+			curEntity->mDisplayZone.mPosY + curEntity->mDisplayZone.mSizeY + 2)		&&
+			(curDistance = Entity_GetDistance(_enemy, curEntity)) < minDistance)
+		{
+			mostNear = curEntity;
+			minDistance = curDistance;
+		}
+	}
+
+	if (minDistance < 5)
+	{
+		double height = mostNear->mPosition_y + (mostNear->mDisplayZone.mSizeY / 2);
+		height -= _enemy->mEntity.mPosition_y + (_enemy->mEntity.mDisplayZone.mSizeY / 2);
+
+		if (height < 0)
+		{
+			move_y = 10;
+		}
+		else
+		{
+			move_y = -10;
+		}
+	}
+
+	// Clamp movement
+	double movement = _enemy->mEntity.mSpeed * _game->mGameDt;
 	double magnitude = sqrt(pow(move_x, 2) + pow(move_y, 2));
 	move_x = move_x / magnitude * movement;
 	move_y = move_y / magnitude * movement;
 
+	// Apply movement
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
 }
 

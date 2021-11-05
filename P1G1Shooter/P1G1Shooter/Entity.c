@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "Entity.h"
 #include "Engine/Game.h"
 #include "PlayerStruct.h"
@@ -76,4 +78,19 @@ void Entity_Free(Entity* _entity)
 		free(_entity);
 		break;
 	}
+}
+
+double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
+
+	if (!(_entityA) || !(_entityB))
+		return 0;
+
+	double distance = 0, distanceX = 0, distanceY = 0;
+
+	distanceX = _entityA->mPosition_x - _entityB->mPosition_x;
+	distanceY = _entityA->mPosition_y - _entityB->mPosition_y;
+
+	distance = sqrt(pow(distanceX, 2) + pow(distanceY, 2));
+
+	return distance;
 }

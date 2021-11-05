@@ -27,7 +27,7 @@ void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
 /// </summary>
 /// <param name="_enemy">Enemy to edit</param>
 /// <param name="_gameScreen">Datas bind to the game state</param>
-void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, double deltaTime);
+void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* game);
 
 /// <summary>
 /// 
