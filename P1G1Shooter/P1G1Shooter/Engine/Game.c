@@ -51,7 +51,7 @@ int		MainLoop(Game* game)
 	game->mGameDt = currentTime - game->mGameTime;
 	game->mGameTime = currentTime;
 
-	ClearBuffer(game->mDisplaySettings, WHITE, DARKER | BLUE);
+	ClearBuffer(game->mDisplaySettings, BLUE, BLUE);
 
 	UpdateAllInputs(game->mInputs);
 
