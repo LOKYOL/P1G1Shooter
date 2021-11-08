@@ -16,6 +16,12 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 		WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2 - 10, 
 		"GAME OVER", 0, NO_FLAG);
 
+	PrintInDisplayZone(
+		&datascreen->mCredit,
+		WHITE, BLACK,
+		180, 110,
+		"Press return to continue...", 0, NO_FLAG);
+
 	return 0;
 
 }

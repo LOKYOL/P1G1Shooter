@@ -28,7 +28,7 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 		WHITE, GREEN, ' '
 	);*/
 
-	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrv.bmp"));
+	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp"));
 
 
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
@@ -94,11 +94,11 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 
 		if (height < 0)
 		{
-			move_y = 2;
+			move_y = 1;
 		}
 		else
 		{
-			move_y = -2;
+			move_y = -1;
 		}
 	}
 

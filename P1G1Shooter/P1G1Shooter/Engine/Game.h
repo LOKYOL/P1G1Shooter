@@ -24,7 +24,8 @@ typedef struct Game
 	double				mGameTime;
 	double				mGameDt;
 
-	int mScore;
+	int					mScore;
+	DisplayZone			mScoreDisplayZone;
 }Game;
 
 void	InitGame(Game* game);
