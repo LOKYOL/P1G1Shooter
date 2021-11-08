@@ -42,8 +42,14 @@ char	CanCollide(Entity* entityA, Entity* entityB);
 
 void	PopBackIfIsDead(GameScreenData* game, Entity* entity);
 
+void	SpawnEntity(struct Game* game, GameScreenData* data);
+
 void	SpawnObstacle(GameScreenData* game);
 
 void	SpawnEnemy(GameScreenData* game);
+
+void	UpdateEntity(struct Game* game, GameScreenData* data);
+
+void	UpdateWeapon(struct Game* game, GameScreenData* data);
 
 void	EndGame(struct Game* game, struct Player* player);
