@@ -22,7 +22,7 @@ void InitPlayer(Player** _player)
 	Entity_Initialize(&newPlayer->mEntity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
 
 	InitDisplayZone(&newPlayer->mChargeZone, 0, 0, 5, 2, 1);
-	DrawBatteryInDisplayZone(&newPlayer->mChargeZone, 100);
+	DrawBatteryInDisplayZone(newPlayer);
 
 	newPlayer->mEntity.mPosition_x = 5;
 	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
