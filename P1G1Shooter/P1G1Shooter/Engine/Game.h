@@ -23,6 +23,8 @@ typedef struct Game
 
 	double				mGameTime;
 	double				mGameDt;
+
+	int mScore;
 }Game;
 
 void	InitGame(Game* game);
