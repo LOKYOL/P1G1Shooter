@@ -55,73 +55,17 @@ int GameScreenUpdate(Game* game, GameState* state)
 {
 	GameScreenData* data = state->mData;
 
-	// SPAWN OBSTACLE
-	data->mGameSpawnObstacleTimer += game->mGameDt;
-	if (data->mGameSpawnObstacleTimer >= OBSTACLE_SPAWN_TIMER)
-	{
-		data->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
+	SpawnEntity(game, data);
 
-		SpawnObstacle(data);
-	}
+	UpdateEntity(game, data);
 
-	// SPAWN ENEMY
-	data->mGameSpawnEnemyTimer += game->mGameDt;
-	if (data->mGameSpawnEnemyTimer >= ENEMY_SPAWN_TIMER)
-	{
-		data->mGameSpawnEnemyTimer -= ENEMY_SPAWN_TIMER;
-
-		SpawnEnemy(data);
-	}
-
-	data->mPlayer->mEntity.mUpdate(data->mPlayer, game, data);
-
-	// FOR EACH ENTITY
-	Entity* curEntity = NULL;
-	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
-	{
-		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
-
-		if (curEntity->mUpdate != NULL)
-		{
-			curEntity->mUpdate((void*)curEntity, game, data);
-		}
-	}
-
-	Entity* curObstacle = NULL, * curProjectile = NULL, * curEnemy = NULL;
-
-	// ENERGY RECHARGE
-	if (data->mPlayer->mReloadCooldown > 0)
-	{
-		data->mPlayer->mReloadCooldown -= game->mGameDt;
-	}
-	else
-	{
-		data->mPlayer->mCurrentEnergy += game->mGameDt * RELOAD_SPEED;
-
-		if (data->mPlayer->mCurrentEnergy >= MAX_ENERGY)
-		{
-			data->mPlayer->mCurrentEnergy = MAX_ENERGY;
-		}
-	}
-
-	// SHOOT COOLDOWN
-	if (data->mPlayer->mShootCooldown > 0)
-	{
-		data->mPlayer->mShootCooldown -= game->mGameDt;
-	}
+	UpdateWeapon(game, data);
 
 	// COLLISIONS
 	HandleCollision(data->mAllEntities);
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize);
 
 	EndGame(game, data->mPlayer);
-
-	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
-	{
-		PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i));
-	}
-
-	
 
 	return 0;
 }
@@ -243,6 +187,27 @@ void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 	}
 }
 
+void SpawnEntity(Game* game, GameScreenData* _data)
+{
+	// SPAWN OBSTACLE
+	_data->mGameSpawnObstacleTimer += game->mGameDt;
+	if (_data->mGameSpawnObstacleTimer >= OBSTACLE_SPAWN_TIMER)
+	{
+		_data->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
+
+		SpawnObstacle(_data);
+	}
+
+	// SPAWN ENEMY
+	_data->mGameSpawnEnemyTimer += game->mGameDt;
+	if (_data->mGameSpawnEnemyTimer >= ENEMY_SPAWN_TIMER)
+	{
+		_data->mGameSpawnEnemyTimer -= ENEMY_SPAWN_TIMER;
+
+		SpawnEnemy(_data);
+	}
+}
+
 void SpawnObstacle(GameScreenData* _game)
 {
 	Obstacle* newObstacle = NULL;
@@ -250,11 +215,54 @@ void SpawnObstacle(GameScreenData* _game)
 	DVectorPushBack(_game->mAllEntities, &newObstacle);
 }
 
-void	SpawnEnemy(GameScreenData* _game)
+void SpawnEnemy(GameScreenData* _game)
 {
 	Enemy* newEnemy = NULL;
 	InitEnemy(&newEnemy, 1, 1, (rand() % 10) + 40);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
+}
+
+void UpdateEntity(Game* game, GameScreenData* data)
+{
+	data->mPlayer->mEntity.mUpdate(data->mPlayer, game, data);
+
+	// FOR EACH ENTITY
+	Entity* curEntity = NULL;
+	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
+	{
+		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
+
+		if (curEntity->mUpdate != NULL)
+		{
+			curEntity->mUpdate((void*)curEntity, game, data);
+		}
+
+		PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i));
+	}
+}
+
+void UpdateWeapon(Game* game, GameScreenData* data)
+{
+	// ENERGY RECHARGE
+	if (data->mPlayer->mReloadCooldown > 0)
+	{
+		data->mPlayer->mReloadCooldown -= game->mGameDt;
+	}
+	else
+	{
+		data->mPlayer->mCurrentEnergy += game->mGameDt * RELOAD_SPEED;
+
+		if (data->mPlayer->mCurrentEnergy >= MAX_ENERGY)
+		{
+			data->mPlayer->mCurrentEnergy = MAX_ENERGY;
+		}
+	}
+
+	// SHOOT COOLDOWN
+	if (data->mPlayer->mShootCooldown > 0)
+	{
+		data->mPlayer->mShootCooldown -= game->mGameDt;
+	}
 }
 
 void EndGame(Game* _game, Player* _player)
