@@ -85,7 +85,7 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 	{
 		if ((curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i)) == _entity)
 		{
-			Entity_Free(curEntity);
+			free(curEntity);
 			DVectorErase(_game->mAllEntities, i);
 			return;
 		}
@@ -258,14 +258,14 @@ void SpawnEntity(Game* game, GameScreenData* _data)
 void SpawnObstacle(GameScreenData* _game)
 {
 	Obstacle* newObstacle = NULL;
-	InitObstacle(&newObstacle);
+	Obstacle_Initialize(&newObstacle);
 	DVectorPushBack(_game->mAllEntities, &newObstacle);
 }
 
 void SpawnEnemy(GameScreenData* _game)
 {
 	Enemy* newEnemy = NULL;
-	InitEnemy(&newEnemy, 1, 1, (rand() % 10) + 40);
+	Enemy_Initialize(&newEnemy, 1, 1, (rand() % 10) + 40);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }
 

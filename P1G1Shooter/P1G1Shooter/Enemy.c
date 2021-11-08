@@ -4,7 +4,7 @@
 #include "PlayerStruct.h"
 #include <math.h>
 
-void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
+void Enemy_Initialize(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 {
 	Enemy* newEnemy = (Enemy*)malloc(sizeof(Enemy));
 	memset(newEnemy, 0, sizeof(Enemy));
@@ -21,15 +21,7 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 		30, 20, 1
 	);
 
-	/*DrawRectangleInDisplayZone
-	(
-		&newEnemy->mEntity.mDisplayZone,
-		0, 0, 3, 2,
-		WHITE, GREEN, ' '
-	);*/
-
 	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp"));
-
 
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
 	newEnemy->mEntity.mPosition_x = WINDOW_WIDTH;

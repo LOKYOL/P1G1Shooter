@@ -2,7 +2,7 @@
 #include "GameScreen.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void InitObstacle(Obstacle** _obstacle)
+void Obstacle_Initialize(Obstacle** _obstacle)
 {
 	Obstacle* newObstacle = (Obstacle*)malloc(sizeof(Obstacle));
 	memset(newObstacle, 0, sizeof(Obstacle));

@@ -61,7 +61,7 @@ char Entity_IsDead(Entity* _entity)
 	return _entity->mHealth <= 0;
 }
 
-void Entity_Free(Entity* _entity)
+/*void Entity_Free(Entity* _entity)
 {
 	switch (_entity->mEntityType)
 	{
@@ -83,7 +83,7 @@ void Entity_Free(Entity* _entity)
 		free(_entity);
 		break;
 	}
-}
+}*/
 
 double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
 

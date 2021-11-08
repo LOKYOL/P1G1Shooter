@@ -43,7 +43,7 @@ void Entity_TakeDamages(Entity* entity, int damages);
 
 char Entity_IsDead(Entity* entity);
 
-void Entity_Free(Entity* entity);
+//void Entity_Free(Entity* entity);
 
 double Entity_GetDistance(Entity* entityA, Entity* entityB);
 

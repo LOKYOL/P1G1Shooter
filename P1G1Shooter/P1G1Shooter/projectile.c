@@ -2,24 +2,29 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void InitProj(Projectile** proj, int speed, int direction, double posPlayer_x, double posPlayer_y)
+void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y)
 {
-	(*proj) = (Projectile*)malloc(sizeof(Projectile));
-	InitDisplayZone(&(*proj)->mEntity.mDisplayZone, (posPlayer_x + 3), posPlayer_y, 2, 1, 1);
+	Projectile* newProjectile = (Projectile*)malloc(sizeof(Projectile));
+	memset(newProjectile, 0, sizeof(Projectile));
 
-	/*DrawRectangleInDisplayZone
+	*_proj = newProjectile;
+
+	Entity_Initialize(&(*_proj)->mEntity, 1, 1, WINDOW_WIDTH / 4, Projectile_Update);
+
+	InitDisplayZone // TEMPORARY
 	(
-		&(*proj)->mEntity.mDisplayZone,
-		0, 0, 2, 1,
-		WHITE, RED, ' '
-	);*/
-	(*proj)->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("bubulle.bmp"));
+		&newProjectile->mEntity.mDisplayZone,
+		(posPlayer_x + 3),
+		posPlayer_y,
+		2, 2, 1
+	);
 
-	Entity_Initialize(&(*proj)->mEntity, 1, 1, WINDOW_WIDTH / 4, Projectile_Update);
-	(*proj)->mEntity.mPosition_x = (posPlayer_x + 3);
-	(*proj)->mEntity.mPosition_y = posPlayer_y;
-	(*proj)->direction = 1;
-	(*proj)->mEntity.mEntityType = TYPE_PLAYER_PROJECTILE;
+	newProjectile->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("bubulle.bmp"));
+
+	newProjectile->mEntity.mPosition_x = (posPlayer_x + 8);
+	newProjectile->mEntity.mPosition_y = posPlayer_y;
+	newProjectile->direction = 1;
+	newProjectile->mEntity.mEntityType = TYPE_PLAYER_PROJECTILE;
 }
 
 void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen) {

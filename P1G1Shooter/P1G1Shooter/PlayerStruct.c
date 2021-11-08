@@ -7,15 +7,11 @@ void InitPlayer(Player** _player)
 {
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	memset(newPlayer, 0, sizeof(Player));
+
 	*_player = newPlayer;
-	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, 0, 2, 2, 1);
+
+	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, WINDOW_HEIGHT/2, 2, 2, 1);
 	
-	/*DrawRectangleInDisplayZone
-	(
-		&newPlayer->mEntity.mDisplayZone, 
-		0, 0, 15, 10, 
-		WHITE, BRIGHT_RED, ' '
-	);*/
 	newPlayer->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("submarine.bmp"));
 
 	Entity_Initialize(&newPlayer->mEntity, 3, 1, WINDOW_HEIGHT / 3, Player_Update);
@@ -24,6 +20,7 @@ void InitPlayer(Player** _player)
 	DrawBatteryInDisplayZone(newPlayer);
 
 	newPlayer->mEntity.mPosition_x = 5;
+	newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
 	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
 	newPlayer->mCurrentEnergy = MAX_ENERGY;
 	newPlayer->mReloadCooldown = 0.f;
@@ -93,7 +90,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 	if (_player->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		InitProj(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y);
+		Proj_Initialize(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y);
 
 		PushEntity(_gameScreen, &newProjectile);
 

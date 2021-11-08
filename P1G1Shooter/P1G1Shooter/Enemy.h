@@ -12,7 +12,7 @@ typedef struct Enemy
 /// Initializes an enemy
 /// </summary>
 /// <param name="enemy">Enemy to initialize</param>
-void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed);
+void Enemy_Initialize(Enemy** _enemy, unsigned int _health, int _damage, int _speed);
 
 /// <summary>
 /// Change the position of an enemy
