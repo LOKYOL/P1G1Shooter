@@ -11,20 +11,10 @@ void Obstacle_Initialize(Obstacle** _obstacle)
 
 	Entity_Initialize(&(*_obstacle)->mEntity, 1, 1, (rand() % 5) + 3, Obstacle_Update);
 
-	InitDisplayZone // TEMPORARY
-	(
-		&newObstacle->mEntity.mDisplayZone,
-		WINDOW_WIDTH,
-		(rand() % (WINDOW_HEIGHT - 2)) + 1,
-		2, 2, 1
-	);
+	newObstacle->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("sealion.bmp"));
 
-	DrawRectangleInDisplayZone
-	(
-		&newObstacle->mEntity.mDisplayZone,
-		0, 0, 2, 2,
-		WHITE, YELLOW, ' '
-	);
+	newObstacle->mEntity.mDisplayZone.mPosY = 
+		rand() % (WINDOW_HEIGHT - newObstacle->mEntity.mDisplayZone.mSizeY);
 
 	newObstacle->mEntity.mPosition_x = WINDOW_WIDTH;
 	newObstacle->mEntity.mPosition_y = newObstacle->mEntity.mDisplayZone.mPosY;
