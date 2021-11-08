@@ -6,6 +6,7 @@
 #include "Obstacle.h"
 #include "projectile.h"
 #include "Enemy.h"
+#include "Game.h"
 
 void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, EntityUpdate _Update)
 {
@@ -23,6 +24,8 @@ void Entity_Move(Entity* _entity, double _moveX, double _moveY)
 	_entity->mPosition_x += _moveX;
 	_entity->mPosition_y += _moveY;
 
+	Entity_ClampYPosition(_entity);
+
 	Entity_UpdateDisplayZone(_entity);
 }
 
@@ -30,6 +33,8 @@ void Entity_MoveTo(Entity* _entity, double _posX, double _posY)
 {
 	_entity->mPosition_x = _posX;
 	_entity->mPosition_y = _posY;
+
+	Entity_ClampYPosition(_entity);
 
 	Entity_UpdateDisplayZone(_entity);
 }
@@ -91,4 +96,12 @@ double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
 		posYB = _entityB->mPosition_y + ((double)_entityB->mDisplayZone.mSizeY / 2);
 
 	return sqrt(pow(posXB - posXA, 2) + pow(posYB - posYA, 2));
+}
+
+void Entity_ClampYPosition(Entity* _entity)
+{
+	if (_entity->mPosition_y < 0)
+		_entity->mPosition_y = 0;
+	if (_entity->mPosition_y > WINDOW_HEIGHT - _entity->mDisplayZone.mSizeY)
+		_entity->mPosition_y = WINDOW_HEIGHT - _entity->mDisplayZone.mSizeY;
 }

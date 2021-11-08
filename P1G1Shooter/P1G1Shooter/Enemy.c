@@ -50,18 +50,22 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 		move_y = 0;
 
 	double
-		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x + 
+		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x +
+			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeX / 2),
+		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y +
+			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeY / 2),
+		posEnemy_x = _enemy->mEntity.mPosition_x +
 			(_enemy->mEntity.mDisplayZone.mSizeX / 2),
-		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y - 
+		posEnemy_y = _enemy->mEntity.mPosition_y +
 			(_enemy->mEntity.mDisplayZone.mSizeY / 2);
 	
 	move_x = -1;
 	
-	if (_enemy->mEntity.mPosition_y < posPlayer_y - 0.5)
+	if (posEnemy_y < posPlayer_y)
 	{
 		move_y++;
 	}
-	else if(_enemy->mEntity.mPosition_y > posPlayer_y + 0.5)
+	else if(posEnemy_y > posPlayer_y)
 	{
 		move_y--;
 	}
@@ -75,8 +79,7 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 	for (int i = 0; i < _gameScreen->mAllEntities->mCurrentSize; i++)
 	{
 		if ((curEntity = DVectorGetTyped(_gameScreen->mAllEntities, Entity*, i))	&&
-				(curEntity->mEntityType == TYPE_OBSTACLE	|| 
-				curEntity->mEntityType == TYPE_PLAYER_PROJECTILE)					&&
+				(curEntity->mEntityType == TYPE_OBSTACLE)					&&
 			InRange(_enemy->mEntity.mDisplayZone.mPosY, 
 			curEntity->mDisplayZone.mPosY - _enemy->mEntity.mDisplayZone.mSizeY - 2, 
 			curEntity->mDisplayZone.mPosY + curEntity->mDisplayZone.mSizeY + 2)		&&
