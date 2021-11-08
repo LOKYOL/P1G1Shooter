@@ -61,35 +61,32 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	{
 		newpos_y += _game->mGameDt * _player->mEntity.mSpeed;
 	}
-	/*if (IsKeyDown(*_game->mInputs, VK_LEFT) || IsKeyDown(*_game->mInputs, 'Q'))
-	{
-		move_x -= _game->mGameDt * _player->entity.speed;
-	}*/
-	/*if (IsKeyDown(*_game->mInputs, VK_RIGHT) || IsKeyDown(*_game->mInputs, 'D'))
-	{
-		move_x += _game->mGameDt * _player->entity.speed;
-	}*/
 
-	if (newpos_x < 0)
-	{
-		newpos_x = 0;
-	}
-	if (newpos_y < 0)
-	{
-		newpos_y = 0;
-	}
-
-	if (newpos_x > WINDOW_WIDTH - _player->mEntity.mDisplayZone.mSizeX)
-	{
-		newpos_x = WINDOW_WIDTH - _player->mEntity.mDisplayZone.mSizeX;
-	}
-	if (newpos_y > WINDOW_HEIGHT - _player->mEntity.mDisplayZone.mSizeY)
-	{
-		newpos_y = WINDOW_HEIGHT - _player->mEntity.mDisplayZone.mSizeY;
-	}
+	ClampPlayerPos(_player, &newpos_x, &newpos_y);
 
 	Entity_MoveTo(&_player->mEntity, newpos_x, newpos_y);
 	UpdateBatteryDisplayZonePosition(_player);
+}
+
+void ClampPlayerPos(Player* _player, double* _posX, double* _posY)
+{
+	if (*_posX < 0)
+	{
+		*_posX = 0;
+	}
+	if (*_posY < 0)
+	{
+		*_posY = 0;
+	}
+
+	if (*_posX > WINDOW_WIDTH - _player->mEntity.mDisplayZone.mSizeX)
+	{
+		*_posX = WINDOW_WIDTH - _player->mEntity.mDisplayZone.mSizeX;
+	}
+	if (*_posY > WINDOW_HEIGHT - _player->mEntity.mDisplayZone.mSizeY)
+	{
+		*_posY = WINDOW_HEIGHT - _player->mEntity.mDisplayZone.mSizeY;
+	}
 }
 
 void Player_Shoot(Player* _player, GameScreenData* _gameScreen)

@@ -29,6 +29,8 @@ void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 
 void Player_UpdateMovement(Player* player, struct Game* game);
 
+void ClampPlayerPos(Player* player, double* posX, double* posY);
+
 void Player_Shoot(Player* player, GameScreenData* _gameScreen);
 
 void UpdateBatteryDisplayZonePosition(Player* player);
