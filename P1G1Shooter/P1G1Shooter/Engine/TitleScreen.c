@@ -81,8 +81,8 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 		PrintOptions(datascreen);
 	}
 
-	FlushDisplayZone(game->mDisplaySettings, &datascreen->mZoneTitre);
 	FlushDisplayZone(game->mDisplaySettings, &datascreen->mOptionsZone);
+	FlushDisplayZone(game->mDisplaySettings, &datascreen->mZoneTitre);
 
 	return 0;
 }
