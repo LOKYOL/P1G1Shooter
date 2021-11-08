@@ -4,6 +4,7 @@
 #include "Engine/ConsoleDisplay.h"
 #include "Engine/DVector.h"
 #include "Entity.h"
+#include "EndScreen.h"
 
 
 typedef struct GameScreenData
@@ -38,3 +39,5 @@ void	PopBackIfIsDead(GameScreenData* game, Entity* entity);
 void	SpawnObstacle(GameScreenData* game);
 
 void	SpawnEnemy(GameScreenData* game);
+
+void	EndGame(struct Game* game, struct Player* player);

@@ -5,6 +5,7 @@
 #include "../PlayerStruct.h"
 #include "../Obstacle.h"
 #include "../Projectile.h"
+#include "../EndScreen.h"
 
 void	InitGame(Game* game)
 {
@@ -39,6 +40,9 @@ void	InitGame(Game* game)
 	gameScreen.mStateUpdate = &GameScreenUpdate;
 
 	PushGameState(game, gameScreen);
+
+
+	
 }
 
 void	CloseGame(Game* game)

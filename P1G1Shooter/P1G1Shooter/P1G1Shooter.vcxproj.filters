@@ -96,6 +96,9 @@
     <ClCompile Include="Enemy.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="EndScreen.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Obstacle.h">
@@ -148,6 +151,9 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EndScreen.h">
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

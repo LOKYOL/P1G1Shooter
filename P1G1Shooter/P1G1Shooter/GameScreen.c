@@ -114,115 +114,14 @@ int GameScreenUpdate(Game* game, GameState* state)
 	HandleCollision(data->mAllEntities);
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize);
 
+	EndGame(game, data->mPlayer);
+
 	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
 	{
 		PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i));
 	}
 
-	/*
-	// FOR EACH OBSTACLE
-	for (int i = 0; i < ObstacleList->mCurrentSize; i++)
-	{
-		curObstacle = *(Obstacle**)DVectorGet(ObstacleList, i);
-
-		// COMPARE COLLISION WITH THE PLAYER
-		if (CompareCollision(curObstacle, &data->mPlayer->mEntity) > 0)
-		{
-			Entity_TakeDamages(data->mPlayer, curObstacle->mDamages);
-			Entity_TakeDamages(curObstacle, INT_MAX);
-			if (curObstacle->mHealth <= 0)
-			{
-				PopEntity(data, curObstacle);
-				DVectorErase(ObstacleList, i);
-				i--;
-			}
-		}
-
-
-		// COMPARE COLLISION WITH EACH PROJECTILE
-		for (int j = 0; j < ProjectileList->mCurrentSize; j++)
-		{
-			curProjectile = *(Projectile**)DVectorGet(ProjectileList, j);
-			if (CompareCollision(curObstacle, curProjectile) > 0)
-			{
-				Entity_TakeDamages(curObstacle, curProjectile->mDamages);
-				Entity_TakeDamages(curProjectile, curObstacle->mDamages);
-				if (curObstacle->mHealth <= 0)
-				{
-					PopEntity(data, curObstacle);
-					DVectorErase(ObstacleList, i);
-					i--;
-				}
-				if (curProjectile->mHealth <= 0)
-				{
-					PopEntity(data, curProjectile);
-					DVectorErase(ProjectileList, j);
-					j--;
-				}
-			}
-		}
-	}
-
-	// FOR EACH ENEMIES
-	for (int i = 0; i < EnemiesList->mCurrentSize; i++)
-	{
-		curEnemy = *(Enemy**)DVectorGet(EnemiesList, i);
-
-		// COMPARE COLLISION WITH THE PLAYER
-		if (CompareCollision(curEnemy, &data->mPlayer->mEntity) > 0)
-		{
-			Entity_TakeDamages(data->mPlayer, curEnemy->mDamages);
-			Entity_TakeDamages(curEnemy, INT_MAX);
-			if (curEnemy->mHealth <= 0)
-			{
-				PopEntity(data, curEnemy);
-				DVectorErase(EnemiesList, i);
-				i--;
-			}
-		}
-
-
-		// COMPARE COLLISION WITH EACH PROJECTILE
-		for (int j = 0; j < ProjectileList->mCurrentSize; j++)
-		{
-			curProjectile = *(Projectile**)DVectorGet(ProjectileList, j);
-			if (CompareCollision(curEnemy, curProjectile) > 0)
-			{
-				Entity_TakeDamages(curEnemy, curProjectile->mDamages);
-				Entity_TakeDamages(curProjectile, curEnemy->mDamages);
-				if (curEnemy->mHealth <= 0)
-				{
-					free(curEnemy);
-					DVectorErase(EnemiesList, i);
-					i--;
-				}
-				if (curProjectile->mHealth <= 0)
-				{
-					free(curProjectile);
-					DVectorErase(ProjectileList, j);
-					j--;
-				}
-			}
-		}
-	}
-
-	// FOREACH PROJECTILE
-	for (int i = 0; i < ProjectileList->mCurrentSize; i++)
-	{
-		curProjectile = *(Projectile**)DVectorGet(ProjectileList, i);
-
-		if (CompareCollision(curProjectile, &data->mPlayer->mEntity) > 0)
-		{
-			Entity_TakeDamages(data->mPlayer, curProjectile->mDamages);
-			Entity_TakeDamages(curProjectile, INT_MAX);
-			if (curProjectile->mHealth <= 0)
-			{
-				free(curProjectile);
-				DVectorErase(ProjectileList, i);
-				i--;
-			}
-		}
-	}*/
+	
 
 	return 0;
 }
@@ -340,6 +239,10 @@ void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 {
 	if (Entity_IsDead(_entity))
 	{
+		if (_entity->mEntityType == TYPE_PLAYER)
+		{
+			
+		}
 		PopEntity(_game, _entity);
 	}
 }
@@ -356,4 +259,18 @@ void	SpawnEnemy(GameScreenData* _game)
 	Enemy* newEnemy = NULL;
 	InitEnemy(&newEnemy, 1, 1, (rand() % 10) + 40);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
+}
+
+void EndGame(Game* _game, Player* _player)
+{
+
+	GameState	end;
+	end.mStateInit = &EndScreenInit;
+	end.mStateClose = &EndScreenClose;
+	end.mStateUpdate = &EndScreenUpdate;
+
+	if (Entity_IsDead(&_player->mEntity))
+	{
+		PushGameState(_game, end);
+	}
 }
