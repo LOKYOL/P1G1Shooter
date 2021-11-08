@@ -49,15 +49,15 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 		move_x = 0,
 		move_y = 0;
 
-	double
+	int
 		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x +
-			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeX / 2),
+			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeX / 2) + 0.5,
 		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y +
-			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeY / 2),
+			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeY / 2) + 0.5,
 		posEnemy_x = _enemy->mEntity.mPosition_x +
-			(_enemy->mEntity.mDisplayZone.mSizeX / 2),
+			(_enemy->mEntity.mDisplayZone.mSizeX / 2) + 0.5,
 		posEnemy_y = _enemy->mEntity.mPosition_y +
-			(_enemy->mEntity.mDisplayZone.mSizeY / 2);
+			(_enemy->mEntity.mDisplayZone.mSizeY / 2) + 0.5;
 	
 	move_x = -1;
 	
