@@ -32,19 +32,6 @@ void	InitGame(Game* game)
 	InitInputs(&game->mInputs);
 
 	PushTitleScreen(game);
-	//GameState	title;
-	title.mStateInit = &TitleScreenInit;
-	title.mStateClose = &TitleScreenClose;
-	title.mStateUpdate = &TitleScreenUpdate;
-
-	PushGameState(game, title);
-
-	GameState	gameScreen;
-	gameScreen.mStateInit = &GameScreenInit;
-	gameScreen.mStateClose = &GameScreenClose;
-	gameScreen.mStateUpdate = &GameScreenUpdate;
-
-	PushGameState(game, gameScreen);
 }
 
 void	CloseGame(Game* game)
