@@ -25,7 +25,7 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 	PrintInDisplayZone(
 		&datascreen->mCredit, 
 		MAGENTA, BLACK, 
-		WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2 - 10, 
+		WINDOW_WIDTH / 2-4, WINDOW_HEIGHT / 2, 
 		"GAME OVER", 0, NO_FLAG);
 
 	PrintInDisplayZone(
