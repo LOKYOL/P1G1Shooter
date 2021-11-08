@@ -110,7 +110,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 
 void UpdateBatteryDisplayZonePosition(Player* _player)
 {
-	MoveDisplayZone(&_player->mChargeZone, 0, _player->mEntity.mPosition_y);
+	MoveDisplayZone(&_player->mChargeZone, 0, _player->mEntity.mPosition_y + 1);
 }
 
 const float energy_divider = 100 / 2;
