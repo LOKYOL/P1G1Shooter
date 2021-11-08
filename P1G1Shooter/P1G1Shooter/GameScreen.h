@@ -5,6 +5,11 @@
 #include "Engine/DVector.h"
 #include "Entity.h"
 
+#define PushGameScreen(game)	GameState gameScreen; \
+	gameScreen.mStateInit = &GameScreenInit; \
+	gameScreen.mStateClose = &GameScreenClose; \
+	gameScreen.mStateUpdate = &GameScreenUpdate; \
+	PushGameState(game, gameScreen);
 
 typedef struct GameScreenData
 {
