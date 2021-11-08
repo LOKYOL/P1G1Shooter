@@ -75,8 +75,7 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 	for (int i = 0; i < _gameScreen->mAllEntities->mCurrentSize; i++)
 	{
 		if ((curEntity = DVectorGetTyped(_gameScreen->mAllEntities, Entity*, i))	&&
-				(curEntity->mEntityType == TYPE_OBSTACLE	|| 
-				curEntity->mEntityType == TYPE_PLAYER_PROJECTILE)					&&
+				(curEntity->mEntityType == TYPE_OBSTACLE)					&&
 			InRange(_enemy->mEntity.mDisplayZone.mPosY, 
 			curEntity->mDisplayZone.mPosY - _enemy->mEntity.mDisplayZone.mSizeY - 2, 
 			curEntity->mDisplayZone.mPosY + curEntity->mDisplayZone.mSizeY + 2)		&&
