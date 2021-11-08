@@ -16,7 +16,6 @@ void InitPlayer(Player** _player)
 		0, 0, 15, 10, 
 		WHITE, BRIGHT_RED, ' '
 	);*/
-
 	newPlayer->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("ehehhe.bmp"));
 
 	Entity_Initialize(&newPlayer->mEntity, 3, 1, WINDOW_HEIGHT / 3, Player_Update);

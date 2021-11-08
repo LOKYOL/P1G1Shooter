@@ -5,6 +5,7 @@
 #include "Engine/DVector.h"
 #include "Entity.h"
 #include "EndScreen.h"
+#include "Game.h"
 
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \
@@ -32,8 +33,8 @@ void	PopEntity(GameScreenData* game, Entity* entity);
 
 DVector* GetAllEntityOfType(GameScreenData* game, EntityType type);
 
-void HandleCollision(DVector* list);
-void HandleEntityCollision(Entity* entity, Entity** list, int length);
+void HandleCollision(DVector* list, Game* gameStruct);
+void HandleEntityCollision(Entity* entity, Entity** list, int length, Game* gameStruct);
 
 char	CompareCollision(Entity* entityA, Entity* entityB);
 char	InRange(int value, int min, int max);
