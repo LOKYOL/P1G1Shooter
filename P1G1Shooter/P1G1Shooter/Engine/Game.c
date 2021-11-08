@@ -10,6 +10,8 @@
 void	InitGame(Game* game)
 {
 	game->mScore = 0;
+	InitDisplayZone(&game->mScoreDisplayZone, 0, 0, 10, 10, 0);
+	PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score: ", 0, NO_FLAG);
 
 	game->mDisplaySettings = InitDisplay
 	(
@@ -30,6 +32,19 @@ void	InitGame(Game* game)
 	InitInputs(&game->mInputs);
 
 	PushTitleScreen(game);
+	//GameState	title;
+	title.mStateInit = &TitleScreenInit;
+	title.mStateClose = &TitleScreenClose;
+	title.mStateUpdate = &TitleScreenUpdate;
+
+	PushGameState(game, title);
+
+	GameState	gameScreen;
+	gameScreen.mStateInit = &GameScreenInit;
+	gameScreen.mStateClose = &GameScreenClose;
+	gameScreen.mStateUpdate = &GameScreenUpdate;
+
+	PushGameState(game, gameScreen);
 }
 
 void	CloseGame(Game* game)

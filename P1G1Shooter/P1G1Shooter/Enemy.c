@@ -94,11 +94,11 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 
 		if (height < 0)
 		{
-			move_y = 2;
+			move_y = 1;
 		}
 		else
 		{
-			move_y = -2;
+			move_y = -1;
 		}
 	}
 
