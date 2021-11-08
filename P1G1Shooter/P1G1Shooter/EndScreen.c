@@ -58,6 +58,10 @@ int EndScreenUpdate(struct Game* game, struct GameState* state)
 	FlushDisplayZone(game->mDisplaySettings, &game->mScoreDisplayZone);
 	if (KeyPressStart(*game->mInputs, VK_RETURN))
 	{
+		game->mScore = 0;
+		game->mScoreDisplayZone.mPosX = 0;
+		game->mScoreDisplayZone.mPosY = 0;
+		PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score:      ", 0, NO_FLAG);
 		PopGameState(game);
 		PopGameState(game);
 	}

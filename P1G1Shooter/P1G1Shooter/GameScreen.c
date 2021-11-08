@@ -66,6 +66,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
 
 	EndGame(game, data->mPlayer);
+	
 	FlushDisplayZone(game->mDisplaySettings, &game->mScoreDisplayZone);
 
 	return 0;

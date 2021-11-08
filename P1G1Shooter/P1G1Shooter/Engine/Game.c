@@ -12,6 +12,7 @@ void	InitGame(Game* game)
 	game->mScore = 0;
 	InitDisplayZone(&game->mScoreDisplayZone, 0, 0, 10, 1, 0);
 	PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score: ", 0, NO_FLAG);
+	
 
 	game->mDisplaySettings = InitDisplay
 	(
