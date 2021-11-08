@@ -8,6 +8,8 @@
 
 void	InitGame(Game* game)
 {
+	game->mScore = 0;
+
 	game->mDisplaySettings = InitDisplay
 	(
 		WINDOW_WIDTH,

@@ -340,6 +340,9 @@ void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 {
 	if (Entity_IsDead(_entity))
 	{
+		//score++
+		//donne plus ou moins par rapport à _entity->mEntityType
+
 		PopEntity(_game, _entity);
 	}
 }
