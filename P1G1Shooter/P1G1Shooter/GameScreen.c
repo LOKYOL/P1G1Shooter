@@ -4,7 +4,8 @@
 #include "Obstacle.h"
 #include "Projectile.h"
 #include "Enemy.h"
-#include "ConsoleDisplay.h"
+#include "Engine/ConsoleDisplay.h"
+#include "EndScreen.h"
 
 const char CollisionsLayers[6] =
 {
@@ -313,14 +314,8 @@ void UpdateWeapon(Game* game, GameScreenData* data)
 
 void EndGame(Game* _game, Player* _player)
 {
-
-	GameState	end;
-	end.mStateInit = &EndScreenInit;
-	end.mStateClose = &EndScreenClose;
-	end.mStateUpdate = &EndScreenUpdate;
-
 	if (Entity_IsDead(&_player->mEntity))
 	{
-		PushGameState(_game, end);
+		PushEndScreen(_game);
 	}
 }

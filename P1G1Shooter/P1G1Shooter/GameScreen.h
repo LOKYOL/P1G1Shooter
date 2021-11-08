@@ -5,7 +5,7 @@
 #include "Engine/DVector.h"
 #include "Entity.h"
 #include "EndScreen.h"
-#include "Game.h"
+#include "Engine/Game.h"
 
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \
