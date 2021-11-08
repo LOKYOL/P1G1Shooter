@@ -239,10 +239,6 @@ void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 {
 	if (Entity_IsDead(_entity))
 	{
-		if (_entity->mEntityType == TYPE_PLAYER)
-		{
-			
-		}
 		PopEntity(_game, _entity);
 	}
 }

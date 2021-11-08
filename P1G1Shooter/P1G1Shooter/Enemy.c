@@ -28,7 +28,7 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 		WHITE, GREEN, ' '
 	);*/
 
-	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("enemy.bmp"));
+	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrv.bmp"));
 
 
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
@@ -50,8 +50,10 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 		move_y = 0;
 
 	double
-		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x,
-		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y;
+		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x + 
+			(_enemy->mEntity.mDisplayZone.mSizeX / 2),
+		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y - 
+			(_enemy->mEntity.mDisplayZone.mSizeY / 2);
 	
 	move_x = -1;
 	
@@ -64,8 +66,10 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 		move_y--;
 	}
 
+	int minDistanceBase = _enemy->mEntity.mDisplayZone.mSizeX + 5;
+
 	Entity* mostNear = NULL;
-	double minDistance = 5;
+	double minDistance = minDistanceBase;
 	Entity* curEntity = NULL;
 	double curDistance = 0;
 	for (int i = 0; i < _gameScreen->mAllEntities->mCurrentSize; i++)
@@ -83,18 +87,18 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 		}
 	}
 
-	if (minDistance < 5)
+	if (minDistance < minDistanceBase)
 	{
 		double height = mostNear->mPosition_y + (mostNear->mDisplayZone.mSizeY / 2);
 		height -= _enemy->mEntity.mPosition_y + (_enemy->mEntity.mDisplayZone.mSizeY / 2);
 
 		if (height < 0)
 		{
-			move_y = 10;
+			move_y = 2;
 		}
 		else
 		{
-			move_y = -10;
+			move_y = -2;
 		}
 	}
 

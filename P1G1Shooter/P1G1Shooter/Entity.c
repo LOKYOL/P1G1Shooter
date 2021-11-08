@@ -84,13 +84,11 @@ double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
 
 	if (!(_entityA) || !(_entityB))
 		return 0;
+	double
+		posXA = _entityA->mPosition_x + ((double)_entityA->mDisplayZone.mSizeX / 2), // Center ?
+		posXB = _entityB->mPosition_x + ((double)_entityB->mDisplayZone.mSizeX / 2),
+		posYA = _entityA->mPosition_y + ((double)_entityA->mDisplayZone.mSizeY / 2),
+		posYB = _entityB->mPosition_y + ((double)_entityB->mDisplayZone.mSizeY / 2);
 
-	double distance = 0, distanceX = 0, distanceY = 0;
-
-	distanceX = _entityA->mPosition_x - _entityB->mPosition_x;
-	distanceY = _entityA->mPosition_y - _entityB->mPosition_y;
-
-	distance = sqrt(pow(distanceX, 2) + pow(distanceY, 2));
-
-	return distance;
+	return sqrt(pow(posXB - posXA, 2) + pow(posYB - posYA, 2));
 }

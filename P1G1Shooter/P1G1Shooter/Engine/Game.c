@@ -9,6 +9,8 @@
 
 void	InitGame(Game* game)
 {
+	game->mScore = 0;
+
 	game->mDisplaySettings = InitDisplay
 	(
 		WINDOW_WIDTH,
@@ -27,22 +29,7 @@ void	InitGame(Game* game)
 
 	InitInputs(&game->mInputs);
 
-	GameState	title;
-	title.mStateInit = &TitleScreenInit;
-	title.mStateClose = &TitleScreenClose;
-	title.mStateUpdate = &TitleScreenUpdate;
-
-	PushGameState(game, title);
-
-	GameState	gameScreen;
-	gameScreen.mStateInit = &GameScreenInit;
-	gameScreen.mStateClose = &GameScreenClose;
-	gameScreen.mStateUpdate = &GameScreenUpdate;
-
-	PushGameState(game, gameScreen);
-
-
-	
+	PushTitleScreen(game);
 }
 
 void	CloseGame(Game* game)
