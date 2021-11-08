@@ -1,6 +1,12 @@
 #pragma once
-#include "GameState.h"
-#include "ConsoleDisplay.h"
+#include "Engine/GameState.h"
+#include "Engine/ConsoleDisplay.h"
+
+#define PushEndScreen(game) GameState endScreen; \
+	endScreen.mStateInit = &EndScreenInit; \
+	endScreen.mStateClose = &EndScreenClose; \
+	endScreen.mStateUpdate = &EndScreenUpdate; \
+	PushGameState(game, endScreen);
 
 typedef struct EndScreenData
 {

@@ -6,7 +6,7 @@
 #include "Obstacle.h"
 #include "projectile.h"
 #include "Enemy.h"
-#include "Game.h"
+#include "Engine/Game.h"
 
 void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, EntityUpdate _Update)
 {

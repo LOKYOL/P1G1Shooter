@@ -4,8 +4,8 @@
 #include "Obstacle.h"
 #include "Projectile.h"
 #include "Enemy.h"
-#include "ConsoleDisplay.h"
-#include "TitleScreen.h"
+#include "Engine/ConsoleDisplay.h"
+#include "EndScreen.h"
 
 const char CollisionsLayers[6] =
 {
@@ -315,6 +315,6 @@ void EndGame(Game* _game, Player* _player)
 {
 	if (Entity_IsDead(&_player->mEntity))
 	{
-		PushTitleScreen(_game);
+		PushEndScreen(_game);
 	}
 }
