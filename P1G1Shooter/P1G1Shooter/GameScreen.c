@@ -66,6 +66,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
 
 	EndGame(game, data->mPlayer);
+	FlushDisplayZone(game->mDisplaySettings, &game->mScoreDisplayZone);
 
 	return 0;
 }
@@ -174,7 +175,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 					totalScore[i] = num[i-7];
 				}
 
-				PrintInDisplayZone(&gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+  				PrintInDisplayZone(&gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
 
 		}

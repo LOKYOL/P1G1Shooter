@@ -18,7 +18,7 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 
 	game->mScoreDisplayZone.mPosX = WINDOW_WIDTH/2-5;
 	game->mScoreDisplayZone.mPosY = WINDOW_HEIGHT/2;
-	PrintInDisplayZone(&game->mScoreDisplayZone, MAGENTA, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+	PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 
 	state->mData = malloc(sizeof(EndScreenData));
 
