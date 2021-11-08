@@ -19,7 +19,7 @@ void InitPlayer(Player** _player)
 
 	newPlayer->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("ehehhe.bmp"));
 
-	Entity_Initialize(&newPlayer->mEntity, 10, 1, WINDOW_HEIGHT / 3, Player_Update);
+	Entity_Initialize(&newPlayer->mEntity, 3, 1, WINDOW_HEIGHT / 3, Player_Update);
 
 	InitDisplayZone(&newPlayer->mChargeZone, 0, 0, 5, 2, 1);
 	DrawBatteryInDisplayZone(newPlayer);

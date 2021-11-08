@@ -1,5 +1,6 @@
 #include "EndScreen.h"
 #include "Game.h"
+#include "Engine/DisplayZoneDrawing.h"
 
 
 int EndScreenInit(struct Game* game, struct GameState* state)
@@ -7,9 +8,13 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 	state->mData = malloc(sizeof(EndScreenData));
 
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
-
-	InitDisplayZone(&datascreen->mCredit, 30, 20, 100, 10, 0);
-	PrintInDisplayZone(&datascreen->mCredit, RED, BLUE, 5, 3, "C est la fin du jeu", 0, NO_FLAG);
+	datascreen->mCredit = *(CreateDisplayZoneFromBMP("pascontent.bmp"));
+	
+	PrintInDisplayZone(
+		&datascreen->mCredit, 
+		MAGENTA, BLACK, 
+		WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2 - 10, 
+		"GAME OVER", 0, NO_FLAG);
 
 	return 0;
 
