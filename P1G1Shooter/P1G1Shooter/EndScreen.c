@@ -5,6 +5,18 @@
 
 int EndScreenInit(struct Game* game, struct GameState* state)
 {
+	char num[10];
+
+	_itoa_s(game->mScore, num, 10, 10);
+
+	char totalScore[18] = "Score: ";
+
+	for (int i = 7; i < 18; i++) {
+		totalScore[i] = num[i - 7];
+	}
+
+	PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+
 	state->mData = malloc(sizeof(EndScreenData));
 
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
@@ -40,6 +52,7 @@ int EndScreenUpdate(struct Game* game, struct GameState* state)
 {
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
 	FlushDisplayZone(game->mDisplaySettings, &datascreen->mCredit);
+	FlushDisplayZone(game->mDisplaySettings, &game->mScoreDisplayZone);
 	if (KeyPressStart(*game->mInputs, VK_RETURN))
 	{
 		PopGameState(game);
