@@ -28,7 +28,7 @@ void InitEnemy(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
 		WHITE, GREEN, ' '
 	);*/
 
-	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("enemy.bmp"));
+	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrv.bmp"));
 
 
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
