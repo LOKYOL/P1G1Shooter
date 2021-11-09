@@ -162,34 +162,42 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			Entity_TakeDamages(_entity, curCompare->mDamages);
 			Entity_TakeDamages(curCompare, _entity->mDamages);
 
-			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) {
+			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
+			{
 				Play_Sound("enemy_hit.wav");
-			} else if (curCompare->mHealth > 0 && (curCompare->mEntityType == TYPE_OBSTACLE || curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)) {
+			} 
+			else if (curCompare->mHealth > 0 && (curCompare->mEntityType == TYPE_OBSTACLE || curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
+			{
 				Play_Sound("enemy_hit.wav");
 			}
 
-			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0) {
+			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0) 
+			{
 				Play_Sound("player_enemyhit.wav");
-			} else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0) {
+			} 
+			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0) 
+			{
 				Play_Sound("player_enemyhit.wav");
 			}
 
-			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) {
+			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) 
+			{
 				Play_Sound("player_die.wav");
 			}
-			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth == 0) {
+			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth == 0) 
+			{
 				Play_Sound("player_die.wav");
 			}
 
 			if (_entity->mHealth == 0 && _entity->mEntityType == 2)
 			{
-				if (curCompare->mEntityType == 4) 
+				if (curCompare->mEntityType == 4)
 				{
 					//score += 3
 					gameStruct->mScore += 3;
 					mBool = 1;
 				}
-				else if (curCompare->mEntityType == 5) 
+				else if (curCompare->mEntityType == 5)
 				{
 					//score += 4
 					gameStruct->mScore += 4;
@@ -220,19 +228,9 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 			if (mBool) 
 			{
-				char num[10];
-				
-
-				//_itoa_s(gameStruct->mScore, num, 10, 10);
-
 				char totalScore[18] = "Score: ";
 
 				snprintf(totalScore, 17, "Score: %d", gameStruct->mScore);
-
-				/*for (int i = 7; i < 17; i++) 
-				{
-					totalScore[i] = num[i-7];
-				}*/
 
   				PrintInDisplayZone(&gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}

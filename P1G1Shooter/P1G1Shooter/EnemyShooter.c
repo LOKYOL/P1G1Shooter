@@ -24,7 +24,10 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy,
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY;
 	newEnemy->mEntity.mPosition_x = WINDOW_WIDTH;
 	newEnemy->mEntity.mPosition_y = newEnemy->mEntity.mDisplayZone.mPosY;
-	newEnemy->mShootCooldown = 5;
+	newEnemy->mShootCooldown = 2;
+	newEnemy->mChangeDirectionCooldown = 1;
+	newEnemy->mCurrentDirectionX = (rand() % 3) - 1;
+	newEnemy->mCurrentDirectionY = (rand() % 3) - 1;
 }
 
 void EnemyShooter_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)
@@ -32,6 +35,15 @@ void EnemyShooter_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)
 	EnemyShooter* myEnemy = (EnemyShooter*)_enemy;
 	EnemyShooter_UpdateMovement(myEnemy, _gameScreen, _game);
 	
+	if (myEnemy->mShootCooldown > 0)
+	{
+		myEnemy->mShootCooldown -= _game->mGameDt;
+	}
+	else
+	{
+		Enemy_Shoot(myEnemy, _gameScreen);
+	}
+
 	FlushDisplayZone(_game->mDisplaySettings, &myEnemy->mEntity.mDisplayZone);
 }
 
@@ -51,27 +63,30 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 		posEnemy_y = _enemy->mEntity.mPosition_y +
 			(_enemy->mEntity.mDisplayZone.mSizeY / 2) + 0.5;
 	
-	//move_x = -1;
-	
-	// Aligning with player
-	if (posEnemy_y < posPlayer_y)
+	if (_enemy->mChangeDirectionCooldown > 0)
 	{
-		move_y++;
+		_enemy->mChangeDirectionCooldown -= _game->mGameDt;
 	}
-	else if(posEnemy_y > posPlayer_y)
+	else
 	{
-		move_y--;
+		_enemy->mChangeDirectionCooldown = 1;
+
+		_enemy->mCurrentDirectionX = (rand() % 3) - 1;
+		_enemy->mCurrentDirectionY = (rand() % 3) - 1;
 	}
 
+	move_y = _enemy->mCurrentDirectionY;
+	move_x = _enemy->mCurrentDirectionX;
+
 	// Not shooting until moved enough to the left
-	if (posEnemy_x >= WINDOW_WIDTH - 5)
+	if (posEnemy_x < WINDOW_WIDTH / 2)
 	{
-		move_x--;
+		move_x += 2;
 	}
-	/*else
+	else if (posEnemy_x > WINDOW_WIDTH / 5 * 4)
 	{
-		Enemy_Shoot(_enemy, _gameScreen);
-	}*/
+		move_x -= 4;
+	}
 
 	// Clamp movement
 	double movement = _enemy->mEntity.mSpeed * _game->mGameDt;
@@ -85,17 +100,12 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 
 void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 {
-	if (_enemy->mShootCooldown <= 0)
-	{
-		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 2, 1, _enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y, TYPE_ENEMY_PROJECTILE, _gameScreen);
+	Projectile* newProjectile;
+	Proj_Initialize(&newProjectile, 2, 0, 
+	_enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y, 
+	TYPE_ENEMY_PROJECTILE, _gameScreen);
 
-		PushEntity(_gameScreen, &newProjectile);
+	PushEntity(_gameScreen, &newProjectile);
 
-		_enemy->mShootCooldown = 5;
-	}
-	else
-	{
-		_enemy->mShootCooldown--;
-	}
+	_enemy->mShootCooldown = 5;
 }

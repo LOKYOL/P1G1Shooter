@@ -2,7 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y, EntityType type, GameScreenData* gameScreen)
+void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y, EntityType _type, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile = (Projectile*)malloc(sizeof(Projectile));
 	memset(newProjectile, 0, sizeof(Projectile));
@@ -19,12 +19,12 @@ void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPla
 		2, 2, 1
 	);
 
-	newProjectile->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_PLAYER_PROJECTILE];
+	newProjectile->mEntity.mDisplayZone = _gameScreen->mSprites[_type];
 
 	newProjectile->mEntity.mPosition_x = (posPlayer_x + 8);
 	newProjectile->mEntity.mPosition_y = posPlayer_y;
-	newProjectile->direction = 1;
-	newProjectile->mEntity.mEntityType = type;
+	newProjectile->direction = direction;
+	newProjectile->mEntity.mEntityType = _type;
 }
 
 void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen) {
@@ -39,16 +39,16 @@ void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _
 {
 	double newpos_x = proj->mEntity.mPosition_x, newpos_y = proj->mEntity.mPosition_y;
 
-		if (proj->direction)
-		{
-			newpos_x += proj->mEntity.mSpeed * _game->mGameDt;
-		}
-		else
-		{
-			newpos_y -= proj->mEntity.mSpeed * _game->mGameDt;
-		}
+	if (proj->direction)
+	{
+		newpos_x += proj->mEntity.mSpeed * _game->mGameDt;
+	}
+	else
+	{
+		newpos_x -= proj->mEntity.mSpeed * _game->mGameDt;
+	}
 
-		Entity_MoveTo(&proj->mEntity, newpos_x, newpos_y);
+	Entity_MoveTo(&proj->mEntity, newpos_x, newpos_y);
 }
 
 //int InRange(int value, int min, int max)

@@ -46,6 +46,11 @@ void Entity_UpdateDisplayZone(Entity* _entity)
 
 void Entity_TakeDamages(Entity* _entity, int _damages)
 {
+	if (_entity->mEntityType == TYPE_ENEMY)
+	{
+ 		int a = 0;
+	}
+
 	if (_entity->mHealth < _damages)
 	{
 		_entity->mHealth = 0;
