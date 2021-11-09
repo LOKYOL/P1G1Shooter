@@ -35,20 +35,25 @@ void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen) {
 	FlushDisplayZone(_game->mDisplaySettings, &myProjectile->mEntity.mDisplayZone);
 }
 
-void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _gameScreen)
+void Projectile_UpdateMovement(Projectile * _proj, Game* _game, GameScreenData* _gameScreen)
 {
-	double newpos_x = proj->mEntity.mPosition_x, newpos_y = proj->mEntity.mPosition_y;
+	double newpos_x = _proj->mEntity.mPosition_x, newpos_y = _proj->mEntity.mPosition_y;
 
-	if (proj->direction)
+	if (_proj->direction)
 	{
-		newpos_x += proj->mEntity.mSpeed * _game->mGameDt;
+		newpos_x += _proj->mEntity.mSpeed * _game->mGameDt;
 	}
 	else
 	{
-		newpos_x -= proj->mEntity.mSpeed * _game->mGameDt;
+		newpos_x -= _proj->mEntity.mSpeed * _game->mGameDt;
 	}
 
-	Entity_MoveTo(&proj->mEntity, newpos_x, newpos_y);
+	Entity_MoveTo(&_proj->mEntity, newpos_x, newpos_y);
+
+	if (_proj->mEntity.mPosition_x < -5 || _proj->mEntity.mPosition_x > WINDOW_WIDTH + 5)
+	{
+		Entity_TakeDamages(_proj, INT_MAX);
+	}
 }
 
 //int InRange(int value, int min, int max)

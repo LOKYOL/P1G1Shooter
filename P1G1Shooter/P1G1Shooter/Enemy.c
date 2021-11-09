@@ -106,6 +106,11 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 
 	// Apply movement
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
+
+	if (_enemy->mEntity.mPosition_x < -5 || _enemy->mEntity.mPosition_x > WINDOW_WIDTH + 5)
+	{
+		Entity_TakeDamages(_enemy, INT_MAX);
+	}
 }
 
 int RandomInt(int min, int max)

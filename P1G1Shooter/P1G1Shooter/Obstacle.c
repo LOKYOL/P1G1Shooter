@@ -34,4 +34,9 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 		(_obstacle->mEntity.mSpeed * _game->mGameDt * 10);
 
 	Entity_MoveTo(&_obstacle->mEntity, newpos_x, _obstacle->mEntity.mPosition_y);
+
+	if (_obstacle->mEntity.mPosition_x < -5 || _obstacle->mEntity.mPosition_x > WINDOW_WIDTH + 5)
+	{
+		Entity_TakeDamages(_obstacle, INT_MAX);
+	}
 }
