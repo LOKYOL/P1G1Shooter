@@ -79,16 +79,14 @@ void Entity_TakeDamages(Entity* entity, int damages);
 /// <returns></returns>
 char Entity_IsDead(Entity* entity);
 
-<<<<<<< Updated upstream
 double Entity_GetDistance(Entity* entityA, Entity* entityB);
 
 void Entity_ClampYPosition(Entity* entity);
-=======
-<<<<<<< Updated upstream
+
 double Entity_GetDistance(Entity* entityA, Entity* entityB);
 
 void Entity_ClampYPosition(Entity* entity);
-=======
+
 //void Entity_Free(Entity* entity);
 
 /// <summary>
@@ -104,5 +102,3 @@ double Entity_GetDistance(Entity* entityA, Entity* entityB);
 /// </summary>
 /// <param name="entity">Entity to check</param>
 void Entity_ClampYPosition(Entity* entity);
->>>>>>> Stashed changes
->>>>>>> Stashed changes
