@@ -106,7 +106,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 		_player->mCurrentEnergy -= SHOOT_COST;
 		_player->mReloadCooldown = RELOAD_COOLDOWN;
 
-		Play_Sound("shoot1.wav");
+		Play_Sound("player_shoot.wav");
 
 		if (_player->mCurrentEnergy <= 0)
 		{
