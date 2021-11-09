@@ -6,6 +6,7 @@
 #include "Enemy.h"
 #include "Engine/ConsoleDisplay.h"
 #include "EndScreen.h"
+#include <stdio.h>
 
 const char CollisionsLayers[6] =
 {
@@ -48,7 +49,15 @@ int GameScreenClose(Game* game, GameState* state)
 {
 	GameScreenData* data = state->mData;
 
+	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
+	{
+		free(DVectorGetTyped(data->mAllEntities, Entity*, i));
+	}
+	
 	DVectorDestroy(data->mAllEntities);
+
+	free(data->mPlayer);
+
 	return 0;
 }
 
@@ -140,42 +149,58 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			Entity_TakeDamages(_entity, curCompare->mDamages);
 			Entity_TakeDamages(curCompare, _entity->mDamages);
 
-			if (_entity->mHealth == 0 && _entity->mEntityType == 2){
-				if (curCompare->mEntityType == 4) {
+			if (_entity->mHealth == 0 && _entity->mEntityType == 2)
+			{
+				if (curCompare->mEntityType == 4) 
+				{
 					//score += 3
 					gameStruct->mScore += 3;
 					mBool = 1;
 				}
-				else if (curCompare->mEntityType == 5) {
+				else if (curCompare->mEntityType == 5) 
+				{
 					//score += 4
 					gameStruct->mScore += 4;
 					mBool = 1;
 				}
 			}
 
-			if (curCompare->mHealth == 0 && curCompare->mEntityType == 2) {
-				if (_entity->mEntityType == 4) {
+			if (curCompare->mHealth == 0 && curCompare->mEntityType == 2) 
+			{
+				if (_entity->mEntityType == TYPE_ENEMY) 
+				{
 					gameStruct->mScore += 3;
 					mBool = 1;
 					//score += 3
 				}
-				else if (_entity->mEntityType == 5) {
+				else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
+				{
 					gameStruct->mScore += 4;
 					mBool = 1;
 					//score += 4
 				}
+				else if (_entity->mEntityType == TYPE_OBSTACLE)
+				{
+					gameStruct->mScore += 1;
+					mBool = 1;
+				}
 			}
 
-			if (mBool) {
+			if (mBool) 
+			{
 				char num[10];
+				
 
-				_itoa_s(gameStruct->mScore, num, 10, 10);
+				//_itoa_s(gameStruct->mScore, num, 10, 10);
 
 				char totalScore[18] = "Score: ";
 
-				for (int i = 7; i < 18; i++) {
+				snprintf(totalScore, 17, "Score: %d", gameStruct->mScore);
+
+				/*for (int i = 7; i < 17; i++) 
+				{
 					totalScore[i] = num[i-7];
-				}
+				}*/
 
   				PrintInDisplayZone(&gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
