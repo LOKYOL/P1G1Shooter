@@ -35,16 +35,30 @@ int GameScreenInit(Game* game, GameState* state)
 	GameScreenData* data = state->mData;
 
 	data->mAllEntities = DVectorCreate();
-	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, NULL);
+	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, 0);
 
 	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * 6);
-	data->mSprites[0] = *CreateDisplayZoneFromBMP("submarine.bmp");	// Player Sprite
-	data->mSprites[1] = *CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
-	data->mSprites[2] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
-	data->mSprites[3] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
-	data->mSprites[4] = *CreateDisplayZoneFromBMP("enemy.bmp");	// Enemy Sprite
-	data->mSprites[5] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// EnemyProjectile Sprite
 
+	DisplayZone* curDisplayZone = NULL;
+
+	curDisplayZone = CreateDisplayZoneFromBMP("submarine.bmp");		// Player Sprite
+	data->mSprites[0] = *curDisplayZone;
+	free(curDisplayZone);
+	curDisplayZone = CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
+	data->mSprites[1] = *curDisplayZone;
+	free(curDisplayZone);
+	curDisplayZone = CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
+	data->mSprites[2] = *curDisplayZone;
+	free(curDisplayZone);
+	curDisplayZone = CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
+	data->mSprites[3] = *curDisplayZone;
+	free(curDisplayZone);
+	curDisplayZone = CreateDisplayZoneFromBMP("enemy.bmp");		// Enemy Sprite
+	data->mSprites[4] = *curDisplayZone;
+	free(curDisplayZone);
+	curDisplayZone = CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// Enemy Kamikaze Sprite
+	data->mSprites[5] = *curDisplayZone;
+	free(curDisplayZone);
 
 	// Create Player
 	Player* myPlayer;
@@ -70,6 +84,9 @@ int GameScreenClose(Game* game, GameState* state)
 	DVectorDestroy(data->mAllEntities);
 
 	free(data->mPlayer);
+	free(data->mSprites);
+
+	free(state->mData);
 
 	return 0;
 }
@@ -280,9 +297,10 @@ char CanCollide(Entity* _entityA, Entity* _entityB)
 	return 0;
 }
 
-void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
+char PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 {
-	if (Entity_IsDead(_entity))
+	char res = Entity_IsDead(_entity);
+	if (res)
 	{
 		if (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE) {
 			Play_Sound("enemy_die.wav");
@@ -290,6 +308,7 @@ void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 
 		PopEntity(_game, _entity);
 	}
+	return res;
 }
 
 void SpawnEntity(Game* game, GameScreenData* _data)
@@ -359,7 +378,10 @@ void UpdateEntity(Game* game, GameScreenData* data)
 			curEntity->mUpdate((void*)curEntity, game, data);
 		}
 
-		PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i));
+		if (PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i)))
+		{
+			i--;
+		}
 	}
 }
 

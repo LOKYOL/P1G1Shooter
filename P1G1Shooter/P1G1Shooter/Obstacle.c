@@ -37,6 +37,6 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 
 	if (_obstacle->mEntity.mPosition_x < -5 || _obstacle->mEntity.mPosition_x > WINDOW_WIDTH + 5)
 	{
-		Entity_TakeDamages(_obstacle, INT_MAX);
+		_obstacle->mEntity.mHealth = 0;
 	}
 }

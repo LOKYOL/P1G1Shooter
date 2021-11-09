@@ -43,7 +43,6 @@ int TitleScreenClose(struct Game* game, struct GameState* state)
 	}*/
 	free(datascreen->mOptions);
 
-
 	free(state->mData);
 	ClearBuffer(game->mDisplaySettings, BLACK, BLACK);
 

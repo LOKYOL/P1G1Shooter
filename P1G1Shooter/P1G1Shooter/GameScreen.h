@@ -43,7 +43,7 @@ char	CompareCollision(Entity* entityA, Entity* entityB);
 char	InRange(int value, int min, int max);
 char	CanCollide(Entity* entityA, Entity* entityB);
 
-void	PopBackIfIsDead(GameScreenData* game, Entity* entity);
+char	PopBackIfIsDead(GameScreenData* game, Entity* entity);
 
 void	SpawnEntity(struct Game* game, GameScreenData* data);
 
