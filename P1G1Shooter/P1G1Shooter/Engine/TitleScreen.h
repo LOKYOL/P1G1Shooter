@@ -16,10 +16,15 @@ typedef struct TitleScreenData
 	DisplayZone mOptionsZone;
 
 	DisplayZone mKeybindsZone;
+
+	DisplayZone mTitleAsciiZone;
 	char** mOptions;
 	int mNbOptions;
 
 	int mCurrentSelector;
+
+	int mTempClock;
+	int mCurrentColor;
 }TitleScreenData;
 
 /// <summary>
@@ -64,3 +69,8 @@ void PrintOption(TitleScreenData* datascreen, int index);
 /// </summary>
 /// <param name="game">Game to push</param>
 void PushGamescreen(struct Game* game);
+
+/// <summary>
+/// Sets the color of ascii art title
+/// <summary>
+void SetTitleColor(DisplayZone* dz, int FColor, int BColor);
