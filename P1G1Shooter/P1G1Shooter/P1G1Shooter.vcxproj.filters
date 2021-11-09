@@ -99,6 +99,9 @@
     <ClCompile Include="EndScreen.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\SoundManager.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Obstacle.h">
@@ -153,6 +156,9 @@
       <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="EndScreen.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SoundManager.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
