@@ -22,11 +22,45 @@ typedef struct TitleScreenData
 	int mCurrentSelector;
 }TitleScreenData;
 
+/// <summary>
+/// Initialize a title screen
+/// </summary>
+/// <param name="game">Current game</param>
+/// <param name="state">Current gamestate</param>
+/// <returns>0 if no error</returns>
 int TitleScreenInit(struct Game* game, struct GameState* state);
+
+/// <summary>
+/// Closes a title screen
+/// </summary>
+/// <param name="game">Current game</param>
+/// <param name="state">Current gamestate</param>
+/// <returns>0 if no error</returns>
 int TitleScreenClose(struct Game* game, struct GameState* state);
+
+/// <summary>
+/// Updates a title screen
+/// </summary>
+/// <param name="game">Current game</param>
+/// <param name="state">Current gamestate</param>
+/// <returns>0 if no error</returns>
 int TitleScreenUpdate(struct Game* game, struct GameState* state);
 
+/// <summary>
+/// Prints every menu options
+/// </summary>
+/// <param name="datascreen">Current screen data</param>
 void PrintOptions(TitleScreenData* datascreen);
+
+/// <summary>
+/// Prints a menu option
+/// </summary>
+/// <param name="datascreen">Current screen data</param>
+/// <param name="index">Current selected menu option</param>
 void PrintOption(TitleScreenData* datascreen, int index);
 
+/// <summary>
+/// Pushes the game screen
+/// </summary>
+/// <param name="game">Game to push</param>
 void PushGamescreen(struct Game* game);
