@@ -14,6 +14,8 @@ void Enemy_Initialize(Enemy** _enemy, unsigned int _health, int _damage, int _sp
 	Entity_Initialize(&newEnemy->mEntity, _health, _damage, _speed, Enemy_Update);
 
 	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp"));
+	newEnemy->mEntity.mDisplayZone.mPosY = 
+		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
 
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
 	newEnemy->mEntity.mPosition_x = WINDOW_WIDTH;

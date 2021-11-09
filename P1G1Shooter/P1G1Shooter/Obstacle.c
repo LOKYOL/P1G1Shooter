@@ -27,7 +27,7 @@ void Obstacle_Update(Obstacle* _obstacle, Game* _game, GameScreenData* _gameScre
 	FlushDisplayZone(_game->mDisplaySettings, &_obstacle->mEntity.mDisplayZone);
 }
 
-void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game, GameScreenData* _gameScreen)
+void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 {
 	double newpos_x = 
 		_obstacle->mEntity.mPosition_x -
