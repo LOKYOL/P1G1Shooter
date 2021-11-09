@@ -46,11 +46,6 @@ void Entity_UpdateDisplayZone(Entity* _entity)
 
 void Entity_TakeDamages(Entity* _entity, int _damages)
 {
-	if (_entity->mEntityType == TYPE_ENEMY)
-	{
- 		int a = 0;
-	}
-
 	if (_entity->mHealth < _damages)
 	{
 		_entity->mHealth = 0;
@@ -63,32 +58,8 @@ void Entity_TakeDamages(Entity* _entity, int _damages)
 
 char Entity_IsDead(Entity* _entity)
 {
-	return _entity->mHealth <= 0;
+	return _entity->mHealth < 1;
 }
-
-/*void Entity_Free(Entity* _entity)
-{
-	switch (_entity->mEntityType)
-	{
-	case TYPE_PLAYER:
-		free(((Player*)_entity));
-		break;
-	case TYPE_OBSTACLE:
-		free(((Obstacle*)_entity));
-		break;
-	case TYPE_PLAYER_PROJECTILE:
-	case TYPE_ENEMY_PROJECTILE:
-		free(((Projectile*)_entity));
-		break;
-	case TYPE_ENEMY:
-	case TYPE_ENEMY_KAMIKAZE:
-		free(((Enemy*)_entity));
-		break;
-	default:
-		free(_entity);
-		break;
-	}
-}*/
 
 double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
 

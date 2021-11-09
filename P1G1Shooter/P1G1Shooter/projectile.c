@@ -52,6 +52,6 @@ void Projectile_UpdateMovement(Projectile * _proj, Game* _game, GameScreenData* 
 
 	if (_proj->mEntity.mPosition_x < -5 || _proj->mEntity.mPosition_x > WINDOW_WIDTH + 5)
 	{
-		Entity_TakeDamages(_proj, INT_MAX);
+		_proj->mEntity.mHealth = 0;
 	}
 }
