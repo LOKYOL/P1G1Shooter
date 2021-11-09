@@ -2,6 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "projectile.h"
+#include "Engine/SoundManager.h"
 
 void InitPlayer(Player** _player)
 {
@@ -102,6 +103,8 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 
 		_player->mCurrentEnergy -= SHOOT_COST;
 		_player->mReloadCooldown = RELOAD_COOLDOWN;
+
+		Play_Sound("shoot1.wav");
 
 		if (_player->mCurrentEnergy <= 0)
 		{
