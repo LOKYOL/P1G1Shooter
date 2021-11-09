@@ -7,7 +7,11 @@ typedef struct EnemyShooter
 {
 	Entity mEntity;
 
-	float mShootCooldown;
+	double mShootCooldown;
+	double mChangeDirectionCooldown;
+
+	int mCurrentDirectionX;
+	int mCurrentDirectionY;
 }EnemyShooter;
 
 void EnemyShooter_Initialize(EnemyShooter** _enemy, 

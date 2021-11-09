@@ -39,13 +39,6 @@ void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
 void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* game);
 
 /// <summary>
-/// Makes an enemy shoot a projectile
-/// </summary>
-/// <param name="enemy">Shooting enemy</param>
-/// <param name="_gameScreen">Datas bind to game state</param>
-void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen);
-
-/// <summary>
 /// Give a random Int between a min and max given in parameters
 /// </summary>
 int RandomInt(int min, int max);

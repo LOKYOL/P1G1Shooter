@@ -96,7 +96,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 	if (_player->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 2, 0, 
+		Proj_Initialize(&newProjectile, 2, 1, 
 		_player->mEntity.mPosition_x, 
 		_player->mEntity.mPosition_y, 
 		TYPE_PLAYER_PROJECTILE, _gameScreen);
