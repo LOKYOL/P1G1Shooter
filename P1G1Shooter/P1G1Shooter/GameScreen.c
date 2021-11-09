@@ -9,6 +9,7 @@
 #include "EnemyShooter.h"
 #include "EndScreen.h"
 #include <stdio.h>
+#include "Engine/SoundManager.h"
 
 const char CollisionsLayers[6] =
 {
@@ -266,6 +267,9 @@ void PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 {
 	if (Entity_IsDead(_entity))
 	{
+		if (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE) {
+			Play_Sound("enemy_die.wav");
+		}
 
 		PopEntity(_game, _entity);
 	}
