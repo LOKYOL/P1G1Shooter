@@ -2,7 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y)
+void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y, EntityType type)
 {
 	Projectile* newProjectile = (Projectile*)malloc(sizeof(Projectile));
 	memset(newProjectile, 0, sizeof(Projectile));
@@ -24,7 +24,7 @@ void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPla
 	newProjectile->mEntity.mPosition_x = (posPlayer_x + 8);
 	newProjectile->mEntity.mPosition_y = posPlayer_y;
 	newProjectile->direction = 1;
-	newProjectile->mEntity.mEntityType = TYPE_PLAYER_PROJECTILE;
+	newProjectile->mEntity.mEntityType = type;
 }
 
 void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen) {

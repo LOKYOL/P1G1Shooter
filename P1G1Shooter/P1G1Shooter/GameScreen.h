@@ -21,6 +21,7 @@ typedef struct GameScreenData
 
 	double				mGameSpawnObstacleTimer;
 	double				mGameSpawnEnemyTimer;
+	double				mGameSpawnEnemyKamikazeTimer;
 }GameScreenData;
 
 int GameScreenInit(struct Game* game, struct GameState* state);
@@ -47,6 +48,8 @@ void	SpawnEntity(struct Game* game, GameScreenData* data);
 void	SpawnObstacle(GameScreenData* game);
 
 void	SpawnEnemy(GameScreenData* game);
+
+void	SpawnEnemyKamikaze(GameScreenData* game);
 
 void	UpdateEntity(struct Game* game, GameScreenData* data);
 

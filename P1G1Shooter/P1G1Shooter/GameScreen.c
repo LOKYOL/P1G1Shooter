@@ -4,6 +4,7 @@
 #include "Obstacle.h"
 #include "Projectile.h"
 #include "Enemy.h"
+#include "EnemyShooter.h"
 #include "Engine/ConsoleDisplay.h"
 #include "EndScreen.h"
 
@@ -40,6 +41,7 @@ int GameScreenInit(Game* game, GameState* state)
 
 	data->mGameSpawnObstacleTimer = 0;
 	data->mGameSpawnEnemyTimer = 0;
+	data->mGameSpawnEnemyKamikazeTimer = 0;
 
 	return 0;
 }
@@ -247,11 +249,20 @@ void SpawnEntity(Game* game, GameScreenData* _data)
 
 	// SPAWN ENEMY
 	_data->mGameSpawnEnemyTimer += game->mGameDt;
+	_data->mGameSpawnEnemyKamikazeTimer += game->mGameDt;
+
 	if (_data->mGameSpawnEnemyTimer >= ENEMY_SPAWN_TIMER)
 	{
 		_data->mGameSpawnEnemyTimer -= ENEMY_SPAWN_TIMER;
 
 		SpawnEnemy(_data);
+	}
+
+	if (_data->mGameSpawnEnemyKamikazeTimer >= ENEMY_KAMIKAZE_SPAWN_TIMER)
+	{
+		_data->mGameSpawnEnemyKamikazeTimer -= ENEMY_KAMIKAZE_SPAWN_TIMER;
+
+		SpawnEnemyKamikaze(_data);
 	}
 }
 
@@ -264,8 +275,17 @@ void SpawnObstacle(GameScreenData* _game)
 
 void SpawnEnemy(GameScreenData* _game)
 {
+	EnemyShooter* newEnemyS = NULL;
+	EnemyShooter_Initialize(&newEnemyS, 1, 1, (rand() % 10) + 40);
+
+	DVectorPushBack(_game->mAllEntities, &newEnemyS);
+}
+
+void SpawnEnemyKamikaze(GameScreenData* _game)
+{
 	Enemy* newEnemy = NULL;
 	Enemy_Initialize(&newEnemy, 1, 1, (rand() % 10) + 40);
+
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }
 

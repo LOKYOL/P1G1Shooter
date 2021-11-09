@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EndScreen.c" />
+    <ClCompile Include="EnemyShooter.c" />
     <ClCompile Include="Engine\bitmap.c" />
     <ClCompile Include="Engine\ConsoleDisplay.c" />
     <ClCompile Include="Engine\DisplayZoneDrawing.c" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EndScreen.h" />
+    <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="Engine\bitmap.h" />
     <ClInclude Include="Engine\ConsoleDisplay.h" />
     <ClInclude Include="Engine\DisplayZoneDrawing.h" />

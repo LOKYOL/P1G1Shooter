@@ -34,4 +34,4 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* game
 /// </summary>
 /// <param name="enemy"></param>
 /// <param name="_gameScreen"></param>
-void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen);
+//void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen);

@@ -15,6 +15,9 @@ void Enemy_Initialize(Enemy** _enemy, unsigned int _health, int _damage, int _sp
 
 	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp"));
 
+	newEnemy->mEntity.mDisplayZone.mPosY =
+		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
+
 	newEnemy->mEntity.mEntityType = TYPE_ENEMY_KAMIKAZE;
 	newEnemy->mEntity.mPosition_x = WINDOW_WIDTH;
 	newEnemy->mEntity.mPosition_y = newEnemy->mEntity.mDisplayZone.mPosY;
@@ -99,7 +102,3 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
 }
 
-void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen)
-{
-
-}
