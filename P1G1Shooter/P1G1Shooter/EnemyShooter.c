@@ -5,7 +5,9 @@
 #include "projectile.h"
 #include <math.h>
 
-void EnemyShooter_Initialize(EnemyShooter** _enemy, unsigned int _health, int _damage, int _speed)
+void EnemyShooter_Initialize(EnemyShooter** _enemy, 
+	unsigned int _health, int _damage, int _speed,
+	GameScreenData* _gameScreen)
 {
 	EnemyShooter* newEnemy = (EnemyShooter*)malloc(sizeof(EnemyShooter));
 	memset(newEnemy, 0, sizeof(EnemyShooter));
@@ -14,7 +16,7 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy, unsigned int _health, int _d
 
 	Entity_Initialize(&newEnemy->mEntity, _health, _damage, _speed, EnemyShooter_Update);
 
-	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("submarine.bmp"));
+	newEnemy->mEntity.mDisplayZone = _gameScreen->mSprites[TYPE_ENEMY];
 
 	newEnemy->mEntity.mDisplayZone.mPosY =
 		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
@@ -86,7 +88,7 @@ void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 	if (_enemy->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 2, 1, _enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y, TYPE_ENEMY_PROJECTILE);
+		Proj_Initialize(&newProjectile, 2, 1, _enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y, TYPE_ENEMY_PROJECTILE, _gameScreen);
 
 		PushEntity(_gameScreen, &newProjectile);
 

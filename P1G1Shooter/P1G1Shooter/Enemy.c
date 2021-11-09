@@ -108,11 +108,6 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
 }
 
-void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen)
-{
-
-}
-
 int RandomInt(int min, int max)
 {
 	if (min < max)

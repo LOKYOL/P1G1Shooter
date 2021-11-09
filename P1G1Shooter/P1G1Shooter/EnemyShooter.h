@@ -10,7 +10,9 @@ typedef struct EnemyShooter
 	float mShootCooldown;
 }EnemyShooter;
 
-void EnemyShooter_Initialize(EnemyShooter** _enemy, unsigned int _health, int _damage, int _speed);
+void EnemyShooter_Initialize(EnemyShooter** _enemy, 
+	unsigned int _health, int _damage, int _speed,
+	GameScreenData* gameScreen);
 
 void EnemyShooter_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
 

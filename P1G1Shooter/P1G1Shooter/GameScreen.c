@@ -41,7 +41,7 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mSprites[1] = *CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
 	data->mSprites[2] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
 	data->mSprites[3] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
-	data->mSprites[4] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// Enemy Sprite
+	data->mSprites[4] = *CreateDisplayZoneFromBMP("test.bmp");	// Enemy Sprite
 	data->mSprites[5] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// EnemyProjectile Sprite
 
 
@@ -311,7 +311,7 @@ void SpawnObstacle(GameScreenData* _game)
 void SpawnEnemy(GameScreenData* _game)
 {
 	EnemyShooter* newEnemyS = NULL;
-	EnemyShooter_Initialize(&newEnemyS, 1, 1, (rand() % 10) + 40);
+	EnemyShooter_Initialize(&newEnemyS, 1, 1, (rand() % 10) + 40, _game);
 
 	DVectorPushBack(_game->mAllEntities, &newEnemyS);
 }

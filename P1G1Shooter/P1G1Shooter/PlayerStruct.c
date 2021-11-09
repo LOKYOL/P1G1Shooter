@@ -99,7 +99,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 		Proj_Initialize(&newProjectile, 2, 0, 
 		_player->mEntity.mPosition_x, 
 		_player->mEntity.mPosition_y, 
-		TYPE_PLAYER_PROJECTILE);
+		TYPE_PLAYER_PROJECTILE, _gameScreen);
 
 		PushEntity(_gameScreen, &newProjectile);
 
