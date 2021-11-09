@@ -1,12 +1,14 @@
 ﻿#include "GameScreen.h"
 #include "Engine/TimeManagement.h"
+#include "Engine/DisplayZoneDrawing.h"
+#include "Engine/ConsoleDisplay.h"
 #include "PlayerStruct.h"
 #include "Obstacle.h"
 #include "Projectile.h"
 #include "Enemy.h"
 #include "EnemyShooter.h"
-#include "Engine/ConsoleDisplay.h"
 #include "EndScreen.h"
+#include <stdio.h>
 
 const char CollisionsLayers[6] =
 {
@@ -34,9 +36,18 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, NULL);
 
+	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * 6);
+	data->mSprites[0] = *CreateDisplayZoneFromBMP("submarine.bmp");	// Player Sprite
+	data->mSprites[1] = *CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
+	data->mSprites[2] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
+	data->mSprites[3] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
+	data->mSprites[4] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// Enemy Sprite
+	data->mSprites[5] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// EnemyProjectile Sprite
+
+
 	// Create Player
 	Player* myPlayer;
-	InitPlayer(&myPlayer);
+	InitPlayer(&myPlayer, data);
 	data->mPlayer = myPlayer;
 
 	data->mGameSpawnObstacleTimer = 0;
@@ -50,7 +61,15 @@ int GameScreenClose(Game* game, GameState* state)
 {
 	GameScreenData* data = state->mData;
 
+	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
+	{
+		free(DVectorGetTyped(data->mAllEntities, Entity*, i));
+	}
+	
 	DVectorDestroy(data->mAllEntities);
+
+	free(data->mPlayer);
+
 	return 0;
 }
 
@@ -142,42 +161,58 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			Entity_TakeDamages(_entity, curCompare->mDamages);
 			Entity_TakeDamages(curCompare, _entity->mDamages);
 
-			if (_entity->mHealth == 0 && _entity->mEntityType == 2){
-				if (curCompare->mEntityType == 4) {
+			if (_entity->mHealth == 0 && _entity->mEntityType == 2)
+			{
+				if (curCompare->mEntityType == 4) 
+				{
 					//score += 3
 					gameStruct->mScore += 3;
 					mBool = 1;
 				}
-				else if (curCompare->mEntityType == 5) {
+				else if (curCompare->mEntityType == 5) 
+				{
 					//score += 4
 					gameStruct->mScore += 4;
 					mBool = 1;
 				}
 			}
 
-			if (curCompare->mHealth == 0 && curCompare->mEntityType == 2) {
-				if (_entity->mEntityType == 4) {
+			if (curCompare->mHealth == 0 && curCompare->mEntityType == 2) 
+			{
+				if (_entity->mEntityType == TYPE_ENEMY) 
+				{
 					gameStruct->mScore += 3;
 					mBool = 1;
 					//score += 3
 				}
-				else if (_entity->mEntityType == 5) {
+				else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
+				{
 					gameStruct->mScore += 4;
 					mBool = 1;
 					//score += 4
 				}
+				else if (_entity->mEntityType == TYPE_OBSTACLE)
+				{
+					gameStruct->mScore += 1;
+					mBool = 1;
+				}
 			}
 
-			if (mBool) {
+			if (mBool) 
+			{
 				char num[10];
+				
 
-				_itoa_s(gameStruct->mScore, num, 10, 10);
+				//_itoa_s(gameStruct->mScore, num, 10, 10);
 
 				char totalScore[18] = "Score: ";
 
-				for (int i = 7; i < 18; i++) {
+				snprintf(totalScore, 17, "Score: %d", gameStruct->mScore);
+
+				/*for (int i = 7; i < 17; i++) 
+				{
 					totalScore[i] = num[i-7];
-				}
+				}*/
 
   				PrintInDisplayZone(&gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
@@ -269,7 +304,7 @@ void SpawnEntity(Game* game, GameScreenData* _data)
 void SpawnObstacle(GameScreenData* _game)
 {
 	Obstacle* newObstacle = NULL;
-	Obstacle_Initialize(&newObstacle);
+	Obstacle_Initialize(&newObstacle, _game);
 	DVectorPushBack(_game->mAllEntities, &newObstacle);
 }
 
@@ -284,8 +319,7 @@ void SpawnEnemy(GameScreenData* _game)
 void SpawnEnemyKamikaze(GameScreenData* _game)
 {
 	Enemy* newEnemy = NULL;
-	Enemy_Initialize(&newEnemy, 1, 1, (rand() % 10) + 40);
-
+	Enemy_Initialize(&newEnemy, _game);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }
 

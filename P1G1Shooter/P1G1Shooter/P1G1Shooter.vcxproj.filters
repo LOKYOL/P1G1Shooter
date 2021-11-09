@@ -101,6 +101,8 @@
     </ClCompile>
     <ClCompile Include="EnemyShooter.c">
       <Filter>Entities\Sources</Filter>
+    <ClCompile Include="Engine\SoundManager.c">
+      <Filter>Engine\Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +162,8 @@
     </ClInclude>
     <ClInclude Include="EnemyShooter.h">
       <Filter>Entities\Headers</Filter>
+    <ClInclude Include="Engine\SoundManager.h">
+      <Filter>Engine\Headers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

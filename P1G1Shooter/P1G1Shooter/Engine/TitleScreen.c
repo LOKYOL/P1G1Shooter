@@ -1,6 +1,7 @@
 #include "TitleScreen.h"
 #include "Game.h"
 #include "../GameScreen.h"
+#include "DisplayZoneDrawing.h"
 
 int TitleScreenInit(struct Game* game, struct GameState* state)
 {
@@ -22,6 +23,12 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 	datascreen->mOptions = malloc(sizeof(char*) * datascreen->mNbOptions);
 	datascreen->mOptions[0] = "New Game";
 	datascreen->mOptions[1] = "Exit";
+
+	InitDisplayZone(&datascreen->mKeybindsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+	
+	datascreen->mKeybindsZone = *CreateDisplayZoneFromBMP("keybinds.bmp");
+	datascreen->mKeybindsZone.mPosX = WINDOW_WIDTH / 2 - 40;
+	datascreen->mKeybindsZone.mPosY = WINDOW_HEIGHT - 40;
 
 	return 0;
 }
@@ -83,6 +90,7 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 
 	FlushDisplayZone(game->mDisplaySettings, &datascreen->mOptionsZone);
 	FlushDisplayZone(game->mDisplaySettings, &datascreen->mZoneTitre);
+	FlushDisplayZone(game->mDisplaySettings, &datascreen->mKeybindsZone);
 
 	return 0;
 }

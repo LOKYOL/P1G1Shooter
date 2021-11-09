@@ -4,16 +4,22 @@
 #include "PlayerStruct.h"
 #include <math.h>
 
-void Enemy_Initialize(Enemy** _enemy, unsigned int _health, int _damage, int _speed)
+void Enemy_Initialize(Enemy** _enemy, GameScreenData* gameScreen)
 {
 	Enemy* newEnemy = (Enemy*)malloc(sizeof(Enemy));
 	memset(newEnemy, 0, sizeof(Enemy));
 
 	*_enemy = newEnemy;
 
-	Entity_Initialize(&newEnemy->mEntity, _health, _damage, _speed, Enemy_Update);
+	int health = RandomInt(ENEMY_HEALTH_MIN, ENEMY_HEALTH_MAX),
+		speed = RandomInt(ENEMY_SPEED_MIN, ENEMY_SPEED_MAX),
+		damages = RandomInt(ENEMY_DAMAGES_MIN, ENEMY_DAMAGES_MAX);
 
-	newEnemy->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp"));
+	Entity_Initialize(&newEnemy->mEntity, health, damages, speed, Enemy_Update);
+
+	newEnemy->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_ENEMY_KAMIKAZE];
+	newEnemy->mEntity.mDisplayZone.mPosY = 
+		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
 
 	newEnemy->mEntity.mDisplayZone.mPosY =
 		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
@@ -102,3 +108,19 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
 }
 
+void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen)
+{
+
+}
+
+int RandomInt(int min, int max)
+{
+	if (min < max)
+	{
+		return (rand() % (max - min + 1)) + min;
+	}
+	else
+	{
+		return min;
+	}
+}

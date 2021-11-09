@@ -3,6 +3,15 @@
 #include "Engine/Game.h"
 #include "GameScreen.h" 
 
+#define ENEMY_HEALTH_MIN	1
+#define ENEMY_HEALTH_MAX	2
+
+#define ENEMY_SPEED_MIN		40
+#define ENEMY_SPEED_MAX		50
+
+#define ENEMY_DAMAGES_MIN	1
+#define ENEMY_DAMAGES_MAX	1
+
 typedef struct Enemy
 {
 	Entity mEntity;
@@ -12,7 +21,7 @@ typedef struct Enemy
 /// Initializes an enemy
 /// </summary>
 /// <param name="enemy">Enemy to initialize</param>
-void Enemy_Initialize(Enemy** _enemy, unsigned int _health, int _damage, int _speed);
+void Enemy_Initialize(Enemy** _enemy, GameScreenData* gameScreen);
 
 /// <summary>
 /// Change the position of an enemy
@@ -29,9 +38,3 @@ void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
 /// <param name="_gameScreen">Datas bind to the game state</param>
 void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* game);
 
-/// <summary>
-/// 
-/// </summary>
-/// <param name="enemy"></param>
-/// <param name="_gameScreen"></param>
-//void Enemy_Shoot(Enemy* enemy, GameScreenData* _gameScreen);

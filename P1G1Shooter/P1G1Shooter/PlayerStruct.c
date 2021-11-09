@@ -2,8 +2,9 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "projectile.h"
+#include "Engine/SoundManager.h"
 
-void InitPlayer(Player** _player)
+void InitPlayer(Player** _player, GameScreenData* gameScreen)
 {
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	memset(newPlayer, 0, sizeof(Player));
@@ -11,13 +12,15 @@ void InitPlayer(Player** _player)
 	*_player = newPlayer;
 
 	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, WINDOW_HEIGHT/2, 2, 2, 1);
-	
-	newPlayer->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("submarine.bmp"));
+	newPlayer->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_PLAYER];
 
 	Entity_Initialize(&newPlayer->mEntity, 3, 1, WINDOW_HEIGHT / 3, Player_Update);
 
 	InitDisplayZone(&newPlayer->mChargeZone, 0, 0, 5, 2, 1);
 	DrawBatteryInDisplayZone(newPlayer);
+
+	InitDisplayZone(&newPlayer->mHealthZone, 0, 0, 4, 1, 1);
+	DrawHealthInDisplayZone(newPlayer);
 
 	newPlayer->mEntity.mPosition_x = 5;
 	newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
@@ -40,7 +43,9 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 	}
 
 	DrawBatteryInDisplayZone(myPlayer);
+	DrawHealthInDisplayZone(myPlayer);
 	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mChargeZone);
+	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mHealthZone);
 }
 
 void Player_UpdateMovement(Player* _player, Game* _game)
@@ -57,11 +62,12 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	{
 		newpos_y += _game->mGameDt * _player->mEntity.mSpeed;
 	}
-
+	
 	ClampPlayerPos(_player, &newpos_x, &newpos_y);
 
 	Entity_MoveTo(&_player->mEntity, newpos_x, newpos_y);
 	UpdateBatteryDisplayZonePosition(_player);
+	UpdateHealthDisplayZonePosition(_player);
 }
 
 void ClampPlayerPos(Player* _player, double* _posX, double* _posY)
@@ -90,12 +96,17 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 	if (_player->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y, TYPE_PLAYER_PROJECTILE);
+		Proj_Initialize(&newProjectile, 2, 0, 
+		_player->mEntity.mPosition_x, 
+		_player->mEntity.mPosition_y, 
+		TYPE_PLAYER_PROJECTILE);
 
 		PushEntity(_gameScreen, &newProjectile);
 
 		_player->mCurrentEnergy -= SHOOT_COST;
 		_player->mReloadCooldown = RELOAD_COOLDOWN;
+
+		Play_Sound("shoot1.wav");
 
 		if (_player->mCurrentEnergy <= 0)
 		{
@@ -108,6 +119,13 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 void UpdateBatteryDisplayZonePosition(Player* _player)
 {
 	MoveDisplayZone(&_player->mChargeZone, 0, _player->mEntity.mPosition_y + 1);
+}
+
+void UpdateHealthDisplayZonePosition(Player* _player)
+{
+	MoveDisplayZone(&_player->mHealthZone, 
+		_player->mEntity.mPosition_x + 5, 
+		_player->mEntity.mPosition_y + 3);
 }
 
 const ConsoleColors ChargeColors[5] =
@@ -152,4 +170,29 @@ void DrawBatteryInDisplayZone(Player* _player)
 	buffer[7] = ENCODE_DISPLAY_CHARACTER(edgeColor, middleFill, 220, NO_FLAG);
 	buffer[8] = ENCODE_DISPLAY_CHARACTER(edgeColor, rightFill, 220, NO_FLAG);
 	buffer[9] = ENCODE_DISPLAY_CHARACTER(edgeColor, BLUE, 221, NO_FLAG);
+}
+
+void DrawHealthInDisplayZone(Player* _player)
+{
+	DisplayCharacter* buffer = _player->mHealthZone.mBuffer;
+
+	buffer[0] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
+	if (_player->mEntity.mHealth > 1)
+	{
+		buffer[1] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
+
+		if (_player->mEntity.mHealth > 2)
+		{
+			buffer[2] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
+		}
+		else
+		{
+			buffer[2] = ENCODE_DISPLAY_CHARACTER(FOREGROUND, BACKGROUND, 0, NO_CHARACTER);
+		}
+	}
+	else
+	{
+		buffer[1] = ENCODE_DISPLAY_CHARACTER(FOREGROUND, BACKGROUND, 0, NO_CHARACTER);
+		buffer[2] = ENCODE_DISPLAY_CHARACTER(FOREGROUND, BACKGROUND, 0, NO_CHARACTER);
+	}
 }

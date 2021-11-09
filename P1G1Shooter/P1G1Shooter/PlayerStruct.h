@@ -17,13 +17,14 @@ typedef struct Player
 	Entity mEntity;
 
 	DisplayZone	mChargeZone;
+	DisplayZone	mHealthZone;
 
 	float mCurrentEnergy;
 	float mReloadCooldown;
 	float mShootCooldown;
 } Player;
 
-void InitPlayer(Player** player);
+void InitPlayer(Player** player, GameScreenData* gameScreen);
 
 void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 
@@ -35,4 +36,8 @@ void Player_Shoot(Player* player, GameScreenData* _gameScreen);
 
 void UpdateBatteryDisplayZonePosition(Player* player);
 
+void UpdateHealthDisplayZonePosition(Player* player);
+
 void DrawBatteryInDisplayZone(Player* player);
+
+void DrawHealthInDisplayZone(Player* player);

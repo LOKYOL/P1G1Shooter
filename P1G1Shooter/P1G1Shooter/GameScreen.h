@@ -19,6 +19,8 @@ typedef struct GameScreenData
 
 	struct Player*				mPlayer;
 
+	DisplayZone*	mSprites;
+
 	double				mGameSpawnObstacleTimer;
 	double				mGameSpawnEnemyTimer;
 	double				mGameSpawnEnemyKamikazeTimer;

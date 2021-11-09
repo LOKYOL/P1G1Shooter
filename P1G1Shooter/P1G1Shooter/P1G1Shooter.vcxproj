@@ -29,6 +29,7 @@
     <ClCompile Include="Engine\GameState.c" />
     <ClCompile Include="Engine\ini.c" />
     <ClCompile Include="Engine\ParamsList.c" />
+    <ClCompile Include="Engine\SoundManager.c" />
     <ClCompile Include="Engine\TimeManagement.c" />
     <ClCompile Include="Engine\TitleScreen.c" />
     <ClCompile Include="Enemy.c" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Engine\GameState.h" />
     <ClInclude Include="Engine\ini.h" />
     <ClInclude Include="Engine\ParamsList.h" />
+    <ClInclude Include="Engine\SoundManager.h" />
     <ClInclude Include="Engine\TimeManagement.h" />
     <ClInclude Include="Engine\TitleScreen.h" />
     <ClInclude Include="Entity.h" />
@@ -159,11 +161,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Sounds;Engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
