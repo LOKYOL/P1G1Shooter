@@ -16,6 +16,5 @@ void Play_SoundThread(char* SoundName) {
 }
 
 void Play_Sound(char* SoundName) {
-	DWORD myThreadID;
-	CreateThread(0, 0, Play_SoundThread, SoundName, 0, &myThreadID);
+	CreateThread(0, 0, Play_SoundThread, SoundName, 0, NULL);
 }
