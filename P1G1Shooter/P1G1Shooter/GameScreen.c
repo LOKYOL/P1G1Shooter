@@ -42,7 +42,7 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mSprites[1] = *CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
 	data->mSprites[2] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
 	data->mSprites[3] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
-	data->mSprites[4] = *CreateDisplayZoneFromBMP("test.bmp");	// Enemy Sprite
+	data->mSprites[4] = *CreateDisplayZoneFromBMP("enemy.bmp");	// Enemy Sprite
 	data->mSprites[5] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// EnemyProjectile Sprite
 
 
