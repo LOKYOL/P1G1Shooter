@@ -55,8 +55,3 @@ void Projectile_UpdateMovement(Projectile * _proj, Game* _game, GameScreenData* 
 		Entity_TakeDamages(_proj, INT_MAX);
 	}
 }
-
-//int InRange(int value, int min, int max)
-//{
-//	return (value >= min && value <= max) ? 1 : 0;
-//}
