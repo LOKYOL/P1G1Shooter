@@ -1,9 +1,11 @@
 #include "SoundManager.h"
 
-void Play_SoundThread(char* SoundName) {
+void Play_SoundThread(char* SoundName) 
+{
 	char soundSearch[50] = "Sounds/";
 
-	for (int i = 7; i < 50; i++) {
+	for (int i = 7; i < 50; i++) 
+	{
 		soundSearch[i] = SoundName[i - 7];
 	}
 
@@ -15,6 +17,7 @@ void Play_SoundThread(char* SoundName) {
 	PlaySound(wc, NULL, SND_ASYNC | SND_FILENAME);
 }
 
-void Play_Sound(char* SoundName) {
+void Play_Sound(char* SoundName) 
+{
 	CreateThread(0, 0, Play_SoundThread, SoundName, 0, NULL);
 }
