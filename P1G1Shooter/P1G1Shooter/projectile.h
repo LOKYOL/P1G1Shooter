@@ -16,7 +16,7 @@ typedef struct Projectile
 /// <param name="proj">Projectile to initialize</param>
 /// <param name="speed">Speed of the projectile</param>
 /// <param name="direction">Direction of the projectile, either left or right</param>
-void Proj_Initialize(Projectile** proj, int speed, int direction, double posPlayer_x, double posPlayer_y);
+void Proj_Initialize(Projectile** proj, int speed, int direction, double posPlayer_x, double posPlayer_y, GameScreenData* gameScreen);
 
 /// <summary>
 /// Change the position of a projectile

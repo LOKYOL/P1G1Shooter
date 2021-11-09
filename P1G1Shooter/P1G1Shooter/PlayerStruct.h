@@ -24,7 +24,7 @@ typedef struct Player
 	float mShootCooldown;
 } Player;
 
-void InitPlayer(Player** player);
+void InitPlayer(Player** player, GameScreenData* gameScreen);
 
 void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 

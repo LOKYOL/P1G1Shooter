@@ -2,7 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y)
+void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPlayer_x, double posPlayer_y, GameScreenData* gameScreen)
 {
 	Projectile* newProjectile = (Projectile*)malloc(sizeof(Projectile));
 	memset(newProjectile, 0, sizeof(Projectile));
@@ -19,7 +19,7 @@ void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPla
 		2, 2, 1
 	);
 
-	newProjectile->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("bubulle.bmp"));
+	newProjectile->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_PLAYER_PROJECTILE];
 
 	newProjectile->mEntity.mPosition_x = (posPlayer_x + 8);
 	newProjectile->mEntity.mPosition_y = posPlayer_y;

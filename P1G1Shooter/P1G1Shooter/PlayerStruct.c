@@ -3,7 +3,7 @@
 #include "Engine/DisplayZoneDrawing.h"
 #include "projectile.h"
 
-void InitPlayer(Player** _player)
+void InitPlayer(Player** _player, GameScreenData* gameScreen)
 {
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	memset(newPlayer, 0, sizeof(Player));
@@ -11,8 +11,7 @@ void InitPlayer(Player** _player)
 	*_player = newPlayer;
 
 	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, WINDOW_HEIGHT/2, 2, 2, 1);
-	
-	newPlayer->mEntity.mDisplayZone = *(CreateDisplayZoneFromBMP("submarine.bmp"));
+	newPlayer->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_PLAYER];
 
 	Entity_Initialize(&newPlayer->mEntity, 3, 1, WINDOW_HEIGHT / 3, Player_Update);
 
@@ -62,7 +61,7 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	{
 		newpos_y += _game->mGameDt * _player->mEntity.mSpeed;
 	}
-
+	
 	ClampPlayerPos(_player, &newpos_x, &newpos_y);
 
 	Entity_MoveTo(&_player->mEntity, newpos_x, newpos_y);
@@ -96,7 +95,9 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 	if (_player->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 2, 0, _player->mEntity.mPosition_x, _player->mEntity.mPosition_y);
+		Proj_Initialize(&newProjectile, 2, 0, 
+			_player->mEntity.mPosition_x, _player->mEntity.mPosition_y, 
+			_gameScreen);
 
 		PushEntity(_gameScreen, &newProjectile);
 

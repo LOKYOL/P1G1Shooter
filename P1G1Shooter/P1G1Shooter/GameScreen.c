@@ -1,10 +1,11 @@
 ﻿#include "GameScreen.h"
 #include "Engine/TimeManagement.h"
+#include "Engine/DisplayZoneDrawing.h"
+#include "Engine/ConsoleDisplay.h"
 #include "PlayerStruct.h"
 #include "Obstacle.h"
 #include "Projectile.h"
 #include "Enemy.h"
-#include "Engine/ConsoleDisplay.h"
 #include "EndScreen.h"
 #include <stdio.h>
 
@@ -34,9 +35,18 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, NULL);
 
+	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * 6);
+	data->mSprites[0] = *CreateDisplayZoneFromBMP("submarine.bmp");	// Player Sprite
+	data->mSprites[1] = *CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
+	data->mSprites[2] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
+	data->mSprites[3] = *CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
+	data->mSprites[4] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// Enemy Sprite
+	data->mSprites[5] = *CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// EnemyProjectile Sprite
+
+
 	// Create Player
 	Player* myPlayer;
-	InitPlayer(&myPlayer);
+	InitPlayer(&myPlayer, data);
 	data->mPlayer = myPlayer;
 
 	data->mGameSpawnObstacleTimer = 0;
@@ -283,14 +293,14 @@ void SpawnEntity(Game* game, GameScreenData* _data)
 void SpawnObstacle(GameScreenData* _game)
 {
 	Obstacle* newObstacle = NULL;
-	Obstacle_Initialize(&newObstacle);
+	Obstacle_Initialize(&newObstacle, _game);
 	DVectorPushBack(_game->mAllEntities, &newObstacle);
 }
 
 void SpawnEnemy(GameScreenData* _game)
 {
 	Enemy* newEnemy = NULL;
-	Enemy_Initialize(&newEnemy, 1, 1, (rand() % 10) + 40);
+	Enemy_Initialize(&newEnemy, _game);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }
 
