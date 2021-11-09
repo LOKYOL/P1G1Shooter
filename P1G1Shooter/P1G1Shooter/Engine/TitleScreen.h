@@ -14,6 +14,8 @@ typedef struct TitleScreenData
 	DisplayZone	mZoneTitre;
 
 	DisplayZone mOptionsZone;
+
+	DisplayZone mKeybindsZone;
 	char** mOptions;
 	int mNbOptions;
 
