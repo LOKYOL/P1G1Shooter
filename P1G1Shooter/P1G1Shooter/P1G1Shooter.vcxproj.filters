@@ -1,65 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{8eaf0fa5-2e06-4ff2-8f0f-fe4a570520db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Headers">
-      <UniqueIdentifier>{f6e0d724-1b22-4a2d-9859-949b03ec9065}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Sources">
-      <UniqueIdentifier>{c2844ccc-36e4-4a73-82cc-e4e8fc1d6d47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Essentials">
-      <UniqueIdentifier>{502990ac-c047-4e38-be2a-7c6bf2a4c6ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Essentials\Headers">
-      <UniqueIdentifier>{457d0c6b-c21b-414f-bd85-baec1671cd8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Essentials\Sources">
-      <UniqueIdentifier>{ba065ba9-bc9f-4145-89b8-afd6985f45c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{37f6432d-3284-4355-96e1-98edd24c092b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Headers">
-      <UniqueIdentifier>{0ed264a0-a64c-47d2-8923-58deff9331be}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Sources">
-      <UniqueIdentifier>{454b3143-7ac1-4606-af65-4f9e95b42013}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="P1G1ShooterMain.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStruct.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Inputs.c">
-      <Filter>Essentials\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\TitleScreen.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
+    <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="Engine\bitmap.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
@@ -72,55 +14,56 @@
     <ClCompile Include="Engine\DVector.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\GameState.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\ini.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="Inputs.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
     <ClCompile Include="Engine\ParamsList.c">
+      <Filter>Engine\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SoundManager.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Engine\TimeManagement.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Projectile.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScreen.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="EndScreen.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyShooter.c">
       <Filter>Entities\Sources</Filter>
-    <ClCompile Include="Engine\SoundManager.c">
+    </ClCompile>
+    <ClCompile Include="Entity.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Obstacle.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStruct.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Projectile.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="EndScreen.c">
+      <Filter>GameStates\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScreen.c">
+      <Filter>GameStates\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\TitleScreen.c">
+      <Filter>GameStates\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Game.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerStruct.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Inputs.h">
-      <Filter>Essentials\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TitleScreen.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\bitmap.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
@@ -133,37 +76,82 @@
     <ClInclude Include="Engine\DVector.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\GameState.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\ini.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Inputs.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\ParamsList.h">
+      <Filter>Engine\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SoundManager.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Engine\TimeManagement.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScreen.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Obstacle.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Projectile.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStruct.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
     <ClInclude Include="EndScreen.h">
+      <Filter>GameStates\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\TitleScreen.h">
+      <Filter>GameStates\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScreen.h">
+      <Filter>GameStates\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Game.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="EnemyShooter.h">
       <Filter>Entities\Headers</Filter>
-    <ClInclude Include="Engine\SoundManager.h">
-      <Filter>Engine\Headers</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{e9b346b9-f8fc-41c5-9ac7-b794cdfc846a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Headers">
+      <UniqueIdentifier>{8a09a8b6-bb08-4788-ab9d-4f3c6bd94daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Sources">
+      <UniqueIdentifier>{bbf31af3-2188-48e7-b125-1445b3b3aba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{f14e6119-9cf2-4c54-891e-f82ed178c181}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Headers">
+      <UniqueIdentifier>{5fdf7230-be2b-4364-8e11-8f8c79258010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Sources">
+      <UniqueIdentifier>{2bbaeb63-3c92-49e2-9214-63ec530d8786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates">
+      <UniqueIdentifier>{ca759f6e-6be6-43c9-a1b8-1e5fcda67b5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates\Headers">
+      <UniqueIdentifier>{1a029e33-ba77-486a-b2bb-edfc247368b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStates\Sources">
+      <UniqueIdentifier>{efd6aa85-28f0-4628-b583-8f887ef9e4be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
