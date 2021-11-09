@@ -15,7 +15,7 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 		&datascreen->mZoneTitre,
 		BRIGHT_BLUE, BLACK,
 		0, 0,
-		"FISH KILLER", 0, NO_FLAG);
+		"BUBBLE WARS", 0, NO_FLAG);
 
 	InitDisplayZone(&datascreen->mOptionsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 
