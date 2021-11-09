@@ -302,7 +302,8 @@ char PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
 	char res = Entity_IsDead(_entity);
 	if (res)
 	{
-		if (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE) {
+		if (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE) 
+		{
 			Play_Sound("enemy_die.wav");
 		}
 
