@@ -14,6 +14,26 @@ typedef struct EndScreenData
 
 }EndScreenData;
 
+/// <summary>
+/// Initialize an end screen
+/// </summary>
+/// <param name="game">Current game</param>
+/// <param name="state">Current gamestate</param>
+/// <returns>0 if no error</returns>
 int EndScreenInit(struct Game* game, struct GameState* state);
+
+/// <summary>
+/// Close an end screen
+/// </summary>
+/// <param name="game">Current game</param>
+/// <param name="state">Current gamestate</param>
+/// <returns>0 if no error</returns>
 int EndScreenClose(struct Game* game, struct GameState* state);
+
+/// <summary>
+/// Update an end screen
+/// </summary>
+/// <param name="game">Current game</param>
+/// <param name="state">Current gamestate</param>
+/// <returns>0 if no error</returns>
 int EndScreenUpdate(struct Game* game, struct GameState* state);

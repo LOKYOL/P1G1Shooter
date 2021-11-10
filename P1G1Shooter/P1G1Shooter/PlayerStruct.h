@@ -57,9 +57,10 @@ void ClampPlayerPos(Player* player, double* posX, double* posY);
 /// <summary>
 /// Makes the player shoot
 /// </summary>
-/// <param name="player">Player the update</param>
-/// <param name="_gameScreen">Datas bind to the game state</param>
-void Player_Shoot(Player* player, GameScreenData* _gameScreen);
+/// <param name="player">Player to update</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+/// <param name="gameStruct">Current game</param>
+void Player_Shoot(Player* player, GameScreenData* gameScreen, Game* gameStruct);
 
 /// <summary>
 /// Updates the overshoot display of the player

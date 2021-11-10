@@ -22,27 +22,14 @@ void Proj_Initialize(Projectile** proj, int speed, int direction, double posPlay
 /// Change the position of a projectile
 /// </summary>
 /// <param name="proj">Projectile to edit</param>
-/// <param name="deltatime">Deltatime of the game</param>
-void Projectile_Update(void* _proj, Game* _game, GameScreenData* _gameScreen);
+/// <param name="game">Current game</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void Projectile_Update(void* proj, Game* game, GameScreenData* gameScreen);
 
 /// <summary>
 /// Change the position of a projectile
 /// </summary>
 /// <param name="proj">Projectile to edit</param>
-/// <param name="deltatime">Deltatime of the game</param>
-void Projectile_UpdateMovement(Projectile * proj, Game* _game, GameScreenData* _gameScreen);
-
-/// <summary>
-/// Destroys a projectile and deallocate its memory
-/// </summary>
-/// <param name="projectile">Projectile to destroy</param>
-void DestroyProjectile(Projectile* projectile);
-
-/// <summary>
-/// Check if a value is within a given range
-/// </summary>
-/// <param name="value">Value to test</param>
-/// <param name="min">Minimum value</param>
-/// <param name="max">Maximum value</param>
-/// <returns></returns>
-// int InRange(int value, int min, int max);
+/// <param name="game">Current game</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void Projectile_UpdateMovement(Projectile * proj, Game* game, GameScreenData* gameScreen);

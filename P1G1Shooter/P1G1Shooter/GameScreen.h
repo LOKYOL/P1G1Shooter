@@ -110,7 +110,7 @@ char	CanCollide(Entity* entityA, Entity* entityB);
 /// </summary>
 /// <param name="game">Current gamescreen</param>
 /// <param name="entity">Entity to check</param>
-char	PopBackIfIsDead(GameScreenData* game, Entity* entity);
+char	PopBackIfIsDead(GameScreenData* game, Entity* entity, Game* gameStruct);
 
 /// <summary>
 /// Spawn entities randomly

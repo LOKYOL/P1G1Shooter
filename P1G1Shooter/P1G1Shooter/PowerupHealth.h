@@ -11,22 +11,22 @@ typedef struct PowerupHealth
 /// <summary>
 /// Initializes a health powerup
 /// </summary>
-/// <param name="_powerup">Health powerup to initialize</param>
+/// <param name="powerup">Health powerup to initialize</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void PowerupHealth_Initialize(PowerupHealth** _powerup, GameScreenData* gameScreen, double posX, double posY);
+void PowerupHealth_Initialize(PowerupHealth** powerup, GameScreenData* gameScreen, double posX, double posY);
 
 /// <summary>
-/// 
+/// Update a health powerup
 /// </summary>
-/// <param name="_powerup">Health powerup to edit</param>
+/// <param name="powerup">Health powerup to edit</param>
 /// <param name="game">Current game</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void PowerupHealth_Update(void* _powerup, Game* _game, GameScreenData* _gameScreen);
+void PowerupHealth_Update(PowerupHealth* powerup, Game* game, GameScreenData* gameScreen);
 
 /// <summary>
 /// Change the position of a health powerup
 /// </summary>
-/// <param name="_powerup">Health powerup to edit</param>
-/// <param name="_gameScreen">Datas bind to the game state</param>
+/// <param name="powerup">Health powerup to edit</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
 /// <param name="game">Current game</param>
-void PowerupHealth_UpdateMovement(PowerupHealth* _powerup, GameScreenData* _gameScreen, Game* game);
+void PowerupHealth_UpdateMovement(PowerupHealth* powerup, GameScreenData* gameScreen, Game* game);

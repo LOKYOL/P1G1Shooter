@@ -27,5 +27,4 @@ void Obstacle_Update(Obstacle* obstacle, Game* game, GameScreenData* gameScreen)
 /// </summary>
 /// <param name="obstacle">Obstacle to update</param>
 /// <param name="game">Game of obstacle</param>
-/// <param name="gameScreen">Screen to update</param>
 void Obstacle_UpdateMovement(Obstacle* obstacle, Game* game);

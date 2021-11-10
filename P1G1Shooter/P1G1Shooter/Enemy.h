@@ -22,23 +22,23 @@ typedef struct Enemy
 /// </summary>
 /// <param name="enemy">Enemy to initialize</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void Enemy_Initialize(Enemy** _enemy, GameScreenData* gameScreen);
+void Enemy_Initialize(Enemy** enemy, GameScreenData* gameScreen);
+
+/// <summary>
+/// Update an enemy
+/// </summary>
+/// <param name="enemy">Enemy to edit</param>
+/// <param name="game">Current game</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void Enemy_Update(void* enemy, Game* game, GameScreenData* gameScreen);
 
 /// <summary>
 /// Change the position of an enemy
 /// </summary>
 /// <param name="enemy">Enemy to edit</param>
-/// <param name="game">Current game</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
-
-/// <summary>
-/// Change the position of an enemy
-/// </summary>
-/// <param name="_enemy">Enemy to edit</param>
-/// <param name="_gameScreen">Datas bind to the game state</param>
 /// <param name="game">Current game</param>
-void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* game);
+void Enemy_UpdateMovement(Enemy* enemy, GameScreenData* gameScreen, Game* game);
 
 /// <summary>
 /// Give a random Int between a min and max given in parameters

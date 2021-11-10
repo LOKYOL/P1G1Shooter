@@ -36,7 +36,7 @@ typedef struct Entity
 } Entity;
 
 /// <summary>
-/// Initialize an entity with different parameters
+/// Initialize an entity with given parameters
 /// </summary>
 /// <param name="entity">Entity to initialize</param>
 /// <param name="health">Health of entity</param>
@@ -74,31 +74,25 @@ void Entity_UpdateDisplayZone(Entity* entity);
 /// <param name="damages">Damage to take</param>
 void Entity_TakeDamages(Entity* entity, int damages);
 
+/// <summary>
+/// Heal an entity
+/// </summary>
+/// <param name="entity">Entity to heal</param>
+/// <param name="heal">Amount of life recovered</param>
 void Entity_ReceiveHeal(Entity* entity, int heal);
 
 /// <summary>
 /// Check if an entity is dead
 /// </summary>
-/// <param name="entity"></param>
-/// <returns></returns>
+/// <param name="entity">Entity to check</param>
 char Entity_IsDead(Entity* entity);
-
-double Entity_GetDistance(Entity* entityA, Entity* entityB);
-
-void Entity_ClampYPosition(Entity* entity);
-
-double Entity_GetDistance(Entity* entityA, Entity* entityB);
-
-void Entity_ClampYPosition(Entity* entity);
-
-//void Entity_Free(Entity* entity);
 
 /// <summary>
 /// Check the distance between 2 entities
 /// </summary>
 /// <param name="entityA">First entity</param>
 /// <param name="entityB">Second entity</param>
-/// <returns>The distance between entity 1 and entity 2</returns>
+/// <returns>The distance between entity A and entity B</returns>
 double Entity_GetDistance(Entity* entityA, Entity* entityB);
 
 /// <summary>

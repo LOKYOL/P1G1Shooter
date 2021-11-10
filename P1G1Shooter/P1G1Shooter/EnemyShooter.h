@@ -14,12 +14,37 @@ typedef struct EnemyShooter
 	int mCurrentDirectionY;
 }EnemyShooter;
 
-void EnemyShooter_Initialize(EnemyShooter** _enemy, 
-	unsigned int _health, int _damage, int _speed,
+/// <summary>
+/// Initialize an enemy shooter with given parameters
+/// </summary>
+/// <param name="enemy">Enemy shooter to initialize</param>
+/// <param name="health">Health of enemy shooter</param>
+/// <param name="damages">Damage dealt by enemy shooter</param>
+/// <param name="speed">Speed of enemy shooter</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void EnemyShooter_Initialize(EnemyShooter** enemy, 
+	unsigned int health, int damage, int speed,
 	GameScreenData* gameScreen);
 
-void EnemyShooter_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
+/// <summary>
+/// Update an enemy shooter
+/// </summary>
+/// <param name="enemy">Enemy shooter to edit</param>
+/// <param name="game">Current game</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void EnemyShooter_Update(void* enemy, Game* game, GameScreenData* gameScreen);
 
-void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScreen, Game* game);
+/// <summary>
+/// Change the position of an enemy shooter
+/// </summary>
+/// <param name="enemy">Enemy shooter to edit</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+/// <param name="game">Current game</param>
+void EnemyShooter_UpdateMovement(EnemyShooter* enemy, GameScreenData* gameScreen, Game* game);
 
-void Enemy_Shoot(EnemyShooter* enemy, GameScreenData* _gameScreen);
+/// <summary>
+/// Makes the enemy shoot
+/// </summary>
+/// <param name="enemy">Enemy to update</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void Enemy_Shoot(EnemyShooter* enemy, GameScreenData* gameScreen);
