@@ -4,6 +4,7 @@
 #include "ConsoleDisplay.h"
 #include "../Inputs.h"
 #include "../Entity.h"
+#include "SoundManager.h"
 
 #define WINDOW_HEIGHT		120
 #define WINDOW_WIDTH		220
@@ -21,6 +22,8 @@ typedef struct Game
 	Inputs*				mInputs;
 
 	DVector*			mStateStack;
+
+	SoundManager*		mSoundManager;
 
 	double				mGameTime;
 	double				mGameDt;

@@ -2,7 +2,6 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "projectile.h"
-#include "Engine/SoundManager.h"
 
 void InitPlayer(Player** _player, GameScreenData* gameScreen)
 {
@@ -39,7 +38,7 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 
 	if (KeyPressStart(*_game->mInputs, VK_SPACE))
 	{
-		Player_Shoot(myPlayer, _gameScreen);
+		Player_Shoot(myPlayer, _gameScreen, _game);
 	}
 
 	DrawBatteryInDisplayZone(myPlayer);
@@ -91,7 +90,7 @@ void ClampPlayerPos(Player* _player, double* _posX, double* _posY)
 	}
 }
 
-void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
+void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct)
 {
 	if (_player->mShootCooldown <= 0)
 	{
@@ -106,7 +105,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 		_player->mCurrentEnergy -= SHOOT_COST;
 		_player->mReloadCooldown = RELOAD_COOLDOWN;
 
-		Play_Sound("player_shoot.wav");
+		Play_Sound("player_shoot.wav", gameStruct->mSoundManager);
 
 		if (_player->mCurrentEnergy <= 0)
 		{
