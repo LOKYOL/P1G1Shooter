@@ -105,7 +105,7 @@ void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 	_enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y, 
 	TYPE_ENEMY_PROJECTILE, _gameScreen);
 
-	PushEntity(_gameScreen, &newProjectile);
+	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 	_enemy->mShootCooldown = 5;
 }

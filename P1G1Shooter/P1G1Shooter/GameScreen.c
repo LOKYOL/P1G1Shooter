@@ -33,7 +33,7 @@ int GameScreenInit(Game* game, GameState* state)
 {
 	state->mData = malloc(sizeof(GameScreenData));
 	GameScreenData* data = state->mData;
-
+	
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, 0);
 

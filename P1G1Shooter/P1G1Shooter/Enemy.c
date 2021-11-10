@@ -52,15 +52,19 @@ void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* _gam
 		posEnemy_y = _enemy->mEntity.mPosition_y +
 			(_enemy->mEntity.mDisplayZone.mSizeY / 2) + 0.5;
 	
-	move_x = -1;
-	
-	if (posEnemy_y < posPlayer_y)
+	move_x = -abs(posPlayer_x - posEnemy_x);
+	move_y = (double)posPlayer_y - posEnemy_y;
+
+	if (abs(move_y) > abs(move_x))
 	{
-		move_y++;
-	}
-	else if(posEnemy_y > posPlayer_y)
-	{
-		move_y--;
+		if (move_y > 0)
+		{
+			move_y = -move_x;
+		}
+		else
+		{
+			move_y = move_x;
+		}
 	}
 
 	int minDistanceBase = _enemy->mEntity.mDisplayZone.mSizeX + 5;
