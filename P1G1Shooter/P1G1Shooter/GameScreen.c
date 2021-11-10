@@ -11,22 +11,26 @@
 #include <stdio.h>
 #include "Engine/SoundManager.h"
 
-const char CollisionsLayers[6] =
-{
-	//						P	O	PP	EP	E	EK
-	//	Player				0	1	0	1	1	1
-	//	Obstacles			1	0	1	1	0	1
-	//	Player Projectiles	0	1	0	1	1	1
-	//	Enemy Projectiles	1	1	1	0	0	1
-	//	Enemy				1	0	1	0	0	0
-	//	Enemy kamikaze		1	1	1	1	0	0
+#define NUM_OF_ENTITY_TYPES 7
 
-	0b010111,
-	0b101101,
-	0b010111,
-	0b111001,
-	0b101000,
-	0b111100
+const char CollisionsLayers[NUM_OF_ENTITY_TYPES] =
+{
+	//						P	O	PP	EP	E	EK	HPP
+	//	Player				0	1	0	1	1	1	1
+	//	Obstacles			1	0	1	1	0	1	0
+	//	Player Projectiles	0	1	0	1	1	1	0
+	//	Enemy Projectiles	1	1	1	0	0	1	0
+	//	Enemy				1	0	1	0	0	0	0
+	//	Enemy kamikaze		1	1	1	1	0	0	0
+	//  Health PP			1	0	0	0	0	0	0
+
+	0b0101110,
+	0b1011010,
+	0b0101110,
+	0b1110010,
+	0b1010000,
+	0b1111000,
+	0b1000000
 };
 
 int GameScreenInit(Game* game, GameState* state)
@@ -37,7 +41,7 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, 0);
 
-	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * 6);
+	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * NUM_OF_ENTITY_TYPES);
 
 	DisplayZone* curDisplayZone = NULL;
 
@@ -58,6 +62,9 @@ int GameScreenInit(Game* game, GameState* state)
 	free(curDisplayZone);
 	curDisplayZone = CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// Enemy Kamikaze Sprite
 	data->mSprites[5] = *curDisplayZone;
+	free(curDisplayZone);
+	curDisplayZone = CreateDisplayZoneFromBMP("health_pp.bmp");	// Health Powerup Sprite
+	data->mSprites[6] = *curDisplayZone;
 	free(curDisplayZone);
 
 	// Create Player
