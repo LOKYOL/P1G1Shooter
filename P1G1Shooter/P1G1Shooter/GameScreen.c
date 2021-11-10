@@ -91,7 +91,7 @@ int GameScreenClose(Game* game, GameState* state)
 	DVectorDestroy(data->mAllEntities);
 
 	free(data->mPlayer);
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
 	{
 		CloseDisplayZone(&data->mSprites[i]);
 	}
