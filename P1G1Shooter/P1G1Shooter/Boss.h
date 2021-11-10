@@ -3,15 +3,30 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
+typedef enum ContactAttackStatus
+{
+	NOT_LAUNCHED = 0,
+	ATTACKING = 1,
+	RETURNING_FROM_ATTACK = 2
+
+}ContactAttackStatus;
+
 typedef struct Boss
 {
 	Entity mEntity;
 
+	ContactAttackStatus mContactAttackStatus;
+
 	double mShootCooldown;
+	double mContactAttackCooldown;
 	double mChangeDirectionCooldown;
+
+	double mTargetedPosX;
+	double mTargetedPosY;
 
 	int mCurrentDirectionX;
 	int mCurrentDirectionY;
+
 }Boss;
 
 /// <summary>
@@ -22,29 +37,16 @@ typedef struct Boss
 /// <param name="damage">Damage dealt by boss</param>
 /// <param name="speed">Speed of boss</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void Boss_Initialize(Boss** boss,
-	unsigned int health, int damage, int speed,
+void Boss_Initialize(Boss** _boss,
+	unsigned int _health, int _damage, int _speed,
 	GameScreenData* gameScreen);
 
-/// <summary>
-/// Update an enemy shooter
-/// </summary>
-/// <param name="boss">Boss to edit</param>
-/// <param name="game">Current game</param>
-/// <param name="gameScreen">Datas bind to the game state</param>
-void Boss_Update(void* boss, Game* game, GameScreenData* gameScreen);
+void Boss_Update(void* _boss, Game* _game, GameScreenData* _gameScreen);
 
-/// <summary>
-/// Change the position of a boss
-/// </summary>
-/// <param name="boss">Boss to edit</param>
-/// <param name="gameScreen">Datas bind to the game state</param>
-/// <param name="game">Current game</param>
-void Boss_UpdateMovement(Boss* boss, GameScreenData* gameScreen, Game* game);
+void Boss_UpdateMovement(Boss* _boss, GameScreenData* _gameScreen, Game* game);
 
-/// <summary>
-/// Makes the boss shoot
-/// </summary>
-/// <param name="boss">Boss to update</param>
-/// <param name="gameScreen">Datas bind to the game state</param>
-void Boss_Shoot(Boss* boss, GameScreenData* gameScreen);
+void Boss_Shoot(Boss* _boss, GameScreenData* _gameScreen);
+
+void Boss_LaunchContactAttack(Boss* _boss, GameScreenData* _gameScreen);
+
+void Boss_ContactAttack(Boss* _boss, GameScreenData* _gameScreen)
