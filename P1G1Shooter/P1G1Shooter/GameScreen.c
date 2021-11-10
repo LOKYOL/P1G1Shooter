@@ -175,9 +175,17 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 		if ((curCompare = _list[i])	&&
 			CompareCollision(_entity, curCompare))
 		{
-			Entity_TakeDamages(_entity, curCompare->mDamages);
-			Entity_TakeDamages(curCompare, _entity->mDamages);
-
+			if (curCompare->mEntityType != TYPE_POWERUP_HEALTH)
+			{
+				Entity_TakeDamages(_entity, curCompare->mDamages);
+				Entity_TakeDamages(curCompare, _entity->mDamages);
+			}
+			else {
+				Entity_TakeDamages(curCompare, _entity->mDamages);
+				Entity_ReceiveHeal(_entity, curCompare->mDamages);
+			}
+			
+			
 			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
 			{
 				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
@@ -195,6 +203,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			{
 				Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
 			}
+
 
 			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) 
 			{
