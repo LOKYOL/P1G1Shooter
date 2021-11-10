@@ -437,7 +437,6 @@ void EndGame(Game* _game, Player* _player)
 {
 	if (Entity_IsDead(&_player->mEntity))
 	{
-		//PushEndScreen(_game);
-		PopGameState(_game);
+		PushEndScreen(_game);
 	}
 }
