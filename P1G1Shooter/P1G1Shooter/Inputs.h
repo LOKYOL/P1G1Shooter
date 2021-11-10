@@ -19,7 +19,7 @@ typedef struct Key
 
 typedef struct Inputs
 {
-	DVector list;
+	DVector* list;
 } Inputs;
 
 void InitInputs(Inputs** inputs);
@@ -38,3 +38,5 @@ char IsKeyDown(Inputs inputs, KEYCODE keycode);
 char IsKeyUp(Inputs inputs, KEYCODE keycode);
 char WasKeyPressed(Inputs inputs, KEYCODE keycode);
 char KeyPressStart(Inputs inputs, KEYCODE keycode);
+
+void DestroyInputs(Inputs* inputs);

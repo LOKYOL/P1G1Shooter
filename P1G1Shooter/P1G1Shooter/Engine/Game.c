@@ -10,8 +10,9 @@
 void	InitGame(Game* game)
 {
 	game->mScore = 0;
-	InitDisplayZone(&game->mScoreDisplayZone, 0, 0, 10, 1, 0);
-	PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score: ", 0, NO_FLAG);
+	game->mScoreDisplayZone = (DisplayZone*)malloc(sizeof(DisplayZone));
+	InitDisplayZone(game->mScoreDisplayZone, 0, 0, 10, 1, 0);
+	PrintInDisplayZone(game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score: ", 0, NO_FLAG);
 	
 
 	game->mDisplaySettings = InitDisplay
@@ -49,6 +50,13 @@ void	CloseGame(Game* game)
 	}
 
 	DVectorDestroy(game->mStateStack);
+
+	DestroyInputs(game->mInputs);
+
+	free(game->mSoundManager);
+
+	CloseDisplayZone(game->mScoreDisplayZone);
+	free(game->mScoreDisplayZone);
 
 	CloseDisplay(game->mDisplaySettings);
 }

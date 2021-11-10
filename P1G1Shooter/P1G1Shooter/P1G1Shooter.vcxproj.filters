@@ -1,157 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="EndScreen.c" />
+    <ClCompile Include="EnemyShooter.c" />
+    <ClCompile Include="Engine\bitmap.c" />
+    <ClCompile Include="Engine\ConsoleDisplay.c" />
+    <ClCompile Include="Engine\DisplayZoneDrawing.c" />
+    <ClCompile Include="Engine\DVector.c" />
+    <ClCompile Include="Engine\Game.c" />
+    <ClCompile Include="Engine\GameState.c" />
+    <ClCompile Include="Engine\ini.c" />
+    <ClCompile Include="Engine\ParamsList.c" />
+    <ClCompile Include="Engine\SoundManager.c" />
+    <ClCompile Include="Engine\TimeManagement.c" />
+    <ClCompile Include="Engine\TitleScreen.c" />
+    <ClCompile Include="Enemy.c" />
+    <ClCompile Include="Entity.c" />
+    <ClCompile Include="GameScreen.c" />
+    <ClCompile Include="Inputs.c" />
+    <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
-    <ClCompile Include="Engine\bitmap.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ConsoleDisplay.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\DisplayZoneDrawing.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\DVector.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameState.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ini.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Inputs.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\ParamsList.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\SoundManager.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\TimeManagement.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyShooter.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Entity.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Obstacle.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStruct.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Projectile.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="EndScreen.c">
-      <Filter>GameStates\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScreen.c">
-      <Filter>GameStates\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\TitleScreen.c">
-      <Filter>GameStates\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Game.c">
-      <Filter>Engine\Sources</Filter>
-    </ClCompile>
+    <ClCompile Include="PlayerStruct.c" />
+    <ClCompile Include="Projectile.c" />
+    <ClCompile Include="PowerupHealth.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\bitmap.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ConsoleDisplay.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\DisplayZoneDrawing.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\DVector.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\GameState.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ini.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Inputs.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\ParamsList.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SoundManager.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TimeManagement.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Obstacle.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Projectile.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerStruct.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="EndScreen.h">
-      <Filter>GameStates\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\TitleScreen.h">
-      <Filter>GameStates\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="GameScreen.h">
-      <Filter>GameStates\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Game.h">
-      <Filter>Engine\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyShooter.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{e9b346b9-f8fc-41c5-9ac7-b794cdfc846a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Headers">
-      <UniqueIdentifier>{8a09a8b6-bb08-4788-ab9d-4f3c6bd94daf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Sources">
-      <UniqueIdentifier>{bbf31af3-2188-48e7-b125-1445b3b3aba3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities">
-      <UniqueIdentifier>{f14e6119-9cf2-4c54-891e-f82ed178c181}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Headers">
-      <UniqueIdentifier>{5fdf7230-be2b-4364-8e11-8f8c79258010}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entities\Sources">
-      <UniqueIdentifier>{2bbaeb63-3c92-49e2-9214-63ec530d8786}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameStates">
-      <UniqueIdentifier>{ca759f6e-6be6-43c9-a1b8-1e5fcda67b5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameStates\Headers">
-      <UniqueIdentifier>{1a029e33-ba77-486a-b2bb-edfc247368b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameStates\Sources">
-      <UniqueIdentifier>{efd6aa85-28f0-4628-b583-8f887ef9e4be}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="EndScreen.h" />
+    <ClInclude Include="EnemyShooter.h" />
+    <ClInclude Include="Engine\bitmap.h" />
+    <ClInclude Include="Engine\ConsoleDisplay.h" />
+    <ClInclude Include="Engine\DisplayZoneDrawing.h" />
+    <ClInclude Include="Engine\DVector.h" />
+    <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\GameState.h" />
+    <ClInclude Include="Engine\ini.h" />
+    <ClInclude Include="Engine\ParamsList.h" />
+    <ClInclude Include="Engine\SoundManager.h" />
+    <ClInclude Include="Engine\TimeManagement.h" />
+    <ClInclude Include="Engine\TitleScreen.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameScreen.h" />
+    <ClInclude Include="Inputs.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="PlayerStruct.h" />
+    <ClInclude Include="Projectile.h" />
+    <ClInclude Include="PowerupHealth.h" />
   </ItemGroup>
 </Project>

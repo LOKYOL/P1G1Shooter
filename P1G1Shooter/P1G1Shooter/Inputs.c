@@ -9,8 +9,10 @@ void InitInputs(Inputs** inputs)
 {
 	*inputs = (Inputs*)malloc(sizeof(Inputs));
 	memset(*inputs, 0, sizeof(Inputs));
-		
-	DVectorInit(&(*inputs)->list, sizeof(Key), NULL, 0);
+	
+	(*inputs)->list = (DVector*)malloc(sizeof(DVector));
+	(*inputs)->list->mBuffer = NULL;
+	DVectorInit((*inputs)->list, sizeof(Key), NULL, 0);
 }
 
 void UpdateAllInputs(Inputs* inputs)
@@ -36,9 +38,9 @@ void UpdateInput(Inputs* inputs, KEYCODE input)
 void AddInput(Inputs* inputs, KEYCODE input)
 {
 	Key* inp = NULL;
-	for (int i = 0; i < inputs->list.mCurrentSize; i++)
+	for (int i = 0; i < inputs->list->mCurrentSize; i++)
 	{
-		inp = &(DVectorGetTyped(&inputs->list, Key, i));
+		inp = &(DVectorGetTyped(inputs->list, Key, i));
 
 		if (inp->keycode == input)
 		{
@@ -55,21 +57,21 @@ void AddInput(Inputs* inputs, KEYCODE input)
 	newInput.keycode = input;
 	newInput.keystate = KeyPressed;
 
-	DVectorPushBack(&inputs->list, &newInput);
+	DVectorPushBack(inputs->list, &newInput);
 }
 
 void DeleteInput(Inputs* inputs, KEYCODE input)
 {
 	Key* inp = NULL;
-	for (int i = 0; i < inputs->list.mCurrentSize; i++)
+	for (int i = 0; i < inputs->list->mCurrentSize; i++)
 	{
-		inp = &(DVectorGetTyped(&inputs->list, Key, i));
+		inp = &(DVectorGetTyped(inputs->list, Key, i));
 
 		if (inp->keycode == input)
 		{
 			if (inp->keystate == KeyUp)
 			{
-				DVectorErase(&inputs->list, i);
+				DVectorErase(inputs->list, i);
 			}
 			else
 			{
@@ -84,9 +86,9 @@ void PrintAllInputs(Inputs* inputs, KeyState keystate)
 {
 	Key* currentKey = NULL;
 
-	for (int i = 0; i < inputs->list.mCurrentSize; i++)
+	for (int i = 0; i < inputs->list->mCurrentSize; i++)
 	{
-		currentKey = &(DVectorGetTyped(&inputs->list, Key, i));
+		currentKey = &(DVectorGetTyped(inputs->list, Key, i));
 		if (currentKey->keystate == keystate)
 		{
 			printf("| %c |", currentKey->keycode);
@@ -97,9 +99,9 @@ void PrintAllInputs(Inputs* inputs, KeyState keystate)
 char IsKeyDown(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list.mCurrentSize; i++)
+	for (int i = 0; i < inputs.list->mCurrentSize; i++)
 	{
-		inp = DVectorGetTyped(&inputs.list, Key, i);
+		inp = DVectorGetTyped(inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate <= KeyDown)
 		{
@@ -112,9 +114,9 @@ char IsKeyDown(Inputs inputs, KEYCODE keycode)
 char IsKeyUp(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list.mCurrentSize; i++)
+	for (int i = 0; i < inputs.list->mCurrentSize; i++)
 	{
-		inp = DVectorGetTyped(&inputs.list, Key, i);
+		inp = DVectorGetTyped(inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate <= KeyDown)
 		{
@@ -127,9 +129,9 @@ char IsKeyUp(Inputs inputs, KEYCODE keycode)
 char WasKeyPressed(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list.mCurrentSize; i++)
+	for (int i = 0; i < inputs.list->mCurrentSize; i++)
 	{
-		inp = DVectorGetTyped(&inputs.list, Key, i);
+		inp = DVectorGetTyped(inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate == KeyUp)
 		{
@@ -142,9 +144,9 @@ char WasKeyPressed(Inputs inputs, KEYCODE keycode)
 char KeyPressStart(Inputs inputs, KEYCODE keycode)
 {
 	Key inp;
-	for (int i = 0; i < inputs.list.mCurrentSize; i++)
+	for (int i = 0; i < inputs.list->mCurrentSize; i++)
 	{
-		inp = DVectorGetTyped(&inputs.list, Key, i);
+		inp = DVectorGetTyped(inputs.list, Key, i);
 
 		if (inp.keycode == keycode && inp.keystate == KeyPressed)
 		{
@@ -152,4 +154,10 @@ char KeyPressStart(Inputs inputs, KEYCODE keycode)
 		}
 	}
 	return 0;
+}
+
+void DestroyInputs(Inputs* _inputs)
+{
+	DVectorDestroy(_inputs->list);
+	free(_inputs);
 }

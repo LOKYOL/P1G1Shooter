@@ -10,7 +10,7 @@
 
 typedef struct EndScreenData
 {
-	DisplayZone mCredit;
+	DisplayZone* mCredit;
 
 }EndScreenData;
 

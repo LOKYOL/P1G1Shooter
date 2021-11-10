@@ -16,25 +16,24 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 	}
 
 
-	game->mScoreDisplayZone.mPosX = WINDOW_WIDTH/2-4;
-	game->mScoreDisplayZone.mPosY = WINDOW_HEIGHT/2;
+	game->mScoreDisplayZone->mPosX = WINDOW_WIDTH/2-4;
+	game->mScoreDisplayZone->mPosY = WINDOW_HEIGHT/2;
 	PrintInDisplayZone(&game->mScoreDisplayZone, MAGENTA, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 
 	state->mData = malloc(sizeof(EndScreenData));
 
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
-	DisplayZone* endDisplayZone = CreateDisplayZoneFromBMP("gameover.bmp");
-	datascreen->mCredit = *endDisplayZone;
-	free(endDisplayZone);
+	
+	datascreen->mCredit = CreateDisplayZoneFromBMP("gameover.bmp");
 	
 	PrintInDisplayZone(
-		&datascreen->mCredit, 
+		datascreen->mCredit, 
 		MAGENTA, BLACK, 
 		WINDOW_WIDTH / 2-4, WINDOW_HEIGHT / 2 - 2, 
 		"GAME OVER", 0, NO_FLAG);
 
 	PrintInDisplayZone(
-		&datascreen->mCredit,
+		datascreen->mCredit,
 		WHITE, BLACK,
 		180, 110,
 		"Press return to continue...", 0, NO_FLAG);
@@ -45,7 +44,7 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 int EndScreenClose(struct Game* game, struct GameState* state)
 {
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
-	CloseDisplayZone(&datascreen->mCredit);
+	CloseDisplayZone(datascreen->mCredit);
 
 	free(state->mData);
 
@@ -56,13 +55,13 @@ int EndScreenClose(struct Game* game, struct GameState* state)
 int EndScreenUpdate(struct Game* game, struct GameState* state)
 {
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
-	FlushDisplayZone(game->mDisplaySettings, &datascreen->mCredit);
-	FlushDisplayZone(game->mDisplaySettings, &game->mScoreDisplayZone);
+	FlushDisplayZone(game->mDisplaySettings, datascreen->mCredit);
+	FlushDisplayZone(game->mDisplaySettings, game->mScoreDisplayZone);
 	if (KeyPressStart(*game->mInputs, VK_RETURN))
 	{
 		game->mScore = 0;
-		game->mScoreDisplayZone.mPosX = 0;
-		game->mScoreDisplayZone.mPosY = 0;
+		game->mScoreDisplayZone->mPosX = 0;
+		game->mScoreDisplayZone->mPosY = 0;
 		PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score:      ", 0, NO_FLAG);
 		PopGameState(game);
 		PopGameState(game);
