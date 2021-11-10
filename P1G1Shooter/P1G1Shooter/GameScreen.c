@@ -84,6 +84,11 @@ int GameScreenClose(Game* game, GameState* state)
 	DVectorDestroy(data->mAllEntities);
 
 	free(data->mPlayer);
+	for (int i = 0; i < 6; i++)
+	{
+		CloseDisplayZone(&data->mSprites[i]);
+	}
+
 	free(data->mSprites);
 
 	free(state->mData);
@@ -124,7 +129,6 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 	{
 		if ((curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i)) == _entity)
 		{
-			CloseDisplayZone(&_entity->mDisplayZone);
 			free(_entity);
 			DVectorErase(_game->mAllEntities, i);
 			return;
