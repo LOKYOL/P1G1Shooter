@@ -181,29 +181,29 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
 			{
-				Play_Sound("enemy_hit.wav");
+				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
 			} 
 			else if (curCompare->mHealth > 0 && (curCompare->mEntityType == TYPE_OBSTACLE || curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
 			{
-				Play_Sound("enemy_hit.wav");
+				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
 			}
 
 			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0) 
 			{
-				Play_Sound("player_enemyhit.wav");
+				Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
 			} 
 			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0) 
 			{
-				Play_Sound("player_enemyhit.wav");
+				Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
 			}
 
 			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) 
 			{
-				Play_Sound("player_die.wav");
+				Play_Sound("player_die.wav", gameStruct->mSoundManager);
 			}
 			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth == 0) 
 			{
-				Play_Sound("player_die.wav");
+				Play_Sound("player_die.wav", gameStruct->mSoundManager);
 			}
 
 			if (_entity->mHealth == 0 && _entity->mEntityType == 2)
@@ -297,14 +297,14 @@ char CanCollide(Entity* _entityA, Entity* _entityB)
 	return 0;
 }
 
-char PopBackIfIsDead(GameScreenData* _game, Entity* _entity)
+char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
 {
 	char res = Entity_IsDead(_entity);
 	if (res)
 	{
 		if (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE) 
 		{
-			Play_Sound("enemy_die.wav");
+			Play_Sound("enemy_die.wav", gameStruct->mSoundManager);
 		}
 
 		PopEntity(_game, _entity);
@@ -379,7 +379,7 @@ void UpdateEntity(Game* game, GameScreenData* data)
 			curEntity->mUpdate((void*)curEntity, game, data);
 		}
 
-		if (PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i)))
+		if (PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i), game))
 		{
 			i--;
 		}
