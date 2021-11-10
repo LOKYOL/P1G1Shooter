@@ -21,6 +21,7 @@ typedef struct Enemy
 /// Initializes an enemy
 /// </summary>
 /// <param name="enemy">Enemy to initialize</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
 void Enemy_Initialize(Enemy** _enemy, GameScreenData* gameScreen);
 
 /// <summary>
@@ -36,6 +37,7 @@ void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen);
 /// </summary>
 /// <param name="_enemy">Enemy to edit</param>
 /// <param name="_gameScreen">Datas bind to the game state</param>
+/// <param name="game">Current game</param>
 void Enemy_UpdateMovement(Enemy* _enemy, GameScreenData* _gameScreen, Game* game);
 
 /// <summary>

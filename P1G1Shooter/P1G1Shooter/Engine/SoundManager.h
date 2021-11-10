@@ -13,7 +13,7 @@ typedef struct SoundManager {
 	Sound mSounds[6];
 } SoundManager;
 
-void Play_Sound(char* SoundName);
+void Play_Sound(char* SoundName, SoundManager* _sound);
 void Play_Music(char* MusicName);
 void Play_MusicThread(char* MusicName);
 void Play_SoundThread(char* SoundName);
