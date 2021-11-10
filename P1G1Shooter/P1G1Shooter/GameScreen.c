@@ -24,7 +24,7 @@ const char CollisionsLayers[NUM_OF_ENTITY_TYPES] =
 	//	Enemy kamikaze		1	1	1	1	0	0	0
 	//  Health PP			1	0	0	0	0	0	0
 
-	0b0101110,
+	0b0101111,
 	0b1011010,
 	0b0101110,
 	0b1110010,
@@ -304,7 +304,7 @@ char CanCollide(Entity* _entityA, Entity* _entityB)
 	if (_entityA->mEntityType >= 0 && _entityB->mEntityType >= 0)
 	{
 		char	layerA = CollisionsLayers[_entityA->mEntityType];
-		return layerA & ((1 << NUM_OF_ENTITY_TYPES) >> _entityB->mEntityType);
+		return layerA & ((1 << (NUM_OF_ENTITY_TYPES - 1)) >> _entityB->mEntityType);
 	}
 	return 0;
 }
