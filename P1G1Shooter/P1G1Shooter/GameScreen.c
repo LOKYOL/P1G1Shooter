@@ -197,11 +197,21 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0) 
 			{
-				Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
+				if (curCompare->mEntityType == TYPE_POWERUP_HEALTH) {
+					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
+				}
+				else {
+					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
+				}
 			} 
 			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0) 
 			{
-				Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
+				if (_entity->mEntityType == TYPE_POWERUP_HEALTH) {
+					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
+				}
+				else {
+					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
+				}
 			}
 
 
