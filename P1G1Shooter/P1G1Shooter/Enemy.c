@@ -18,8 +18,6 @@ void Enemy_Initialize(Enemy** _enemy, GameScreenData* gameScreen)
 	Entity_Initialize(&newEnemy->mEntity, health, damages, speed, Enemy_Update);
 
 	newEnemy->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_ENEMY_KAMIKAZE];
-	newEnemy->mEntity.mDisplayZone.mPosY = 
-		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
 
 	newEnemy->mEntity.mDisplayZone.mPosY =
 		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
