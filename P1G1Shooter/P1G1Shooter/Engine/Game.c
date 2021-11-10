@@ -39,8 +39,6 @@ void	InitGame(Game* game)
 	InitSoundManager(game->mSoundManager);
 
 	PushTitleScreen(game);
-	//PushEN
-	//PushGameScreen(game);
 }
 
 void	CloseGame(Game* game)

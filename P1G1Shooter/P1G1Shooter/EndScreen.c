@@ -6,13 +6,9 @@
 
 int EndScreenInit(struct Game* game, struct GameState* state)
 {
-	char num[10];
-
-	_itoa_s(game->mScore, num, 10, 10);
-
 	char totalScore[18] = "Score: ";
 
-	snprintf(totalScore, 17, "Score : %d", num);
+	snprintf(totalScore, 17, "Score : %d", game->mScore);
 
 	game->mScoreDisplayZone->mPosX = WINDOW_WIDTH/2-4;
 	game->mScoreDisplayZone->mPosY = WINDOW_HEIGHT/2;
