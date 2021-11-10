@@ -62,6 +62,12 @@
     <ClCompile Include="Engine\Game.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="PowerupHealth.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Boss.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h">
@@ -122,6 +128,12 @@
       <Filter>Engine\Headers</Filter>
     </ClInclude>
     <ClInclude Include="EnemyShooter.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupHealth.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Boss.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
   </ItemGroup>

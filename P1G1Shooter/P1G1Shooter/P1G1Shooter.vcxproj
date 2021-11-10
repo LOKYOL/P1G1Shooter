@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Boss.c" />
     <ClCompile Include="EndScreen.c" />
     <ClCompile Include="EnemyShooter.c" />
     <ClCompile Include="Engine\bitmap.c" />
@@ -43,6 +44,7 @@
     <ClCompile Include="PowerupHealth.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="EndScreen.h" />
     <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="Engine\bitmap.h" />
