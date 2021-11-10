@@ -18,7 +18,7 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
 	
-	datascreen->mCredit = CreateDisplayZoneFromBMP("gameover.bmp");
+	datascreen->mCredit = CreateDisplayZoneFromBMP("Sprites/gameover.bmp");
 	
 	PrintInDisplayZone(
 		datascreen->mCredit, 

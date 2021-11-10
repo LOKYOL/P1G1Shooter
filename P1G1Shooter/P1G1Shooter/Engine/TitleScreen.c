@@ -25,7 +25,7 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 
 	//InitDisplayZone(datascreen->mKeybindsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 	
-	datascreen->mKeybindsZone = CreateDisplayZoneFromBMP("keybinds.bmp");
+	datascreen->mKeybindsZone = CreateDisplayZoneFromBMP("Sprites/keybinds.bmp");
 	datascreen->mKeybindsZone->mPosX = WINDOW_WIDTH / 2 - 40;
 	datascreen->mKeybindsZone->mPosY = WINDOW_HEIGHT - 40;
 
