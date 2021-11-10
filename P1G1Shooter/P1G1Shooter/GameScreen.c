@@ -91,7 +91,12 @@ int GameScreenClose(Game* game, GameState* state)
 	
 	DVectorDestroy(data->mAllEntities);
 
+	CloseDisplayZone(data->mPlayer->mChargeZone);
+	CloseDisplayZone(data->mPlayer->mHealthZone);
+	free(data->mPlayer->mChargeZone);
+	free(data->mPlayer->mHealthZone);
 	free(data->mPlayer);
+
 	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
 	{
 		CloseDisplayZone(&data->mSprites[i]);
@@ -144,25 +149,6 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 	}
 }
 
-DVector* GetAllEntityOfType(GameScreenData* _game, EntityType _type)
-{
-	DVector* list = DVectorCreate();
-	DVectorInit(list, sizeof(void*), 0, 0);
-
-	Entity* curEntity = NULL;
-	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
-	{
-		curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i);
-
-		if (curEntity->mEntityType == _type)
-		{
-			DVectorPushBack(list, &curEntity);
-		}
-	}
-
-	return list;
-}
-
 void HandleCollision(DVector* _list, Game* gameStruct)
 {
 	Entity* curEntity = NULL;
@@ -189,9 +175,17 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 		if ((curCompare = _list[i])	&&
 			CompareCollision(_entity, curCompare))
 		{
-			Entity_TakeDamages(_entity, curCompare->mDamages);
-			Entity_TakeDamages(curCompare, _entity->mDamages);
-
+			if (curCompare->mEntityType != TYPE_POWERUP_HEALTH)
+			{
+				Entity_TakeDamages(_entity, curCompare->mDamages);
+				Entity_TakeDamages(curCompare, _entity->mDamages);
+			}
+			else {
+				Entity_TakeDamages(curCompare, _entity->mDamages);
+				Entity_ReceiveHeal(_entity, curCompare->mDamages);
+			}
+			
+			
 			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
 			{
 				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
@@ -209,6 +203,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			{
 				Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
 			}
+
 
 			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) 
 			{
@@ -442,6 +437,7 @@ void EndGame(Game* _game, Player* _player)
 {
 	if (Entity_IsDead(&_player->mEntity))
 	{
-		PushEndScreen(_game);
+		//PushEndScreen(_game);
+		PopGameState(_game);
 	}
 }

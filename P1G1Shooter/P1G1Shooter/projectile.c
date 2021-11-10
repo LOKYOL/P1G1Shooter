@@ -11,14 +11,6 @@ void Proj_Initialize(Projectile** _proj, int speed, int direction, double posPla
 
 	Entity_Initialize(&(*_proj)->mEntity, 1, 1, WINDOW_WIDTH / 4, Projectile_Update);
 
-	InitDisplayZone // TEMPORARY
-	(
-		&newProjectile->mEntity.mDisplayZone,
-		(posPlayer_x + 3),
-		posPlayer_y,
-		2, 2, 1
-	);
-
 	newProjectile->mEntity.mDisplayZone = _gameScreen->mSprites[_type];
 
 	newProjectile->mEntity.mPosition_x = (posPlayer_x + 8);

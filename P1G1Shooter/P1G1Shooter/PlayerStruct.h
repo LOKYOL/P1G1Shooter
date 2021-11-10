@@ -16,8 +16,8 @@ typedef struct Player
 {
 	Entity mEntity;
 
-	DisplayZone	mChargeZone;
-	DisplayZone	mHealthZone;
+	DisplayZone*	mChargeZone;
+	DisplayZone*	mHealthZone;
 
 	float mCurrentEnergy;
 	float mReloadCooldown;

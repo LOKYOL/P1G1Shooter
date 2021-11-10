@@ -10,15 +10,16 @@ void InitPlayer(Player** _player, GameScreenData* gameScreen)
 
 	*_player = newPlayer;
 
-	InitDisplayZone(&newPlayer->mEntity.mDisplayZone, 5, WINDOW_HEIGHT/2, 2, 2, 1);
 	newPlayer->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_PLAYER];
 
 	Entity_Initialize(&newPlayer->mEntity, 3, 1, WINDOW_HEIGHT / 3, Player_Update);
 
-	InitDisplayZone(&newPlayer->mChargeZone, 0, 0, 5, 2, 1);
+	newPlayer->mChargeZone = malloc(sizeof(DisplayZone));
+	InitDisplayZone(newPlayer->mChargeZone, 0, 0, 5, 2, 1);
 	DrawBatteryInDisplayZone(newPlayer);
 
-	InitDisplayZone(&newPlayer->mHealthZone, 0, 0, 4, 1, 1);
+	newPlayer->mHealthZone = malloc(sizeof(DisplayZone));
+	InitDisplayZone(newPlayer->mHealthZone, 0, 0, 4, 1, 1);
 	DrawHealthInDisplayZone(newPlayer);
 
 	newPlayer->mEntity.mPosition_x = 5;
@@ -43,8 +44,8 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 
 	DrawBatteryInDisplayZone(myPlayer);
 	DrawHealthInDisplayZone(myPlayer);
-	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mChargeZone);
-	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mHealthZone);
+	FlushDisplayZone(_game->mDisplaySettings, myPlayer->mChargeZone);
+	FlushDisplayZone(_game->mDisplaySettings, myPlayer->mHealthZone);
 }
 
 void Player_UpdateMovement(Player* _player, Game* _game)
@@ -117,12 +118,12 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 
 void UpdateBatteryDisplayZonePosition(Player* _player)
 {
-	MoveDisplayZone(&_player->mChargeZone, 0, _player->mEntity.mPosition_y + 1);
+	MoveDisplayZone(_player->mChargeZone, 0, _player->mEntity.mPosition_y + 1);
 }
 
 void UpdateHealthDisplayZonePosition(Player* _player)
 {
-	MoveDisplayZone(&_player->mHealthZone, 
+	MoveDisplayZone(_player->mHealthZone, 
 		_player->mEntity.mPosition_x + 5, 
 		_player->mEntity.mPosition_y + 3);
 }
@@ -138,7 +139,7 @@ const ConsoleColors ChargeColors[5] =
 
 void DrawBatteryInDisplayZone(Player* _player)
 {
-	DisplayCharacter* buffer = _player->mChargeZone.mBuffer;
+	DisplayCharacter* buffer = _player->mChargeZone->mBuffer;
 
 	ConsoleColors edgeColor =  
 		(_player->mShootCooldown > 0) ? 
@@ -173,7 +174,7 @@ void DrawBatteryInDisplayZone(Player* _player)
 
 void DrawHealthInDisplayZone(Player* _player)
 {
-	DisplayCharacter* buffer = _player->mHealthZone.mBuffer;
+	DisplayCharacter* buffer = _player->mHealthZone->mBuffer;
 
 	buffer[0] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
 	if (_player->mEntity.mHealth > 1)

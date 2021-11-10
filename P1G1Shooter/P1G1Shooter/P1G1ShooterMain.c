@@ -3,12 +3,12 @@
 #include <time.h>
 #include "Engine/Game.h"
 
-#include <crtdbg.h>
+//#include <crtdbg.h>
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	//_CrtSetBreakAlloc(586);
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetBreakAlloc(x);
 
 	Game	game;
 	InitGame(&game);
