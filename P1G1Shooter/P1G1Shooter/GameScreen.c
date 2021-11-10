@@ -262,7 +262,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 				snprintf(totalScore, 17, "Score: %d", gameStruct->mScore);
 
-  				PrintInDisplayZone(&gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+  				PrintInDisplayZone(gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
 
 		}
