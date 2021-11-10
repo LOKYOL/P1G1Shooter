@@ -15,7 +15,7 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy,
 	*_enemy = newEnemy;
 
 	Entity_Initialize(&newEnemy->mEntity, _health, _damage, _speed, EnemyShooter_Update);
-
+	
 	newEnemy->mEntity.mDisplayZone = _gameScreen->mSprites[TYPE_ENEMY];
 
 	newEnemy->mEntity.mDisplayZone.mPosY =

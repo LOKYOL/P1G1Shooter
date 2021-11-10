@@ -91,7 +91,12 @@ int GameScreenClose(Game* game, GameState* state)
 	
 	DVectorDestroy(data->mAllEntities);
 
+	CloseDisplayZone(data->mPlayer->mChargeZone);
+	CloseDisplayZone(data->mPlayer->mHealthZone);
+	free(data->mPlayer->mChargeZone);
+	free(data->mPlayer->mHealthZone);
 	free(data->mPlayer);
+
 	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
 	{
 		CloseDisplayZone(&data->mSprites[i]);
@@ -142,25 +147,6 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 			return;
 		}
 	}
-}
-
-DVector* GetAllEntityOfType(GameScreenData* _game, EntityType _type)
-{
-	DVector* list = DVectorCreate();
-	DVectorInit(list, sizeof(void*), 0, 0);
-
-	Entity* curEntity = NULL;
-	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
-	{
-		curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i);
-
-		if (curEntity->mEntityType == _type)
-		{
-			DVectorPushBack(list, &curEntity);
-		}
-	}
-
-	return list;
 }
 
 void HandleCollision(DVector* _list, Game* gameStruct)
@@ -442,6 +428,7 @@ void EndGame(Game* _game, Player* _player)
 {
 	if (Entity_IsDead(&_player->mEntity))
 	{
-		PushEndScreen(_game);
+		//PushEndScreen(_game);
+		PopGameState(_game);
 	}
 }

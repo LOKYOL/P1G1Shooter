@@ -65,14 +65,6 @@ void	PushEntity(GameScreenData* game, Entity** entity);
 void	PopEntity(GameScreenData* game, Entity* entity);
 
 /// <summary>
-/// Get a vector of all entities of a given type
-/// </summary>
-/// <param name="game">Current game</param>
-/// <param name="type">Entity type to search</param>
-/// <returns>Vector of all entities with the given type</returns>
-DVector* GetAllEntityOfType(GameScreenData* game, EntityType type);
-
-/// <summary>
 /// Check collisions between all entities from vector
 /// </summary>
 /// <param name="list">Vector of all entities</param>
