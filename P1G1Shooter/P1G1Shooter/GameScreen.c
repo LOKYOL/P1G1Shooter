@@ -120,7 +120,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 
 	EndGame(game, data->mPlayer);
 	
-	FlushDisplayZone(game->mDisplaySettings, &game->mScoreDisplayZone);
+	FlushDisplayZone(game->mDisplaySettings, game->mScoreDisplayZone);
 
 	return 0;
 }
