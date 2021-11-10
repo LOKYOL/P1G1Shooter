@@ -34,7 +34,6 @@ DVector* DVectorDestroy(DVector* darray)
 	if (darray)
 	{
 		DVectorReset(darray);
-		free(darray->mBuffer);
 		free(darray);
 	}
 	return NULL;

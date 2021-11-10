@@ -40,7 +40,6 @@
     <ClCompile Include="P1G1ShooterMain.c" />
     <ClCompile Include="PlayerStruct.c" />
     <ClCompile Include="Projectile.c" />
-    <ClCompile Include="PowerupHealth.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EndScreen.h" />
@@ -58,7 +57,6 @@
     <ClInclude Include="Engine\TitleScreen.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="GameScreen.h" />
-    <ClInclude Include="PowerupHealth.h" />
     <ClInclude Include="Inputs.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Obstacle.h" />

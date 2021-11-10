@@ -13,7 +13,7 @@ typedef struct PowerupHealth
 /// </summary>
 /// <param name="_powerup">Health powerup to initialize</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void PowerupHealth_Initialize(PowerupHealth** _powerup, GameScreenData* gameScreen, double posX, double posY);
+void PowerupHealth_Initialize(PowerupHealth** _powerup, GameScreenData* gameScreen);
 
 /// <summary>
 /// 

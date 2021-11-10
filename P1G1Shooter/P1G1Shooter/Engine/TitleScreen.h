@@ -11,12 +11,13 @@
 
 typedef struct TitleScreenData
 {
+	DisplayZone	mZoneTitre;
 
-	DisplayZone* mOptionsZone;
+	DisplayZone mOptionsZone;
 
-	DisplayZone* mKeybindsZone;
+	DisplayZone mKeybindsZone;
 
-	DisplayZone* mTitleAsciiZone;
+	DisplayZone mTitleAsciiZone;
 	char** mOptions;
 	int mNbOptions;
 

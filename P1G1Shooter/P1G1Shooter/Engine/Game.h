@@ -25,13 +25,11 @@ typedef struct Game
 
 	SoundManager*		mSoundManager;
 
-	DisplayZone* mScoreDisplayZone;
-
 	double				mGameTime;
 	double				mGameDt;
 
 	int					mScore;
-	
+	DisplayZone			mScoreDisplayZone;
 }Game;
 
 /// <summary>
