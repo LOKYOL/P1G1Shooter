@@ -45,11 +45,10 @@ int TitleScreenClose(struct Game* game, struct GameState* state)
 {
 	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
 	CloseDisplayZone(&datascreen->mZoneTitre);
+	CloseDisplayZone(&datascreen->mOptionsZone);
+	CloseDisplayZone(&datascreen->mKeybindsZone);
+	CloseDisplayZone(&datascreen->mTitleAsciiZone);
 
-	/*for (int i = 0; i < datascreen->mNbOptions; i++)
-	{
-		free((datascreen->mOptions[i]));
-	}*/
 	free(datascreen->mOptions);
 
 	free(state->mData);
