@@ -10,7 +10,7 @@ void PowerupHealth_Initialize(PowerupHealth** _powerup, GameScreenData* gameScre
 
 	*_powerup = newPowerup;
 
-	Entity_Initialize(&newPowerup->mEntity, 1, 0, 40, PowerupHealth_Update);
+	Entity_Initialize(&newPowerup->mEntity, 1, 0, 2, PowerupHealth_Update);
 
 	newPowerup->mEntity.mDisplayZone = gameScreen->mSprites[TYPE_POWERUP_HEALTH];
 	newPowerup->mEntity.mDisplayZone.mPosX = posX;

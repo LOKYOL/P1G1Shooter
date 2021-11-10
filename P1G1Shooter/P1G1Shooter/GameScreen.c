@@ -7,6 +7,7 @@
 #include "Projectile.h"
 #include "Enemy.h"
 #include "EnemyShooter.h"
+#include "PowerupHealth.h"
 #include "EndScreen.h"
 #include <stdio.h>
 #include "Engine/SoundManager.h"
@@ -24,7 +25,7 @@ const char CollisionsLayers[NUM_OF_ENTITY_TYPES] =
 	//	Enemy kamikaze		1	1	1	1	0	0	0
 	//  Health PP			1	0	0	0	0	0	0
 
-	0b0101110,
+	0b0101111,
 	0b1011010,
 	0b0101110,
 	0b1110010,
@@ -304,24 +305,9 @@ char CanCollide(Entity* _entityA, Entity* _entityB)
 	if (_entityA->mEntityType >= 0 && _entityB->mEntityType >= 0)
 	{
 		char	layerA = CollisionsLayers[_entityA->mEntityType];
-		return layerA & (32 >> _entityB->mEntityType);
+		return layerA & ((1 << (NUM_OF_ENTITY_TYPES - 1)) >> _entityB->mEntityType);
 	}
 	return 0;
-}
-
-char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
-{
-	char res = Entity_IsDead(_entity);
-	if (res)
-	{
-		if (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE) 
-		{
-			Play_Sound("enemy_die.wav", gameStruct->mSoundManager);
-		}
-
-		PopEntity(_game, _entity);
-	}
-	return res;
 }
 
 void SpawnEntity(Game* game, GameScreenData* _data)
@@ -374,6 +360,36 @@ void SpawnEnemyKamikaze(GameScreenData* _game)
 	Enemy* newEnemy = NULL;
 	Enemy_Initialize(&newEnemy, _game);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
+}
+
+void SpawnHealthPowerup(GameScreenData* _game, double posX, double posY)
+{
+	PowerupHealth* newPowerup = NULL;
+	PowerupHealth_Initialize(&newPowerup, _game, posX, posY);
+	DVectorPushBack(_game->mAllEntities, &newPowerup);
+}
+
+char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
+{
+	char res = Entity_IsDead(_entity);
+	if (res)
+	{
+		if (_entity->mEntityType == TYPE_OBSTACLE) 
+		{
+			Play_Sound("enemy_die.wav", gameStruct->mSoundManager);
+		}
+		else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE || _entity->mEntityType == TYPE_ENEMY)
+		{
+			Play_Sound("enemy_die.wav", gameStruct->mSoundManager);
+			if (RandomInt(1,20) == 20) // 5% de chance de spawner un bonus
+			{
+				SpawnHealthPowerup(_game, _entity->mPosition_x, _entity->mPosition_y);
+			}
+		}
+
+		PopEntity(_game, _entity);
+	}
+	return res;
 }
 
 void UpdateEntity(Game* game, GameScreenData* data)
