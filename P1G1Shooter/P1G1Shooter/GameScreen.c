@@ -17,7 +17,7 @@
 const char CollisionsLayers[NUM_OF_ENTITY_TYPES] =
 {
 	//						P	O	PP	EP	E	EK	HPP
-	//	Player				0	1	0	1	1	1	0
+	//	Player				0	1	0	1	1	1	1
 	//	Obstacles			1	0	1	1	0	1	0
 	//	Player Projectiles	0	1	0	1	1	1	0
 	//	Enemy Projectiles	1	1	1	0	0	1	0
