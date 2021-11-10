@@ -1,6 +1,7 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
+#include <stdio.h>
 
 
 int EndScreenInit(struct Game* game, struct GameState* state)
@@ -11,14 +12,11 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 
 	char totalScore[18] = "Score: ";
 
-	for (int i = 7; i < 18; i++) {
-		totalScore[i] = num[i - 7];
-	}
-
+	snprintf(totalScore, 17, "Score : %d", num);
 
 	game->mScoreDisplayZone->mPosX = WINDOW_WIDTH/2-4;
 	game->mScoreDisplayZone->mPosY = WINDOW_HEIGHT/2;
-	PrintInDisplayZone(&game->mScoreDisplayZone, MAGENTA, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+	PrintInDisplayZone(game->mScoreDisplayZone, MAGENTA, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 
 	state->mData = malloc(sizeof(EndScreenData));
 
@@ -62,7 +60,7 @@ int EndScreenUpdate(struct Game* game, struct GameState* state)
 		game->mScore = 0;
 		game->mScoreDisplayZone->mPosX = 0;
 		game->mScoreDisplayZone->mPosY = 0;
-		PrintInDisplayZone(&game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score:      ", 0, NO_FLAG);
+		PrintInDisplayZone(game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score:      ", 0, NO_FLAG);
 		PopGameState(game);
 		PopGameState(game);
 	}
