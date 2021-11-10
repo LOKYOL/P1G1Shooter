@@ -101,7 +101,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen)
 		_player->mEntity.mPosition_y, 
 		TYPE_PLAYER_PROJECTILE, _gameScreen);
 
-		PushEntity(_gameScreen, &newProjectile);
+		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 		_player->mCurrentEnergy -= SHOOT_COST;
 		_player->mReloadCooldown = RELOAD_COOLDOWN;

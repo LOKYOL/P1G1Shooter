@@ -124,7 +124,8 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 	{
 		if ((curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i)) == _entity)
 		{
-			free(curEntity);
+			CloseDisplayZone(&_entity->mDisplayZone);
+			free(_entity);
 			DVectorErase(_game->mAllEntities, i);
 			return;
 		}
