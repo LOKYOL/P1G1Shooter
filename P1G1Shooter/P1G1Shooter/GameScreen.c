@@ -46,25 +46,25 @@ int GameScreenInit(Game* game, GameState* state)
 
 	DisplayZone* curDisplayZone = NULL;
 
-	curDisplayZone = CreateDisplayZoneFromBMP("submarine.bmp");		// Player Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/submarine.bmp");		// Player Sprite
 	data->mSprites[0] = *curDisplayZone;
 	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("sealion.bmp");	// OBstacles Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/sealion.bmp");	// OBstacles Sprite
 	data->mSprites[1] = *curDisplayZone;
 	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("bubulle.bmp");	// Player Projectile Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/bubulle.bmp");	// Player Projectile Sprite
 	data->mSprites[2] = *curDisplayZone;
 	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("bubulle.bmp");	// Enemy Projectile Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/bubulle.bmp");	// Enemy Projectile Sprite
 	data->mSprites[3] = *curDisplayZone;
 	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("enemy.bmp");		// Enemy Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/enemy.bmp");		// Enemy Sprite
 	data->mSprites[4] = *curDisplayZone;
 	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("kamikaze_nrvtest.bmp");	// Enemy Kamikaze Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/kamikaze_nrv.bmp");	// Enemy Kamikaze Sprite
 	data->mSprites[5] = *curDisplayZone;
 	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("health_pp.bmp");	// Health Powerup Sprite
+	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/health_pp.bmp");	// Health Powerup Sprite
 	data->mSprites[6] = *curDisplayZone;
 	free(curDisplayZone);
 
