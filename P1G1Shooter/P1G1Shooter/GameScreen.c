@@ -304,7 +304,7 @@ char CanCollide(Entity* _entityA, Entity* _entityB)
 	if (_entityA->mEntityType >= 0 && _entityB->mEntityType >= 0)
 	{
 		char	layerA = CollisionsLayers[_entityA->mEntityType];
-		return layerA & (32 >> _entityB->mEntityType);
+		return layerA & ((1 << NUM_OF_ENTITY_TYPES) >> _entityB->mEntityType);
 	}
 	return 0;
 }
