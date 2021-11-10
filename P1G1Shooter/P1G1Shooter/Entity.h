@@ -74,6 +74,8 @@ void Entity_UpdateDisplayZone(Entity* entity);
 /// <param name="damages">Damage to take</param>
 void Entity_TakeDamages(Entity* entity, int damages);
 
+void Entity_ReceiveHeal(Entity* entity, int heal);
+
 /// <summary>
 /// Check if an entity is dead
 /// </summary>

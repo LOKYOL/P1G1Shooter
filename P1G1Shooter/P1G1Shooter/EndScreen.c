@@ -23,7 +23,9 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 	state->mData = malloc(sizeof(EndScreenData));
 
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
-	datascreen->mCredit = *(CreateDisplayZoneFromBMP("gameover.bmp"));
+	DisplayZone* endDisplayZone = CreateDisplayZoneFromBMP("gameover.bmp");
+	datascreen->mCredit = *endDisplayZone;
+	free(endDisplayZone);
 	
 	PrintInDisplayZone(
 		&datascreen->mCredit, 

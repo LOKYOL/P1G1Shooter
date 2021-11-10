@@ -56,6 +56,16 @@ void Entity_TakeDamages(Entity* _entity, int _damages)
 	}
 }
 
+void Entity_ReceiveHeal(Entity* _entity, int _heal)
+{
+	_entity->mHealth += _heal;
+
+	if (_entity->mHealth > 3)
+	{
+		_entity->mHealth = 3;
+	}
+}
+
 char Entity_IsDead(Entity* _entity)
 {
 	return _entity->mHealth < 1;
