@@ -67,6 +67,7 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 		{
 		case 0:
 			PushGamescreen(game);
+			Play_Sound("new_game.wav", game->mSoundManager);
 			break;
 		case 1:
 			return 1;
@@ -82,11 +83,13 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 		{
 			selector++;
 			selector %= datascreen->mNbOptions;
+			Play_Sound("click.wav", game->mSoundManager);
 		}
 		if (KeyPressStart(*game->mInputs, VK_UP))
 		{
 			selector--;
 			selector = (selector + datascreen->mNbOptions) % datascreen->mNbOptions;
+			Play_Sound("click.wav", game->mSoundManager);
 		}
 		datascreen->mCurrentSelector = selector;
 
