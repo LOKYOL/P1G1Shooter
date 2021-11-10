@@ -1,6 +1,7 @@
 #include "SoundManager.h"
 
-int FindSoundPriority(char* SoundName, SoundManager* _sound) {
+int FindSoundPriority(char* SoundName, SoundManager* _sound) 
+{
     int n = 3;
 
     for (int i = 0; i < 6; i++) {
@@ -19,7 +20,7 @@ void Play_Sound(char* SoundName, SoundManager* _sound)
 
     if (_sound->mSound == NULL) 
     {
-        Sound* newSound;
+        Sound* newSound = (Sound*)malloc(sizeof(Sound));
         newSound->mSoundPath = SoundName;
         newSound->mPriority = FindSoundPriority(SoundName, _sound);
         _sound->mSound = newSound;
@@ -33,15 +34,16 @@ void Play_Sound(char* SoundName, SoundManager* _sound)
     if (mBool == 1) {
         char soundSearch[50] = "Sounds/";
 
-        snprintf(soundSearch, 50, "Sounds/%s", SoundName);
+        snprintf(soundSearch, 50, "Sounds/%s", _sound->mSound->mSoundPath);
 
         wchar_t wc[50];
         size_t size = strlen(soundSearch) + 1;
         size_t outSize;
         mbstowcs_s(&outSize, wc, size, soundSearch, size - 1);
 
-        PlaySound(wc, NULL, SND_SYNC);
+        PlaySound(wc, NULL, SND_ASYNC);
         free(_sound->mSound);
+        _sound->mSound = NULL;
     }
 }
 
