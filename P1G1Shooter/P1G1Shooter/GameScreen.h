@@ -17,9 +17,9 @@ typedef struct GameScreenData
 {
 	DVector*			mAllEntities;
 
-	struct Player*				mPlayer;
+	struct Player*		mPlayer;
 
-	DisplayZone*	mSprites;
+	DisplayZone*		mSprites;
 
 	double				mGameSpawnObstacleTimer;
 	double				mGameSpawnEnemyTimer;

@@ -32,6 +32,11 @@ void	InitGame(Game* game)
 
 	InitInputs(&game->mInputs);
 
+	game->mSoundManager = (SoundManager*)malloc(sizeof(SoundManager));
+	game->mSoundManager->mSound = NULL;
+
+	InitSoundManager(game->mSoundManager);
+
 	PushTitleScreen(game);
 }
 
