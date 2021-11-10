@@ -47,7 +47,7 @@ void Boss_Update(void* _boss, Game* _game, GameScreenData* _gameScreen)
 	FlushDisplayZone(_game->mDisplaySettings, &myBoss->mEntity.mDisplayZone);
 }
 
-void EnemyShooter_UpdateMovement(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
+void Boss_UpdateMovement(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
 {
 	double
 		move_x = 0,
