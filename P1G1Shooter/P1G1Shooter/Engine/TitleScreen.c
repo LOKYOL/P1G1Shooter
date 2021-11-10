@@ -10,15 +10,10 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 	memset(state->mData, 0, sizeof(TitleScreenData));
 
 	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
+	datascreen->mOptionsZone = (DisplayZone*)malloc(sizeof(DisplayZone));
+	datascreen->mTitleAsciiZone = (DisplayZone*)malloc(sizeof(DisplayZone));
 
-	InitDisplayZone(&datascreen->mZoneTitre, WINDOW_WIDTH / 2 - 6, WINDOW_HEIGHT / 3, 15, 1, 0);
-	PrintInDisplayZone(
-		&datascreen->mZoneTitre,
-		BRIGHT_BLUE, BLACK,
-		0, 0,
-		"BUBBLE WARS", 0, NO_FLAG);
-
-	InitDisplayZone(&datascreen->mOptionsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+	InitDisplayZone(datascreen->mOptionsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 
 	datascreen->mNbOptions = 2;
 	datascreen->mOptions = malloc(sizeof(char*) * datascreen->mNbOptions);
@@ -28,28 +23,31 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 	datascreen->mTempClock = 0;
 	datascreen->mCurrentColor = 1;
 
-	InitDisplayZone(&datascreen->mKeybindsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
+	//InitDisplayZone(datascreen->mKeybindsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 	
-	datascreen->mKeybindsZone = *CreateDisplayZoneFromBMP("keybinds.bmp");
-	datascreen->mKeybindsZone.mPosX = WINDOW_WIDTH / 2 - 40;
-	datascreen->mKeybindsZone.mPosY = WINDOW_HEIGHT - 40;
+	datascreen->mKeybindsZone = CreateDisplayZoneFromBMP("keybinds.bmp");
+	datascreen->mKeybindsZone->mPosX = WINDOW_WIDTH / 2 - 40;
+	datascreen->mKeybindsZone->mPosY = WINDOW_HEIGHT - 40;
 
-	InitDisplayZone(&datascreen->mTitleAsciiZone, 0, 0, 100, 6, 0);
+	InitDisplayZone(datascreen->mTitleAsciiZone, 0, 0, 100, 6, 0);
 	int asciiPosX = 0, asciiPosY = 0;
-	SetTitleColor(&datascreen->mTitleAsciiZone, 6, 0);
-	datascreen->mTitleAsciiZone.mPosX = 74;
-	datascreen->mTitleAsciiZone.mPosY = 32;
+	SetTitleColor(datascreen->mTitleAsciiZone, 6, 0);
+	datascreen->mTitleAsciiZone->mPosX = 74;
+	datascreen->mTitleAsciiZone->mPosY = 32;
 	return 0;
 }
 int TitleScreenClose(struct Game* game, struct GameState* state)
 {
 	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
-	CloseDisplayZone(&datascreen->mZoneTitre);
-	CloseDisplayZone(&datascreen->mOptionsZone);
-	CloseDisplayZone(&datascreen->mKeybindsZone);
-	CloseDisplayZone(&datascreen->mTitleAsciiZone);
+	CloseDisplayZone(datascreen->mOptionsZone);
+	CloseDisplayZone(datascreen->mKeybindsZone);
+	CloseDisplayZone(datascreen->mTitleAsciiZone);
 
 	free(datascreen->mOptions);
+
+	free(datascreen->mOptionsZone);
+	free(datascreen->mKeybindsZone);
+	free(datascreen->mTitleAsciiZone);
 
 	free(state->mData);
 	ClearBuffer(game->mDisplaySettings, BLACK, BLACK);
@@ -95,18 +93,17 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 		PrintOptions(datascreen);
 	}
 
-	FlushDisplayZone(game->mDisplaySettings, &datascreen->mOptionsZone);
-	FlushDisplayZone(game->mDisplaySettings, &datascreen->mZoneTitre);
-	FlushDisplayZone(game->mDisplaySettings, &datascreen->mKeybindsZone);
+	FlushDisplayZone(game->mDisplaySettings, datascreen->mOptionsZone);
+	FlushDisplayZone(game->mDisplaySettings, datascreen->mKeybindsZone);
 
 	if (datascreen->mTempClock < clock() - 400) {
 		datascreen->mCurrentColor++;
 		if (datascreen->mCurrentColor >= 15) { datascreen->mCurrentColor = 1; }
 		datascreen->mTempClock = clock();
-		SetTitleColor(&datascreen->mTitleAsciiZone, datascreen->mCurrentColor, 0);
+		SetTitleColor(datascreen->mTitleAsciiZone, datascreen->mCurrentColor, 0);
 	}
 
-	FlushDisplayZone(game->mDisplaySettings, &datascreen->mTitleAsciiZone);
+	FlushDisplayZone(game->mDisplaySettings, datascreen->mTitleAsciiZone);
 
 	return 0;
 }
@@ -132,7 +129,7 @@ void PrintOption(TitleScreenData* _datascreen, int _index)
 	}
 
 	PrintInDisplayZone(
-		&_datascreen->mOptionsZone,
+		_datascreen->mOptionsZone,
 		fg, BLACK,
 		WINDOW_WIDTH / 2 - strlen(_datascreen->mOptions[_index]) / 2, 
 		WINDOW_HEIGHT / 3 + 3 + _index * 2,
