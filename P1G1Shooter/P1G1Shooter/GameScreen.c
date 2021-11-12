@@ -2,36 +2,26 @@
 #include "Engine/TimeManagement.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "Engine/ConsoleDisplay.h"
-#include "PlayerStruct.h"
+#include "Player.h"
 #include "Obstacle.h"
 #include "Projectile.h"
-#include "Enemy.h"
+#include "EnemyKamikaze.h"
 #include "EnemyShooter.h"
 #include "PowerupHealth.h"
 #include "EndScreen.h"
 #include <stdio.h>
 #include "Engine/SoundManager.h"
 
-#define NUM_OF_ENTITY_TYPES 7
-
-const char CollisionsLayers[NUM_OF_ENTITY_TYPES] =
+const char* spritesNames[NUM_OF_ENTITY_TYPES] =
 {
-	//						P	O	PP	EP	E	EK	HPP
-	//	Player				0	1	0	1	1	1	1
-	//	Obstacles			1	0	1	1	0	1	0
-	//	Player Projectiles	0	1	0	1	1	1	0
-	//	Enemy Projectiles	1	1	1	0	0	1	0
-	//	Enemy				1	0	1	0	0	0	0
-	//	Enemy kamikaze		1	1	1	1	0	0	0
-	//  Health PP			1	0	0	0	0	0	0
-
-	0b0101111,
-	0b1011010,
-	0b0101110,
-	0b1110010,
-	0b1010000,
-	0b1111000,
-	0b1000000
+	"Sprites/submarine.bmp",	// Player
+	"Sprites/sealion.bmp",		// Obstacles
+	"Sprites/bubulle.bmp",		// Player Projectiles
+	"Sprites/bubulle.bmp",		// Enemies Projectiles
+	"Sprites/enemy.bmp",		// Enemies
+	"Sprites/kamikaze_nrv.bmp",	// Enemies kamikazes
+	"Sprites/health_pp.bmp",	// PowerUp Health
+	"Sprites/enemy.bmp"			// Boss
 };
 
 int GameScreenInit(Game* game, GameState* state)
@@ -45,28 +35,12 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * NUM_OF_ENTITY_TYPES);
 
 	DisplayZone* curDisplayZone = NULL;
-
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/submarine.bmp");		// Player Sprite
-	data->mSprites[0] = *curDisplayZone;
-	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/sealion.bmp");	// OBstacles Sprite
-	data->mSprites[1] = *curDisplayZone;
-	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/bubulle.bmp");	// Player Projectile Sprite
-	data->mSprites[2] = *curDisplayZone;
-	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/bubulle.bmp");	// Enemy Projectile Sprite
-	data->mSprites[3] = *curDisplayZone;
-	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/enemy.bmp");		// Enemy Sprite
-	data->mSprites[4] = *curDisplayZone;
-	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/kamikaze_nrv.bmp");	// Enemy Kamikaze Sprite
-	data->mSprites[5] = *curDisplayZone;
-	free(curDisplayZone);
-	curDisplayZone = CreateDisplayZoneFromBMP("Sprites/health_pp.bmp");	// Health Powerup Sprite
-	data->mSprites[6] = *curDisplayZone;
-	free(curDisplayZone);
+	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
+	{
+		curDisplayZone = CreateDisplayZoneFromBMP(spritesNames[i]);		// Player Sprite
+		data->mSprites[i] = *curDisplayZone;
+		free(curDisplayZone);
+	}
 
 	// Create Player
 	Player* myPlayer;
@@ -142,7 +116,7 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 	{
 		if ((curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i)) == _entity)
 		{
-			free(_entity);
+			_entity->mDestroy(_entity);
 			DVectorErase(_game->mAllEntities, i);
 			return;
 		}
@@ -175,17 +149,13 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 		if ((curCompare = _list[i])	&&
 			CompareCollision(_entity, curCompare))
 		{
-			if (curCompare->mEntityType != TYPE_POWERUP_HEALTH)
-			{
-				Entity_TakeDamages(_entity, curCompare->mDamages);
-				Entity_TakeDamages(curCompare, _entity->mDamages);
-			}
-			else {
-				Entity_TakeDamages(curCompare, _entity->mDamages);
-				Entity_ReceiveHeal(_entity, curCompare->mDamages);
-			}
-			
-			
+			if (_entity->mOnCollide)
+				_entity->mOnCollide(curCompare);
+
+			if (curCompare->mOnCollide)
+				curCompare->mOnCollide(_entity);
+
+			/*
 			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
 			{
 				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
@@ -269,7 +239,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
   				PrintInDisplayZone(gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
-
+			*/
 		}
 	}
 }
@@ -286,7 +256,6 @@ char	CompareCollision(Entity* _entityA, Entity* _entityB)
 		* zoneB = &_entityB->mDisplayZone;
 
 	return 
-		CanCollide(_entityA, _entityB)		&&
 		InRange(zoneA->mPosX, 
 			zoneB->mPosX - zoneA->mSizeX, 
 			zoneB->mPosX + zoneB->mSizeX)	&&
@@ -303,16 +272,6 @@ char	CompareCollision(Entity* _entityA, Entity* _entityB)
 char InRange(int value, int min, int max)
 {
 	return value < max && value > min;
-}
-
-char CanCollide(Entity* _entityA, Entity* _entityB)
-{
-	if (_entityA->mEntityType >= 0 && _entityB->mEntityType >= 0)
-	{
-		char	layerA = CollisionsLayers[_entityA->mEntityType];
-		return layerA & ((1 << (NUM_OF_ENTITY_TYPES - 1)) >> _entityB->mEntityType);
-	}
-	return 0;
 }
 
 void SpawnEntity(Game* game, GameScreenData* _data)
@@ -355,14 +314,14 @@ void SpawnObstacle(GameScreenData* _game)
 void SpawnEnemy(GameScreenData* _game)
 {
 	EnemyShooter* newEnemyS = NULL;
-	EnemyShooter_Initialize(&newEnemyS, 1, 1, (rand() % 10) + 40, _game);
+	EnemyShooter_Initialize(&newEnemyS, _game);
 
 	DVectorPushBack(_game->mAllEntities, &newEnemyS);
 }
 
 void SpawnEnemyKamikaze(GameScreenData* _game)
 {
-	Enemy* newEnemy = NULL;
+	EnemyKamikaze* newEnemy = NULL;
 	Enemy_Initialize(&newEnemy, _game);
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }

@@ -33,13 +33,13 @@
     <ClCompile Include="Engine\SoundManager.c" />
     <ClCompile Include="Engine\TimeManagement.c" />
     <ClCompile Include="Engine\TitleScreen.c" />
-    <ClCompile Include="Enemy.c" />
+    <ClCompile Include="EnemyKamikaze.c" />
     <ClCompile Include="Entity.c" />
     <ClCompile Include="GameScreen.c" />
     <ClCompile Include="Inputs.c" />
     <ClCompile Include="Obstacle.c" />
     <ClCompile Include="P1G1ShooterMain.c" />
-    <ClCompile Include="PlayerStruct.c" />
+    <ClCompile Include="Player.c" />
     <ClCompile Include="Projectile.c" />
     <ClCompile Include="PowerupHealth.c" />
   </ItemGroup>
@@ -62,9 +62,9 @@
     <ClInclude Include="GameScreen.h" />
     <ClInclude Include="PowerupHealth.h" />
     <ClInclude Include="Inputs.h" />
-    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyKamikaze.h" />
     <ClInclude Include="Obstacle.h" />
-    <ClInclude Include="PlayerStruct.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Projectile.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

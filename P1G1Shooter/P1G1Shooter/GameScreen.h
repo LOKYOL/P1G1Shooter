@@ -98,14 +98,6 @@ char	CompareCollision(Entity* entityA, Entity* entityB);
 char	InRange(int value, int min, int max);
 
 /// <summary>
-/// Check if 2 entities are supposed to collide with each others
-/// </summary>
-/// <param name="entityA">First entity</param>
-/// <param name="entityB">Second entity</param>
-/// <returns>1 if collision is possible, 0 if not</returns>
-char	CanCollide(Entity* entityA, Entity* entityB);
-
-/// <summary>
 /// Remove an entity if its health points reach 0
 /// </summary>
 /// <param name="game">Current gamescreen</param>

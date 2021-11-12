@@ -32,9 +32,6 @@
     <ClCompile Include="Engine\TimeManagement.c">
       <Filter>Engine\Sources</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyShooter.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
@@ -42,9 +39,6 @@
       <Filter>Entities\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Obstacle.c">
-      <Filter>Entities\Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStruct.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Projectile.c">
@@ -66,6 +60,12 @@
       <Filter>Entities\Sources</Filter>
     </ClCompile>
     <ClCompile Include="Boss.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyKamikaze.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -100,9 +100,6 @@
     <ClInclude Include="Engine\TimeManagement.h">
       <Filter>Engine\Headers</Filter>
     </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
@@ -110,9 +107,6 @@
       <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Projectile.h">
-      <Filter>Entities\Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerStruct.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="EndScreen.h">
@@ -134,6 +128,12 @@
       <Filter>Entities\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Boss.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyKamikaze.h">
       <Filter>Entities\Headers</Filter>
     </ClInclude>
   </ItemGroup>

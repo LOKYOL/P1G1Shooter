@@ -1,29 +1,24 @@
 #include "EnemyShooter.h"
 #include "GameScreen.h"
 #include "Engine/DisplayZoneDrawing.h"
-#include "PlayerStruct.h"
+#include "Player.h"
 #include "projectile.h"
 #include <math.h>
 
-void EnemyShooter_Initialize(EnemyShooter** _enemy, 
-	unsigned int _health, int _damage, int _speed,
-	GameScreenData* _gameScreen)
+void EnemyShooter_Initialize(EnemyShooter** _enemy,	GameScreenData* _gameScreen)
 {
 	EnemyShooter* newEnemy = (EnemyShooter*)malloc(sizeof(EnemyShooter));
 	memset(newEnemy, 0, sizeof(EnemyShooter));
 
 	*_enemy = newEnemy;
 
-	Entity_Initialize(&newEnemy->mEntity, _health, _damage, _speed, EnemyShooter_Update);
+	float speed = rand() % (ENEMYK_SPEED_MAX - ENEMYK_SPEED_MIN + 1) + ENEMYK_SPEED_MIN;
+
+	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY,
+		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
+		ENEMYS_HEALTH, speed, &_gameScreen->mSprites[TYPE_ENEMY],
+		EnemyShooter_Update, EnemyShooter_OnCollide, EnemyShooter_Destroy);
 	
-	newEnemy->mEntity.mDisplayZone = _gameScreen->mSprites[TYPE_ENEMY];
-
-	newEnemy->mEntity.mDisplayZone.mPosY =
-		rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY);
-
-	newEnemy->mEntity.mEntityType = TYPE_ENEMY;
-	newEnemy->mEntity.mPosition_x = WINDOW_WIDTH;
-	newEnemy->mEntity.mPosition_y = newEnemy->mEntity.mDisplayZone.mPosY;
 	newEnemy->mShootCooldown = 2;
 	newEnemy->mChangeDirectionCooldown = 1;
 	newEnemy->mCurrentDirectionX = (rand() % 3) - 1;
@@ -101,11 +96,25 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
-	Proj_Initialize(&newProjectile, 2, 0, 
-	_enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y, 
-	TYPE_ENEMY_PROJECTILE, _gameScreen);
+	Proj_Initialize(&newProjectile, 40, 1, -1, 0,
+		_enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y,
+		TYPE_ENEMY_PROJECTILE, _gameScreen,
+		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
 	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 	_enemy->mShootCooldown = 5;
+}
+
+void EnemyShooter_OnCollide(Entity* _entity)
+{
+	if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
+	{
+		Entity_Kill(_entity);
+	}
+}
+
+void EnemyShooter_Destroy(Entity* _entity)
+{
+	free(_entity);
 }

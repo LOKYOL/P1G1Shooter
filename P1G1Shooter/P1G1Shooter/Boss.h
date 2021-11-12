@@ -48,3 +48,7 @@ void Boss_UpdateMovement(Boss* boss, GameScreenData* gameScreen, Game* game);
 /// <param name="boss">Boss to update</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Boss_Shoot(Boss* boss, GameScreenData* gameScreen);
+
+void Boss_OnCollide(Entity* entity);
+
+void Boss_Destroy(Entity* entity);

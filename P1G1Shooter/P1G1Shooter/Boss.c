@@ -1,7 +1,7 @@
 #include "Boss.h"
 #include "GameScreen.h"
 #include "Engine/DisplayZoneDrawing.h"
-#include "PlayerStruct.h"
+#include "Player.h"
 #include "Projectile.h"
 #include <math.h>
 
@@ -14,16 +14,12 @@ void Boss_Initialize(Boss** _boss,
 
 	*_boss = newBoss;
 
-	Entity_Initialize(&newBoss->mEntity, _health, _damage, _speed, Boss_Update);
+	Entity_Initialize(newBoss, TYPE_BOSS, 
+		WINDOW_WIDTH, WINDOW_HEIGHT - (newBoss->mEntity.mDisplayZone.mSizeY / 2), 
+		_health, _speed, 
+		&_gameScreen->mSprites[TYPE_BOSS],
+		Boss_Update, Boss_OnCollide, Boss_Destroy);
 
-	newBoss->mEntity.mDisplayZone = _gameScreen->mSprites[TYPE_BOSS];
-
-	newBoss->mEntity.mDisplayZone.mPosY = WINDOW_HEIGHT - (newBoss->mEntity.mDisplayZone.mSizeY / 2);
-		//rand() % (WINDOW_HEIGHT - newBoss->mEntity.mDisplayZone.mSizeY);
-
-	newBoss->mEntity.mEntityType = TYPE_BOSS;
-	newBoss->mEntity.mPosition_x = WINDOW_WIDTH;
-	newBoss->mEntity.mPosition_y = newBoss->mEntity.mDisplayZone.mPosY;
 	newBoss->mShootCooldown = 2;
 	newBoss->mChangeDirectionCooldown = 1;
 	newBoss->mCurrentDirectionX = (rand() % 3) - 1;
@@ -101,11 +97,25 @@ void Boss_UpdateMovement(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
 void Boss_Shoot(Boss* _boss, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
-	Proj_Initialize(&newProjectile, 2, 0,
-		_boss->mEntity.mPosition_x, _boss->mEntity.mPosition_y,
-		TYPE_ENEMY_PROJECTILE, _gameScreen);
+	Proj_Initialize(&newProjectile, 10, 1,
+		-1, 0, _boss->mEntity.mPosition_x, _boss->mEntity.mPosition_y,
+		TYPE_ENEMY_PROJECTILE, _gameScreen,
+		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
 	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 	_boss->mShootCooldown = 5;
+}
+
+void Boss_OnCollide(Entity* _entity)
+{
+	if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
+	{
+		Entity_Kill(_entity);
+	}
+}
+
+void Boss_Destroy(Entity* _entity)
+{
+	free(_entity);
 }

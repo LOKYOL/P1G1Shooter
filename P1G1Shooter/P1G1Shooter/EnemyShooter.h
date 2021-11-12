@@ -3,15 +3,20 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
+#define ENEMYS_HEALTH	1
+
+#define ENEMYK_SPEED_MIN	40
+#define ENEMYK_SPEED_MAX	50
+
 typedef struct EnemyShooter
 {
-	Entity mEntity;
+	Entity	mEntity;
 
-	double mShootCooldown;
-	double mChangeDirectionCooldown;
+	double	mShootCooldown;
+	double	mChangeDirectionCooldown;
 
-	int mCurrentDirectionX;
-	int mCurrentDirectionY;
+	int		mCurrentDirectionX;
+	int		mCurrentDirectionY;
 }EnemyShooter;
 
 /// <summary>
@@ -22,9 +27,7 @@ typedef struct EnemyShooter
 /// <param name="damages">Damage dealt by enemy shooter</param>
 /// <param name="speed">Speed of enemy shooter</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void EnemyShooter_Initialize(EnemyShooter** enemy, 
-	unsigned int health, int damage, int speed,
-	GameScreenData* gameScreen);
+void EnemyShooter_Initialize(EnemyShooter** enemy, GameScreenData* gameScreen);
 
 /// <summary>
 /// Update an enemy shooter
@@ -48,3 +51,7 @@ void EnemyShooter_UpdateMovement(EnemyShooter* enemy, GameScreenData* gameScreen
 /// <param name="enemy">Enemy to update</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Enemy_Shoot(EnemyShooter* enemy, GameScreenData* gameScreen);
+
+void EnemyShooter_OnCollide(Entity* entity);
+
+void EnemyShooter_Destroy(Entity* entity);

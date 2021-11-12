@@ -8,15 +8,24 @@
 #include "Enemy.h"
 #include "Engine/Game.h"
 
-void Entity_Initialize(Entity* _entity, int _health, int _damages, int _speed, EntityUpdate _Update)
+void Entity_Initialize(Entity* _entity, EntityType _type, int _posx, int _posy, 
+	int _health, float _speed,
+	DisplayZone* _displayZone,
+	Update _update, OnCollide _onCollide, Destroy _destroy)
 {
-	_entity->mPosition_x = 0;
-	_entity->mPosition_y = 0;
-	_entity->mHealth = _health;
-	_entity->mDamages = _damages;
-	_entity->mSpeed = _speed;
+	_entity->mDisplayZone = *_displayZone;
+	_entity->mDisplayZone.mPosX = _posx;
+	_entity->mDisplayZone.mPosY = _posy;
 
-	_entity->mUpdate = _Update;
+	_entity->mEntityType = _type;
+
+	_entity->mPosition_x = _posx;
+	_entity->mPosition_y = _posy;
+	_entity->mHealth = _health;
+	_entity->mSpeed = _speed;
+	_entity->mUpdate = _update;
+	_entity->mOnCollide = _onCollide;
+	_entity->mDestroy = _destroy;
 }
 
 void Entity_Move(Entity* _entity, double _moveX, double _moveY)
@@ -66,6 +75,11 @@ void Entity_ReceiveHeal(Entity* _entity, int _heal)
 	}
 }
 
+void Entity_Kill(Entity* _entity)
+{
+	_entity->mHealth = 0.f;
+}
+
 char Entity_IsDead(Entity* _entity)
 {
 	return _entity->mHealth < 1;
@@ -90,4 +104,17 @@ void Entity_ClampYPosition(Entity* _entity)
 		_entity->mPosition_y = 0;
 	if (_entity->mPosition_y > WINDOW_HEIGHT - _entity->mDisplayZone.mSizeY)
 		_entity->mPosition_y = WINDOW_HEIGHT - _entity->mDisplayZone.mSizeY;
+}
+
+void Entity_ClampXPosition(Entity* _entity)
+{
+	if (_entity->mPosition_x < 0)
+		_entity->mPosition_x = 0;
+	if (_entity->mPosition_x > WINDOW_HEIGHT - _entity->mDisplayZone.mSizeX)
+		_entity->mPosition_x = WINDOW_HEIGHT - _entity->mDisplayZone.mSizeX;
+}
+
+void Entity_Destroy(Entity* _entity)
+{
+	free(_entity);
 }

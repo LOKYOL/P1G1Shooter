@@ -7,7 +7,8 @@ typedef struct Projectile
 {
 	Entity mEntity;
 
-	unsigned char direction; //0 = left, 1 = right
+	float mVelocity_x;
+	float mVelocity_y;
 }Projectile;
 
 /// <summary>
@@ -16,7 +17,14 @@ typedef struct Projectile
 /// <param name="proj">Projectile to initialize</param>
 /// <param name="speed">Speed of the projectile</param>
 /// <param name="direction">Direction of the projectile, either left or right</param>
-void Proj_Initialize(Projectile** proj, int speed, int direction, double posPlayer_x, double posPlayer_y, EntityType type, GameScreenData* gameScreen);
+void Proj_Initialize(Projectile** proj, float speed, int health,
+	float velocity_x, float velocity_y,
+	double pos_x, double pos_y, 
+	EntityType type, GameScreenData* gameScreen,
+	Update update, // = Projectile_Update, 
+	OnCollide onCollide, // = Projectile_OnCollide, 
+	Destroy destroy // = Projectile_Destroy
+	);
 
 /// <summary>
 /// Change the position of a projectile
@@ -33,3 +41,7 @@ void Projectile_Update(void* proj, Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Projectile_UpdateMovement(Projectile * proj, Game* game, GameScreenData* gameScreen);
+
+void Projectile_OnCollide(Entity* entity);
+
+void Projectile_Destroy(Entity* entity);

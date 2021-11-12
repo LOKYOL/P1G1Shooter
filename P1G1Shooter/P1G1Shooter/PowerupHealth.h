@@ -3,6 +3,10 @@
 #include "Engine/Game.h"
 #include "GameScreen.h" 
 
+#define POWERUPHEALTH_HEALTH	1
+#define POWERUPHEALTH_SPEED		2
+#define POWERUPHEALTH_HEAL		1
+
 typedef struct PowerupHealth
 {
 	Entity mEntity;
@@ -30,3 +34,7 @@ void PowerupHealth_Update(PowerupHealth* powerup, Game* game, GameScreenData* ga
 /// <param name="gameScreen">Datas bind to the game state</param>
 /// <param name="game">Current game</param>
 void PowerupHealth_UpdateMovement(PowerupHealth* powerup, GameScreenData* gameScreen, Game* game);
+
+void PowerupHealth_OnCollide(Entity* entity);
+
+void PowerupHealth_Destroy(Entity* entity);

@@ -2,7 +2,11 @@
 
 #include "Engine/ConsoleDisplay.h"
 
-typedef void(*EntityUpdate)(void* entity, struct Game* game, struct GameScreenData* gameScreen);
+typedef void(*Update)(void* entity, struct Game*, struct GameScreenData*);
+typedef void(*OnCollide)(void* entity);
+typedef void(*Destroy)(void* entity);
+
+#define NUM_OF_ENTITY_TYPES 8
 
 typedef enum EntityType
 {
@@ -26,24 +30,26 @@ typedef struct Entity
 	double			mPosition_x, 
 					mPosition_y;
 
-	unsigned int	mHealth;
+	float			mHealth;
 
-	int				mDamages;
+	//int				mDamages;
 
-	int				mSpeed;
+	float			mSpeed;
 
-	EntityUpdate	mUpdate;
+	Update			mUpdate;
+	OnCollide		mOnCollide;
+	Destroy			mDestroy;
+
 } Entity;
 
 /// <summary>
 /// Initialize an entity with given parameters
 /// </summary>
 /// <param name="entity">Entity to initialize</param>
-/// <param name="health">Health of entity</param>
-/// <param name="damages">Damage dealt by entity</param>
-/// <param name="speed">Speed of entity</param>
-/// <param name="Update">Update function of entity</param>
-void Entity_Initialize(Entity* entity, int health, int damages, int speed, EntityUpdate Update);
+void Entity_Initialize(Entity* entity, EntityType type, int posx, int posy, 
+	int health, float speed,
+	DisplayZone* displayZone,
+	Update update, OnCollide onCollide, Destroy destroy);
 
 /// <summary>
 /// Moves an entity with xy distance
@@ -82,6 +88,12 @@ void Entity_TakeDamages(Entity* entity, int damages);
 void Entity_ReceiveHeal(Entity* entity, int heal);
 
 /// <summary>
+/// Kill the entity by putting his health to 0
+/// </summary>
+/// <param name="entity">Entity to kill</param>
+void Entity_Kill(Entity* entity);
+
+/// <summary>
 /// Check if an entity is dead
 /// </summary>
 /// <param name="entity">Entity to check</param>
@@ -100,3 +112,11 @@ double Entity_GetDistance(Entity* entityA, Entity* entityB);
 /// </summary>
 /// <param name="entity">Entity to check</param>
 void Entity_ClampYPosition(Entity* entity);
+
+/// <summary>
+/// Makes sure an entity doesn't go out-of-bound on the X axis
+/// </summary>
+/// <param name="entity">Entity to check</param>
+void Entity_ClampXPosition(Entity* entity);
+
+void Entity_Destroy(Entity* entity);
