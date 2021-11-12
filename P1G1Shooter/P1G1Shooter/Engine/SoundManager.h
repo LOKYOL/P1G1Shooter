@@ -3,12 +3,14 @@
 #include <wchar.h>
 #include <stdio.h>
 
-typedef struct Sound {
+typedef struct Sound 
+{
 	char* mSoundPath;
 	unsigned char mPriority;
 } Sound;
 
-typedef struct SoundManager {
+typedef struct SoundManager 
+{
 	Sound* mSound;
 	Sound mSounds[6];
 } SoundManager;

@@ -25,13 +25,16 @@ void Play_Sound(char* SoundName, SoundManager* _sound)
         newSound->mPriority = FindSoundPriority(SoundName, _sound);
         _sound->mSound = newSound;
         mBool = 1;
-    } else if (_sound->mSound != NULL && _sound->mSound->mPriority < FindSoundPriority(SoundName, _sound)) {
+    } 
+    else if (_sound->mSound != NULL && _sound->mSound->mPriority < FindSoundPriority(SoundName, _sound)) 
+    {
         _sound->mSound->mPriority = FindSoundPriority(SoundName, _sound);
         _sound->mSound->mSoundPath = SoundName;
         mBool = 1;
     }
 
-    if (mBool == 1) {
+    if (mBool == 1) 
+    {
         char soundSearch[50] = "Sounds/";
 
         snprintf(soundSearch, 50, "Sounds/%s", _sound->mSound->mSoundPath);

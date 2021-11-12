@@ -63,22 +63,16 @@ int GameScreenClose(Game* game, GameState* state)
 
 	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
 	{
-		free(DVectorGetTyped(data->mAllEntities, Entity*, i));
+		(DVectorGetTyped(data->mAllEntities, Entity*, i))->mDestroy(DVectorGet(data->mAllEntities, i));
 	}
-	
 	DVectorDestroy(data->mAllEntities);
 
-	CloseDisplayZone(data->mPlayer->mChargeZone);
-	CloseDisplayZone(data->mPlayer->mHealthZone);
-	free(data->mPlayer->mChargeZone);
-	free(data->mPlayer->mHealthZone);
-	free(data->mPlayer);
+	data->mPlayer->mEntity.mDestroy(data->mPlayer);
 
 	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
 	{
 		CloseDisplayZone(&data->mSprites[i]);
 	}
-
 	free(data->mSprites);
 
 	free(state->mData);
