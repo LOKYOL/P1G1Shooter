@@ -3,6 +3,8 @@
 #include <wchar.h>
 #include <stdio.h>
 
+#pragma comment(lib,"winmm.lib")
+
 typedef struct Sound 
 {
 	char* mSoundPath;

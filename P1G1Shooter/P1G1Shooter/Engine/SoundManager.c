@@ -55,7 +55,6 @@ void Play_SoundThread(char* SoundName)
     char soundSearch[50] = "Sounds/";
 
     snprintf(soundSearch, 50, "Sounds/%s", SoundName);
-
     wchar_t wc[50];
     size_t size = strlen(soundSearch) + 1;
     size_t outSize;
