@@ -34,6 +34,6 @@ void Obstacle_Update(Obstacle* obstacle, Game* game, GameScreenData* gameScreen)
 /// <param name="game">Game of obstacle</param>
 void Obstacle_UpdateMovement(Obstacle* obstacle, Game* game);
 
-void Obstacle_OnCollide(Entity* entity);
+void Obstacle_OnCollide(Entity* entity, Game* game);
 
 void Obstacle_Destroy(Entity* entity);

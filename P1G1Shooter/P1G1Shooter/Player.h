@@ -48,7 +48,7 @@ void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 void Player_UpdateMovement(Player* player, struct Game* game);
 
-void Player_OnCollide(Entity* entity);
+void Player_OnCollide(Entity* entity, Game* game);
 
 /// <summary>
 /// Prevents a player from going out of bound 
@@ -92,4 +92,4 @@ void DrawHealthInDisplayZone(Player* player);
 
 void Player_Destroy(Player* player);
 
-void PlayerProjectile_OnCollide(Entity* entity);
+void PlayerProjectile_OnCollide(Entity* entity, Game* game);

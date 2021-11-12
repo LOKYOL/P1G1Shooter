@@ -35,12 +35,17 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 	}
 }
 
-void Obstacle_OnCollide(Entity* _entity)
+void Obstacle_OnCollide(Entity* _entity, Game* game)
 {
 	EntityType type = _entity->mEntityType;
 	if (type == TYPE_PLAYER || type == TYPE_ENEMY_KAMIKAZE)
 	{
 		Entity_TakeDamages(_entity, OBSTACLE_DAMAGES);
+
+		if (type == TYPE_PLAYER)
+		{
+			Play_Sound("player_enemyhit", game->mSoundManager);
+		}
 	}
 	else if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 	{

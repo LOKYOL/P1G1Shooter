@@ -61,9 +61,11 @@ int GameScreenClose(Game* game, GameState* state)
 {
 	GameScreenData* data = state->mData;
 
+	Entity* curEntity = NULL;
 	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
 	{
-		(DVectorGetTyped(data->mAllEntities, Entity*, i))->mDestroy(DVectorGet(data->mAllEntities, i));
+		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
+		curEntity->mDestroy(curEntity);
 	}
 	DVectorDestroy(data->mAllEntities);
 
@@ -147,51 +149,12 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			CompareCollision(_entity, curCompare))
 		{
 			if (_entity->mOnCollide)
-				_entity->mOnCollide(curCompare);
+				_entity->mOnCollide(curCompare, gameStruct);
 
 			if (curCompare->mOnCollide)
-				curCompare->mOnCollide(_entity);
+				curCompare->mOnCollide(_entity, gameStruct);
 
-			
-			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || 
-				_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
-			{
-				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
-			} 
-			else if (curCompare->mHealth > 0 && (curCompare->mEntityType == TYPE_OBSTACLE || curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
-			{
-				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
-			}
-
-			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0)
-			{
-				if (curCompare->mEntityType == TYPE_POWERUP_HEALTH) 
-				{
-					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
-				}
-				else 
-				{
-					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
-				}
-			}
-			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0)
-			{
-				if (_entity->mEntityType == TYPE_POWERUP_HEALTH)
-				{
-					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
-				}
-				else
-				{
-					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
-				}
-			}
-
-
-			if ((_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) ||
-				(curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth == 0))
-			{
-				Play_Sound("player_die.wav", gameStruct->mSoundManager);
-			}
+			// SCORE
 
 			if (_entity->mHealth == 0 && _entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 			{

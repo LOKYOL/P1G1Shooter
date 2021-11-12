@@ -106,7 +106,7 @@ void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 	_enemy->mShootCooldown = 5;
 }
 
-void EnemyShooter_OnCollide(Entity* _entity)
+void EnemyShooter_OnCollide(Entity* _entity, Game* game)
 {
 	if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 	{

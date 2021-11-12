@@ -71,7 +71,7 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	UpdateHealthDisplayZonePosition(_player);
 }
 
-void Player_OnCollide(Entity* _entity)
+void Player_OnCollide(Entity* _entity, Game* game)
 {
 	if (_entity->mEntityType != TYPE_PLAYER_PROJECTILE)
 	{
@@ -218,7 +218,7 @@ void Player_Destroy(Player* _player)
 	free(_player);
 }
 
-void PlayerProjectile_OnCollide(Entity* _entity)
+void PlayerProjectile_OnCollide(Entity* _entity, Game* game)
 {
 	EntityType type = _entity->mEntityType;
 	if (type == TYPE_ENEMY || type == TYPE_ENEMY_KAMIKAZE ||
@@ -226,5 +226,10 @@ void PlayerProjectile_OnCollide(Entity* _entity)
 		type == TYPE_BOSS || type == TYPE_OBSTACLE)
 	{
 		Entity_TakeDamages(_entity, 1);
+
+		if (type != TYPE_ENEMY_PROJECTILE && type != TYPE_PLAYER_PROJECTILE)
+		{
+			Play_Sound("enemy_hit", game->mSoundManager);
+		}
 	}
 }

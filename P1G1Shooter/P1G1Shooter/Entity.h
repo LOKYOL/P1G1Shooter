@@ -3,7 +3,7 @@
 #include "Engine/ConsoleDisplay.h"
 
 typedef void(*Update)(void* entity, struct Game*, struct GameScreenData*);
-typedef void(*OnCollide)(void* entity);
+typedef void(*OnCollide)(void* entity, struct Game*);
 typedef void(*Destroy)(void* entity);
 
 #define NUM_OF_ENTITY_TYPES 8

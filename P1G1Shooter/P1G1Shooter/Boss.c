@@ -107,7 +107,7 @@ void Boss_Shoot(Boss* _boss, GameScreenData* _gameScreen)
 	_boss->mShootCooldown = 5;
 }
 
-void Boss_OnCollide(Entity* _entity)
+void Boss_OnCollide(Entity* _entity, Game* game)
 {
 	if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 	{

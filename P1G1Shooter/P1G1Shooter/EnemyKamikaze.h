@@ -39,7 +39,7 @@ void Enemy_Update(void* enemy, Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 void Enemy_UpdateMovement(EnemyKamikaze* enemy, GameScreenData* gameScreen, Game* game);
 
-void Enemy_OnCollide(Entity* entity);
+void Enemy_OnCollide(Entity* entity, Game* game);
 
 void Enemy_Destroy(Entity* entity);
 

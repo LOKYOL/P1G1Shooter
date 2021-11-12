@@ -42,6 +42,6 @@ void Projectile_Update(void* proj, Game* game, GameScreenData* gameScreen);
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Projectile_UpdateMovement(Projectile * proj, Game* game, GameScreenData* gameScreen);
 
-void Projectile_OnCollide(Entity* entity);
+void Projectile_OnCollide(Entity* entity, Game* game);
 
 void Projectile_Destroy(Entity* entity);

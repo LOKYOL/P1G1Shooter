@@ -23,13 +23,13 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 	PrintInDisplayZone(
 		datascreen->mCredit, 
 		MAGENTA, BLACK, 
-		WINDOW_WIDTH / 2-4, WINDOW_HEIGHT / 2 - 2, 
+		WINDOW_WIDTH / 2 - 4, WINDOW_HEIGHT / 2 - 2, 
 		"GAME OVER", 0, NO_FLAG);
 
 	PrintInDisplayZone(
 		datascreen->mCredit,
 		WHITE, BLACK,
-		180, 110,
+		WINDOW_WIDTH - 40, WINDOW_HEIGHT - 10,
 		"Press return to continue...", 0, NO_FLAG);
 
 	return 0;
@@ -38,10 +38,10 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 int EndScreenClose(struct Game* game, struct GameState* state)
 {
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
+
 	CloseDisplayZone(datascreen->mCredit);
 
 	free(state->mData);
-
 	ClearBuffer(game->mDisplaySettings, BLACK, BLACK);
 
 	return 0;

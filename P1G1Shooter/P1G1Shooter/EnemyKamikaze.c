@@ -108,12 +108,17 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	}
 }
 
-void Enemy_OnCollide(Entity* _entity)
+void Enemy_OnCollide(Entity* _entity, Game* game)
 {
 	EntityType type = _entity->mEntityType;
 	if (type == TYPE_PLAYER || type == TYPE_OBSTACLE)
 	{
 		Entity_TakeDamages(_entity, ENEMYK_DAMAGES);
+
+		if (type == TYPE_PLAYER)
+		{
+			Play_Sound("player_enemyhit", game->mSoundManager);
+		}
 	}
 	else if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 	{

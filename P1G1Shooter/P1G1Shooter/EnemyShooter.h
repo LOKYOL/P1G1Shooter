@@ -52,6 +52,6 @@ void EnemyShooter_UpdateMovement(EnemyShooter* enemy, GameScreenData* gameScreen
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Enemy_Shoot(EnemyShooter* enemy, GameScreenData* gameScreen);
 
-void EnemyShooter_OnCollide(Entity* entity);
+void EnemyShooter_OnCollide(Entity* entity, Game* game);
 
 void EnemyShooter_Destroy(Entity* entity);
