@@ -25,8 +25,6 @@ typedef struct Game
 
 	SoundManager*		mSoundManager;
 
-	DisplayZone*		mScoreDisplayZone;
-
 	double				mGameTime;
 	double				mGameDt;
 
@@ -72,4 +70,3 @@ void	PopGameState(Game* game);
 /// <param name="game">Game to switch gamestate from</param>
 /// <param name="state">New gamestate</param>
 void	ChangeGameState(Game* game, GameState state);
-

@@ -6,14 +6,6 @@
 
 int EndScreenInit(struct Game* game, struct GameState* state)
 {
-	char totalScore[18] = "Score: ";
-
-	snprintf(totalScore, 17, "Score : %d", game->mScore);
-
-	game->mScoreDisplayZone->mPosX = WINDOW_WIDTH/2-4;
-	game->mScoreDisplayZone->mPosY = WINDOW_HEIGHT/2;
-	PrintInDisplayZone(game->mScoreDisplayZone, MAGENTA, BLACK, 0, 0, totalScore, 0, NO_FLAG);
-
 	state->mData = malloc(sizeof(EndScreenData));
 
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
@@ -32,6 +24,16 @@ int EndScreenInit(struct Game* game, struct GameState* state)
 		WINDOW_WIDTH - 40, WINDOW_HEIGHT - 10,
 		"Press return to continue...", 0, NO_FLAG);
 
+	datascreen->mScoreDisplayZone = malloc(sizeof(DisplayZone));
+	InitDisplayZone(datascreen->mScoreDisplayZone, 
+		WINDOW_WIDTH / 2 - 4, WINDOW_HEIGHT / 2, 25, 1, 0);
+
+	char totalScore[20] = "";
+
+	snprintf(totalScore, 19, "Score : %d", game->mScore);
+
+	PrintInDisplayZone(datascreen->mScoreDisplayZone, MAGENTA, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+
 	return 0;
 
 }
@@ -40,6 +42,9 @@ int EndScreenClose(struct Game* game, struct GameState* state)
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
 
 	CloseDisplayZone(datascreen->mCredit);
+	free(datascreen->mCredit);
+	CloseDisplayZone(datascreen->mScoreDisplayZone);
+	free(datascreen->mScoreDisplayZone);
 
 	free(state->mData);
 	ClearBuffer(game->mDisplaySettings, BLACK, BLACK);
@@ -50,13 +55,10 @@ int EndScreenUpdate(struct Game* game, struct GameState* state)
 {
 	EndScreenData* datascreen = (EndScreenData*)state->mData;
 	FlushDisplayZone(game->mDisplaySettings, datascreen->mCredit);
-	FlushDisplayZone(game->mDisplaySettings, game->mScoreDisplayZone);
+	FlushDisplayZone(game->mDisplaySettings, datascreen->mScoreDisplayZone);
 	if (KeyPressStart(*game->mInputs, VK_RETURN))
 	{
 		game->mScore = 0;
-		game->mScoreDisplayZone->mPosX = 0;
-		game->mScoreDisplayZone->mPosY = 0;
-		PrintInDisplayZone(game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score:      ", 0, NO_FLAG);
 		PopGameState(game);
 		PopGameState(game);
 	}

@@ -12,6 +12,8 @@ typedef struct EndScreenData
 {
 	DisplayZone* mCredit;
 
+	DisplayZone* mScoreDisplayZone;
+
 }EndScreenData;
 
 /// <summary>

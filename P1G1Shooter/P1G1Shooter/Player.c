@@ -227,9 +227,16 @@ void PlayerProjectile_OnCollide(Entity* _entity, Game* game)
 	{
 		Entity_TakeDamages(_entity, 1);
 
-		if (type != TYPE_ENEMY_PROJECTILE && type != TYPE_PLAYER_PROJECTILE)
+		if (type != TYPE_ENEMY_PROJECTILE)
 		{
-			Play_Sound("enemy_hit", game->mSoundManager);
+			if (_entity->mHealth > 0)
+			{
+				Play_Sound("enemy_hit", game->mSoundManager);
+			}
+			else
+			{
+				Play_Sound("enemy_die", game->mSoundManager);
+			}
 		}
 	}
 }

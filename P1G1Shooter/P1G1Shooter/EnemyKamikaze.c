@@ -117,7 +117,14 @@ void Enemy_OnCollide(Entity* _entity, Game* game)
 
 		if (type == TYPE_PLAYER)
 		{
-			Play_Sound("player_enemyhit", game->mSoundManager);
+			if (_entity->mHealth > 0)
+			{
+				Play_Sound("player_enemyhit", game->mSoundManager);
+			}
+			else
+			{
+				Play_Sound("player_die", game->mSoundManager);
+			}
 		}
 	}
 	else if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)

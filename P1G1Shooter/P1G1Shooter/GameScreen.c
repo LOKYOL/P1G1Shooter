@@ -52,7 +52,8 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mGameSpawnEnemyKamikazeTimer = 0;
 
 	game->mScore = 0;
-	PrintInDisplayZone(game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score : 0", 0, NO_FLAG);
+	data->mScoreDisplayZone = malloc(sizeof(DisplayZone));
+	InitDisplayZone(data->mScoreDisplayZone, 0, 0, 20, 1, 0);
 
 	return 0;
 }
@@ -75,6 +76,10 @@ int GameScreenClose(Game* game, GameState* state)
 	{
 		CloseDisplayZone(&data->mSprites[i]);
 	}
+
+	CloseDisplayZone(data->mScoreDisplayZone);
+	free(data->mScoreDisplayZone);
+
 	free(data->mSprites);
 
 	free(state->mData);
@@ -95,10 +100,14 @@ int GameScreenUpdate(Game* game, GameState* state)
 	// COLLISIONS
 	HandleCollision(data->mAllEntities,	game);
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
+	
+	char totalScore[20] = "";
+	snprintf(totalScore, 19, "Score : %d", game->mScore);
+	PrintInDisplayZone(data->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 
 	EndGame(game, data->mPlayer);
 	
-	FlushDisplayZone(game->mDisplaySettings, game->mScoreDisplayZone);
+	FlushDisplayZone(game->mDisplaySettings, data->mScoreDisplayZone);
 
 	return 0;
 }
@@ -141,7 +150,6 @@ void HandleCollision(DVector* _list, Game* gameStruct)
 
 void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* gameStruct)
 {
-	unsigned char scoreChanged = 0;
 	Entity* curCompare = NULL;
 	for (int i = 0; i < _length; i++)
 	{
@@ -162,13 +170,11 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 				{
 					//score += 3
 					gameStruct->mScore += 3;
-					scoreChanged = 1;
 				}
 				else if (curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)
 				{
 					//score += 4
 					gameStruct->mScore += 4;
-					scoreChanged = 1;
 				}
 			}
 
@@ -177,29 +183,17 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 				if (_entity->mEntityType == TYPE_ENEMY) 
 				{
 					gameStruct->mScore += 3;
-					scoreChanged = 1;
 					//score += 3
 				}
 				else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
 				{
 					gameStruct->mScore += 4;
-					scoreChanged = 1;
 					//score += 4
 				}
 				else if (_entity->mEntityType == TYPE_OBSTACLE)
 				{
 					gameStruct->mScore += 1;
-					scoreChanged = 1;
 				}
-			}
-
-			if (scoreChanged) 
-			{
-				char totalScore[18] = "Score: ";
-
-				snprintf(totalScore, 17, "Score: %d", gameStruct->mScore);
-
-  				PrintInDisplayZone(gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
 		}
 	}
@@ -299,14 +293,9 @@ char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
 	char res = Entity_IsDead(_entity);
 	if (res)
 	{
-		if (_entity->mEntityType == TYPE_OBSTACLE) 
+		if (/*_entity->mEntityType == TYPE_ENEMY_KAMIKAZE || */_entity->mEntityType == TYPE_ENEMY)
 		{
-			Play_Sound("enemy_die.wav", gameStruct->mSoundManager);
-		}
-		else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE || _entity->mEntityType == TYPE_ENEMY)
-		{
-			Play_Sound("enemy_die.wav", gameStruct->mSoundManager);
-			if (RandomInt(1,20) == 20) // 5% de chance de spawner un bonus
+			if (RandomInt(1,10) == 1) // 10% de chance de spawner un bonus
 			{
 				SpawnHealthPowerup(_game, _entity->mPosition_x, _entity->mPosition_y);
 			}
