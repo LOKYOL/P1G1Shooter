@@ -51,6 +51,9 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mGameSpawnEnemyTimer = 0;
 	data->mGameSpawnEnemyKamikazeTimer = 0;
 
+	game->mScore = 0;
+	PrintInDisplayZone(game->mScoreDisplayZone, WHITE, BLACK, 0, 0, "Score : 0", 0, NO_FLAG);
+
 	return 0;
 }
 
@@ -142,7 +145,7 @@ void HandleCollision(DVector* _list, Game* gameStruct)
 
 void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* gameStruct)
 {
-	unsigned char mBool = 0;
+	unsigned char scoreChanged = 0;
 	Entity* curCompare = NULL;
 	for (int i = 0; i < _length; i++)
 	{
@@ -155,8 +158,9 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			if (curCompare->mOnCollide)
 				curCompare->mOnCollide(_entity);
 
-			/*
-			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || _entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
+			
+			if (_entity->mHealth > 0 && (_entity->mEntityType == TYPE_OBSTACLE || 
+				_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)) 
 			{
 				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
 			} 
@@ -165,73 +169,74 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 				Play_Sound("enemy_hit.wav", gameStruct->mSoundManager);
 			}
 
-			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0) 
+			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth > 0)
 			{
-				if (curCompare->mEntityType == TYPE_POWERUP_HEALTH) {
+				if (curCompare->mEntityType == TYPE_POWERUP_HEALTH) 
+				{
 					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
 				}
-				else {
-					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
-				}
-			} 
-			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0) 
-			{
-				if (_entity->mEntityType == TYPE_POWERUP_HEALTH) {
-					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
-				}
-				else {
+				else 
+				{
 					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
 				}
 			}
+			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth > 0)
+			{
+				if (_entity->mEntityType == TYPE_POWERUP_HEALTH)
+				{
+					Play_Sound("powerup_health.wav", gameStruct->mSoundManager);
+				}
+				else
+				{
+					Play_Sound("player_enemyhit.wav", gameStruct->mSoundManager);
+				}
+			}
 
 
-			if (_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) 
+			if ((_entity->mEntityType == TYPE_PLAYER && _entity->mHealth == 0) ||
+				(curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth == 0))
 			{
 				Play_Sound("player_die.wav", gameStruct->mSoundManager);
 			}
-			else if (curCompare->mEntityType == TYPE_PLAYER && curCompare->mHealth == 0) 
-			{
-				Play_Sound("player_die.wav", gameStruct->mSoundManager);
-			}
 
-			if (_entity->mHealth == 0 && _entity->mEntityType == 2)
+			if (_entity->mHealth == 0 && _entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 			{
-				if (curCompare->mEntityType == 4)
+				if (curCompare->mEntityType == TYPE_ENEMY)
 				{
 					//score += 3
 					gameStruct->mScore += 3;
-					mBool = 1;
+					scoreChanged = 1;
 				}
-				else if (curCompare->mEntityType == 5)
+				else if (curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)
 				{
 					//score += 4
 					gameStruct->mScore += 4;
-					mBool = 1;
+					scoreChanged = 1;
 				}
 			}
 
-			if (curCompare->mHealth == 0 && curCompare->mEntityType == 2) 
+			if (curCompare->mHealth == 0 && curCompare->mEntityType == TYPE_PLAYER_PROJECTILE) 
 			{
 				if (_entity->mEntityType == TYPE_ENEMY) 
 				{
 					gameStruct->mScore += 3;
-					mBool = 1;
+					scoreChanged = 1;
 					//score += 3
 				}
 				else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
 				{
 					gameStruct->mScore += 4;
-					mBool = 1;
+					scoreChanged = 1;
 					//score += 4
 				}
 				else if (_entity->mEntityType == TYPE_OBSTACLE)
 				{
 					gameStruct->mScore += 1;
-					mBool = 1;
+					scoreChanged = 1;
 				}
 			}
 
-			if (mBool) 
+			if (scoreChanged) 
 			{
 				char totalScore[18] = "Score: ";
 
@@ -239,7 +244,6 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
   				PrintInDisplayZone(gameStruct->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
 			}
-			*/
 		}
 	}
 }

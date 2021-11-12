@@ -25,7 +25,7 @@ typedef struct Game
 
 	SoundManager*		mSoundManager;
 
-	DisplayZone* mScoreDisplayZone;
+	DisplayZone*		mScoreDisplayZone;
 
 	double				mGameTime;
 	double				mGameDt;
