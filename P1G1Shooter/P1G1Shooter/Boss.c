@@ -13,7 +13,7 @@ void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 	*_boss = newBoss;
 
 	Entity_Initialize(newBoss, TYPE_ENEMY_BOSS, 
-		WINDOW_WIDTH, WINDOW_HEIGHT - (newBoss->mEntity.mDisplayZone.mSizeY / 2), 
+		WINDOW_WIDTH, (WINDOW_HEIGHT - newBoss->mEntity.mDisplayZone.mSizeY) / 2, 
 		BOSS_HEALTH, BOSS_SPEED,
 		&_gameScreen->mSprites[TYPE_ENEMY_BOSS],
 		Boss_Update, Boss_OnCollide, Boss_Destroy);
@@ -76,9 +76,18 @@ void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
 	{
 		boss->mCurrentDirectionX = -1;
 	}
+	else
+	{
+		boss->mCurrentDirectionX = 0;
+	}
+
 	if (boss->mEntity.mPosition_y > 0)
 	{
 		boss->mCurrentDirectionY = -1;
+	}
+	else
+	{
+		boss->mCurrentDirectionY = 0;
 	}
 
 	if (boss->mCurrentDirectionX != 0 || boss->mCurrentDirectionY != 0)
@@ -87,23 +96,24 @@ void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
 		(
 			boss, 
 			boss->mCurrentDirectionX * BOSS_SPEED * game->mGameDt, 
-			boss->mCurrentDirectionX * BOSS_SPEED * game->mGameDt
+			boss->mCurrentDirectionY * BOSS_SPEED * game->mGameDt
 		);
 	}
 	else
 	{
 		boss->mCurrentMovementUpdate = Boss_Movement_UpDown;
 		boss->mCurrentDirectionX = 0;
+		boss->mCurrentDirectionY = -1;
 	}
 }
 
 void Boss_Movement_UpDown(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
 {
-	if (_boss->mCurrentDirectionY >= WINDOW_HEIGHT - _boss->mEntity.mDisplayZone.mSizeY)
+	if (_boss->mEntity.mPosition_y >= WINDOW_HEIGHT - _boss->mEntity.mDisplayZone.mSizeY)
 	{
 		_boss->mCurrentDirectionY = -BOSS_SPEED * _game->mGameDt;
 	}
-	else if (_boss->mCurrentDirectionY <= 0)
+	else if (_boss->mEntity.mPosition_y <= 0)
 	{
 		_boss->mCurrentDirectionY = BOSS_SPEED * _game->mGameDt;
 	}
