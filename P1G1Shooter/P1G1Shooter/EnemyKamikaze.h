@@ -39,7 +39,11 @@ void Enemy_Update(void* enemy, Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 void Enemy_UpdateMovement(EnemyKamikaze* enemy, GameScreenData* gameScreen, Game* game);
 
-void Enemy_OnCollide(Entity* entity, Game* game);
+/// <summary>
+/// Free components of an obstacle and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to an obstacle to destroy</param>
+void Enemy_OnCollide(EnemyKamikaze* current, Entity* entity, Game* game);
 
 void Enemy_Destroy(Entity* entity);
 

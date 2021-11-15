@@ -35,28 +35,18 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 	}
 }
 
-void Obstacle_OnCollide(Entity* _entity, Game* game)
+void Obstacle_OnCollide(Obstacle* _current, Entity* _entity, Game* game)
 {
-	EntityType type = _entity->mEntityType;
-	if (type == TYPE_PLAYER || type == TYPE_ENEMY_KAMIKAZE)
+	switch (_entity->mEntityType)
 	{
-		Entity_TakeDamages(_entity, OBSTACLE_DAMAGES);
-
-		if (type == TYPE_PLAYER)
-		{
-			if (_entity->mHealth > 0)
-			{
-				Play_Sound("player_enemyhit", game->mSoundManager);
-			}
-			else
-			{
-				Play_Sound("player_die", game->mSoundManager);
-			}
-		}
-	}
-	else if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
-	{
-		Entity_Kill(_entity);
+	case TYPE_PLAYER:
+	case TYPE_PLAYER_PROJECTILE:
+	case TYPE_ENEMY_PROJECTILE:
+	case TYPE_ENEMY_KAMIKAZE:
+		Entity_Kill(_current);
+		return;
+	default:
+		return;
 	}
 }
 

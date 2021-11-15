@@ -106,11 +106,23 @@ void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 	_enemy->mShootCooldown = 5;
 }
 
-void EnemyShooter_OnCollide(Entity* _entity, Game* game)
+void EnemyShooter_OnCollide(EnemyShooter* _current, Entity* _entity, Game* game)
 {
-	if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
+	switch (_entity->mEntityType)
 	{
-		Entity_Kill(_entity);
+	case TYPE_PLAYER_PROJECTILE:
+		Entity_TakeDamages(_current, 1);
+		if (_current->mEntity.mHealth > 0)
+		{
+			Play_Sound("enemy_hit", game->mSoundManager);
+		}
+		else
+		{
+			Play_Sound("enemy_die", game->mSoundManager);
+		}
+		return;
+	default:
+		return;
 	}
 }
 

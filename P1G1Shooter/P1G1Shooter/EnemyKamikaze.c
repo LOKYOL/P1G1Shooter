@@ -108,28 +108,43 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	}
 }
 
-void Enemy_OnCollide(Entity* _entity, Game* game)
+void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 {
-	EntityType type = _entity->mEntityType;
-	if (type == TYPE_PLAYER || type == TYPE_OBSTACLE)
+	/*switch (_entity->mEntityType)
 	{
-		Entity_TakeDamages(_entity, ENEMYK_DAMAGES);
-
-		if (type == TYPE_PLAYER)
+	case TYPE_PLAYER:
+	case TYPE_OBSTACLE:
+	case TYPE_PLAYER_PROJECTILE:
+	case TYPE_ENEMY_PROJECTILE:
+		Entity_TakeDamages(_current, 1);
+		if (_current->mEntity.mHealth > 0)
 		{
-			if (_entity->mHealth > 0)
+			Play_Sound("enemy_hit", game->mSoundManager);
+		}
+		else
+		{
+			Play_Sound("enemy_die", game->mSoundManager);
+		}
+		return;
+	default:
+		return;
+	}*/
+
+	int type = (int)_entity->mEntityType;
+	if (type >= 0 && type <= 3)
+	{
+		Entity_TakeDamages(_current, 1);
+		if (type == TYPE_PLAYER_PROJECTILE)
+		{
+			if (_current->mEntity.mHealth > 0)
 			{
-				Play_Sound("player_enemyhit", game->mSoundManager);
+				Play_Sound("enemy_hit", game->mSoundManager);
 			}
 			else
 			{
-				Play_Sound("player_die", game->mSoundManager);
+				Play_Sound("enemy_die", game->mSoundManager);
 			}
 		}
-	}
-	else if (_entity->mEntityType == TYPE_PLAYER_PROJECTILE)
-	{
-		Entity_Kill(_entity);
 	}
 }
 

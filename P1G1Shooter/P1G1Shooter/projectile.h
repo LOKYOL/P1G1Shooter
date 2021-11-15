@@ -42,6 +42,16 @@ void Projectile_Update(void* proj, Game* game, GameScreenData* gameScreen);
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Projectile_UpdateMovement(Projectile * proj, Game* game, GameScreenData* gameScreen);
 
-void Projectile_OnCollide(Entity* entity, Game* game);
+/// <summary>
+/// Check collision of a projectile
+/// </summary>
+/// <param name="current">Current projectile</param>
+/// <param name="entity">Other entity which collide with the current </param>
+/// <param name="game">Current game</param>
+void Projectile_OnCollide(Projectile* current, Entity* entity, Game* game);
 
+/// <summary>
+/// Free components of a projectile and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to projectile to destroy</param>
 void Projectile_Destroy(Entity* entity);

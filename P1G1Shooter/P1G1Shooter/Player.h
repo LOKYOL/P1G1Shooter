@@ -48,7 +48,7 @@ void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 void Player_UpdateMovement(Player* player, struct Game* game);
 
-void Player_OnCollide(Entity* entity, Game* game);
+void Player_OnCollide(Player* current, Entity* entity, Game* game);
 
 /// <summary>
 /// Prevents a player from going out of bound 
@@ -90,6 +90,14 @@ void DrawBatteryInDisplayZone(Player* player);
 /// <param name="player">Player to check</param>
 void DrawHealthInDisplayZone(Player* player);
 
+/// <summary>
+/// Free components of a player and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to player to destroy</param>
 void Player_Destroy(Player* player);
 
-void PlayerProjectile_OnCollide(Entity* entity, Game* game);
+/// <summary>
+/// Free components of a player projectiles and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to player projectile to destroy</param>
+void PlayerProjectile_OnCollide(struct Projectile* current, Entity* entity, Game* game);

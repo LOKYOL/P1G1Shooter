@@ -71,11 +71,31 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	UpdateHealthDisplayZonePosition(_player);
 }
 
-void Player_OnCollide(Entity* _entity, Game* game)
+void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
 {
-	if (_entity->mEntityType != TYPE_PLAYER_PROJECTILE)
+	switch (_entity->mEntityType)
 	{
-		Entity_Kill(_entity);
+	case TYPE_OBSTACLE:
+	case TYPE_ENEMY_PROJECTILE:
+	case TYPE_ENEMY:
+	case TYPE_ENEMY_KAMIKAZE:
+	case TYPE_BOSS:
+		Entity_TakeDamages(_current, 1);
+		if (_current->mEntity.mHealth > 0)
+		{
+			Play_Sound("player_enemyhit", game->mSoundManager);
+		}
+		else
+		{
+			Play_Sound("player_die", game->mSoundManager);
+		}
+		return;
+	case TYPE_POWERUP_HEALTH:
+		Entity_ReceiveHeal(_current, 1);
+		Play_Sound("powerup_health", game->mSoundManager);
+		return;
+	default:
+		return;
 	}
 }
 
@@ -116,12 +136,15 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 		_player->mCurrentEnergy -= SHOOT_COST;
 		_player->mReloadCooldown = RELOAD_COOLDOWN;
 
-		Play_Sound("player_shoot.wav", gameStruct->mSoundManager);
-
 		if (_player->mCurrentEnergy <= 0)
 		{
 			_player->mShootCooldown = OVERHEAT_COOLDOWN;
 			_player->mCurrentEnergy = 0;
+			Play_Sound("player_recharge", gameStruct->mSoundManager);
+		}
+		else
+		{
+			Play_Sound("player_shoot.wav", gameStruct->mSoundManager);
 		}
 	}
 }
@@ -218,25 +241,18 @@ void Player_Destroy(Player* _player)
 	free(_player);
 }
 
-void PlayerProjectile_OnCollide(Entity* _entity, Game* game)
+void PlayerProjectile_OnCollide(Projectile* _current, Entity* _entity, Game* game)
 {
-	EntityType type = _entity->mEntityType;
-	if (type == TYPE_ENEMY || type == TYPE_ENEMY_KAMIKAZE ||
-		type == TYPE_ENEMY_PROJECTILE ||
-		type == TYPE_BOSS || type == TYPE_OBSTACLE)
+	switch (_entity->mEntityType)
 	{
-		Entity_TakeDamages(_entity, 1);
-
-		if (type != TYPE_ENEMY_PROJECTILE)
-		{
-			if (_entity->mHealth > 0)
-			{
-				Play_Sound("enemy_hit", game->mSoundManager);
-			}
-			else
-			{
-				Play_Sound("enemy_die", game->mSoundManager);
-			}
-		}
+	case TYPE_OBSTACLE:
+	case TYPE_ENEMY_PROJECTILE:
+	case TYPE_ENEMY:
+	case TYPE_ENEMY_KAMIKAZE:
+	case TYPE_BOSS:
+		Entity_Kill(_current);
+		return;
+	default:
+		return;
 	}
 }

@@ -35,6 +35,16 @@ void PowerupHealth_Update(PowerupHealth* powerup, Game* game, GameScreenData* ga
 /// <param name="game">Current game</param>
 void PowerupHealth_UpdateMovement(PowerupHealth* powerup, GameScreenData* gameScreen, Game* game);
 
-void PowerupHealth_OnCollide(Entity* entity, Game* game);
+/// <summary>
+/// Check collision of a health powerup
+/// </summary>
+/// <param name="current">Current powerup</param>
+/// <param name="entity">Other entity which collide with the current powerup</param>
+/// <param name="game">Current game</param>
+void PowerupHealth_OnCollide(PowerupHealth* current, Entity* entity, Game* game);
 
+/// <summary>
+/// Free components of a health powerup and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to health powerup to destroy</param>
 void PowerupHealth_Destroy(Entity* entity);

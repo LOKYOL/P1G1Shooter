@@ -3,7 +3,7 @@
 #include "Engine/ConsoleDisplay.h"
 
 typedef void(*Update)(void* entity, struct Game*, struct GameScreenData*);
-typedef void(*OnCollide)(void* entity, struct Game*);
+typedef void(*OnCollide)(void* current, void* other, struct Game*);
 typedef void(*Destroy)(void* entity);
 
 #define NUM_OF_ENTITY_TYPES 8
@@ -119,4 +119,8 @@ void Entity_ClampYPosition(Entity* entity);
 /// <param name="entity">Entity to check</param>
 void Entity_ClampXPosition(Entity* entity);
 
+/// <summary>
+/// Free components of an entity and destroy him
+/// </summary>
+/// <param name="entity">Entity to destroy</param>
 void Entity_Destroy(Entity* entity);

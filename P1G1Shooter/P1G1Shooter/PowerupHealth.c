@@ -36,12 +36,15 @@ void PowerupHealth_UpdateMovement(PowerupHealth* _powerup, GameScreenData* _game
 	}
 }
 
-void PowerupHealth_OnCollide(Entity* _entity, Game* game)
+void PowerupHealth_OnCollide(PowerupHealth* _current, Entity* _entity, Game* game)
 {
-	if (_entity->mEntityType == TYPE_PLAYER)
+	switch (_entity->mEntityType)
 	{
-		Entity_ReceiveHeal(_entity, POWERUPHEALTH_HEAL);
-		Play_Sound("powerup_health", game->mSoundManager);
+	case TYPE_PLAYER:
+		Entity_Kill(_current);
+		return;
+	default:
+		return;
 	}
 }
 

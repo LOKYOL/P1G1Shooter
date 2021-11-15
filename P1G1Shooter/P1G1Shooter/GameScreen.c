@@ -157,10 +157,10 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 			CompareCollision(_entity, curCompare))
 		{
 			if (_entity->mOnCollide)
-				_entity->mOnCollide(curCompare, gameStruct);
+				_entity->mOnCollide(_entity, curCompare, gameStruct);
 
 			if (curCompare->mOnCollide)
-				curCompare->mOnCollide(_entity, gameStruct);
+				curCompare->mOnCollide(curCompare, _entity, gameStruct);
 
 			// SCORE
 
