@@ -35,9 +35,11 @@ void Obstacle_Update(Obstacle* obstacle, Game* game, GameScreenData* gameScreen)
 void Obstacle_UpdateMovement(Obstacle* obstacle, Game* game);
 
 /// <summary>
-/// Free components of an obstacle and destroy him
+/// Check collision of an obstacle
 /// </summary>
-/// <param name="entity">Entity casted to an obstacle to destroy</param>
+/// <param name="current">Current obstacle</param>
+/// <param name="entity">Other entity which collide with the current </param>
+/// <param name="game">Current game</param>
 void Obstacle_OnCollide(Obstacle* _current, Entity* entity, Game* game);
 
 /// <summary>

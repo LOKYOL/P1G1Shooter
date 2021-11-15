@@ -77,9 +77,9 @@ void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
 	{
 	case TYPE_OBSTACLE:
 	case TYPE_ENEMY_PROJECTILE:
-	case TYPE_ENEMY:
+	case TYPE_ENEMY_SHOOTER:
 	case TYPE_ENEMY_KAMIKAZE:
-	case TYPE_BOSS:
+	case TYPE_ENEMY_BOSS:
 		Entity_TakeDamages(_current, 1);
 		if (_current->mEntity.mHealth > 0)
 		{
@@ -247,9 +247,9 @@ void PlayerProjectile_OnCollide(Projectile* _current, Entity* _entity, Game* gam
 	{
 	case TYPE_OBSTACLE:
 	case TYPE_ENEMY_PROJECTILE:
-	case TYPE_ENEMY:
+	case TYPE_ENEMY_SHOOTER:
 	case TYPE_ENEMY_KAMIKAZE:
-	case TYPE_BOSS:
+	case TYPE_ENEMY_BOSS:
 		Entity_Kill(_current);
 		return;
 	default:

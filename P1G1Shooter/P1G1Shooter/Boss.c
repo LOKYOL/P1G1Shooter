@@ -14,10 +14,10 @@ void Boss_Initialize(Boss** _boss,
 
 	*_boss = newBoss;
 
-	Entity_Initialize(newBoss, TYPE_BOSS, 
+	Entity_Initialize(newBoss, TYPE_ENEMY_BOSS, 
 		WINDOW_WIDTH, WINDOW_HEIGHT - (newBoss->mEntity.mDisplayZone.mSizeY / 2), 
 		_health, _speed, 
-		&_gameScreen->mSprites[TYPE_BOSS],
+		&_gameScreen->mSprites[TYPE_ENEMY_BOSS],
 		Boss_Update, Boss_OnCollide, Boss_Destroy);
 
 	newBoss->mShootCooldown = 2;

@@ -97,7 +97,9 @@ void DrawHealthInDisplayZone(Player* player);
 void Player_Destroy(Player* player);
 
 /// <summary>
-/// Free components of a player projectiles and destroy him
+/// Check collision of a player projectile
 /// </summary>
-/// <param name="entity">Entity casted to player projectile to destroy</param>
+/// <param name="current">Current player projectile</param>
+/// <param name="entity">Other entity which collide with the current </param>
+/// <param name="game">Current game</param>
 void PlayerProjectile_OnCollide(struct Projectile* current, Entity* entity, Game* game);

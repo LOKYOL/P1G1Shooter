@@ -40,11 +40,17 @@ void Enemy_Update(void* enemy, Game* game, GameScreenData* gameScreen);
 void Enemy_UpdateMovement(EnemyKamikaze* enemy, GameScreenData* gameScreen, Game* game);
 
 /// <summary>
-/// Free components of an obstacle and destroy him
+/// Check collision of an ennemy kamikaze
 /// </summary>
-/// <param name="entity">Entity casted to an obstacle to destroy</param>
+/// <param name="current">Current ennemy kamikaze</param>
+/// <param name="entity">Other entity which collide with the current </param>
+/// <param name="game">Current game</param>
 void Enemy_OnCollide(EnemyKamikaze* current, Entity* entity, Game* game);
 
+/// <summary>
+/// Free components of an enemy and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to an enemy to destroy</param>
 void Enemy_Destroy(Entity* entity);
 
 /// <summary>

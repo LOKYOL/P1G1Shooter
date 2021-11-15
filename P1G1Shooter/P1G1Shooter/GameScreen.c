@@ -166,7 +166,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 			if (_entity->mHealth == 0 && _entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 			{
-				if (curCompare->mEntityType == TYPE_ENEMY)
+				if (curCompare->mEntityType == TYPE_ENEMY_SHOOTER)
 				{
 					//score += 3
 					gameStruct->mScore += 3;
@@ -180,7 +180,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 			if (curCompare->mHealth == 0 && curCompare->mEntityType == TYPE_PLAYER_PROJECTILE) 
 			{
-				if (_entity->mEntityType == TYPE_ENEMY) 
+				if (_entity->mEntityType == TYPE_ENEMY_SHOOTER) 
 				{
 					gameStruct->mScore += 3;
 					//score += 3
@@ -293,7 +293,7 @@ char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
 	char res = Entity_IsDead(_entity);
 	if (res)
 	{
-		if (/*_entity->mEntityType == TYPE_ENEMY_KAMIKAZE || */_entity->mEntityType == TYPE_ENEMY)
+		if (/*_entity->mEntityType == TYPE_ENEMY_KAMIKAZE || */_entity->mEntityType == TYPE_ENEMY_SHOOTER)
 		{
 			if (RandomInt(1,10) == 1) // 10% de chance de spawner un bonus
 			{

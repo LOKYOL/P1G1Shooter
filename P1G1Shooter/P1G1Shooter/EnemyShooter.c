@@ -14,9 +14,9 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy,	GameScreenData* _gameScreen)
 
 	float speed = rand() % (ENEMYK_SPEED_MAX - ENEMYK_SPEED_MIN + 1) + ENEMYK_SPEED_MIN;
 
-	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY,
+	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_SHOOTER,
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
-		ENEMYS_HEALTH, speed, &_gameScreen->mSprites[TYPE_ENEMY],
+		ENEMYS_HEALTH, speed, &_gameScreen->mSprites[TYPE_ENEMY_SHOOTER],
 		EnemyShooter_Update, EnemyShooter_OnCollide, EnemyShooter_Destroy);
 	
 	newEnemy->mShootCooldown = 2;
