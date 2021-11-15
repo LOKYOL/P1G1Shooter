@@ -7,13 +7,13 @@
 
 int main()
 {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	//_CrtSetBreakAlloc(x);
 
 	Game	game;
 	InitGame(&game);
 
-	int tempclock = 0, ms = 17;
+	int tempclock = ZERO, ms = 17;
 
 	while (MainLoop(&game) == 0)
 	{
@@ -23,5 +23,5 @@ int main()
 
 	CloseGame(&game);
 
-	return 0;
+	return ZERO;
 }

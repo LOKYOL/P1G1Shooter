@@ -59,8 +59,10 @@ int EndScreenUpdate(struct Game* game, struct GameState* state)
 	if (KeyPressStart(*game->mInputs, VK_RETURN))
 	{
 		game->mScore = 0;
-		PopGameState(game);
-		PopGameState(game);
+		while (game->mStateStack->mCurrentSize > 1)
+		{
+			PopGameState(game);
+		}
 	}
 
 	return 0;

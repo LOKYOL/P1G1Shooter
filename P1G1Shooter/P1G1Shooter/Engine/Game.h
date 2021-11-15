@@ -15,6 +15,8 @@
 #define ENEMY_SPAWN_TIMER 1
 #define ENEMY_KAMIKAZE_SPAWN_TIMER	1.5
 
+#define ZERO 0 // Used for initialize variables.
+
 typedef struct Game
 {
 	DisplaySettings*	mDisplaySettings;

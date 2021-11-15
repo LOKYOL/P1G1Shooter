@@ -9,7 +9,7 @@
 
 void	InitGame(Game* game)
 {
-	game->mScore = 0;
+	game->mScore = ZERO;
 
 	game->mDisplaySettings = InitDisplay
 	(
@@ -22,10 +22,10 @@ void	InitGame(Game* game)
 	InitTime();
 
 	game->mGameTime = GetTime();
-	game->mGameDt = 0.0;
+	game->mGameDt = ZERO;
 
 	game->mStateStack = DVectorCreate();
-	DVectorInit(game->mStateStack, sizeof(GameState), 0, NULL);
+	DVectorInit(game->mStateStack, sizeof(GameState), ZERO, NULL);
 
 	InitInputs(&game->mInputs);
 
@@ -64,7 +64,7 @@ int		MainLoop(Game* game)
 
 	UpdateAllInputs(game->mInputs);
 
-	int updateResult = 0;
+	int updateResult = ZERO;
 
 	if (DVectorSize(game->mStateStack))
 	{

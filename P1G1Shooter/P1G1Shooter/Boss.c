@@ -5,18 +5,16 @@
 #include "Projectile.h"
 #include <math.h>
 
-void Boss_Initialize(Boss** _boss,
-	unsigned int _health, int _damage, int _speed,
-	GameScreenData* _gameScreen)
+void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 {
-	Boss* newBoss = (Boss*)malloc(sizeof(Boss));
+ 	Boss* newBoss = (Boss*)malloc(sizeof(Boss));
 	memset(newBoss, 0, sizeof(Boss));
 
 	*_boss = newBoss;
 
 	Entity_Initialize(newBoss, TYPE_ENEMY_BOSS, 
 		WINDOW_WIDTH, WINDOW_HEIGHT - (newBoss->mEntity.mDisplayZone.mSizeY / 2), 
-		_health, _speed, 
+		BOSS_HEALTH, BOSS_SPEED,
 		&_gameScreen->mSprites[TYPE_ENEMY_BOSS],
 		Boss_Update, Boss_OnCollide, Boss_Destroy);
 
@@ -24,87 +22,109 @@ void Boss_Initialize(Boss** _boss,
 	newBoss->mChangeDirectionCooldown = 1;
 	newBoss->mCurrentDirectionX = (rand() % 3) - 1;
 	newBoss->mCurrentDirectionY = (rand() % 3) - 1;
+
+	newBoss->mCurrentPhaseUpdate = Boss_PhaseA_Update;
+	newBoss->mCurrentMovementUpdate = Boss_Movement_EnterScreen;
 }
 
-void Boss_Update(void* _boss, Game* _game, GameScreenData* _gameScreen)
+void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
 {
-	Boss* myBoss = (Boss*)_boss;
-	Boss_UpdateMovement(myBoss, _gameScreen, _game);
+	boss->mCurrentPhaseUpdate(boss, _game, _gameScreen);
 
-	if (myBoss->mShootCooldown > 0)
+	if (boss)
 	{
-		myBoss->mShootCooldown -= _game->mGameDt;
+		boss->mCurrentMovementUpdate(boss, _game, _gameScreen);
+		if (boss->mShootCooldown > 0)
+		{
+			boss->mShootCooldown -= _game->mGameDt;
+		}
+		else
+		{
+			Enemy_Shoot(boss, _gameScreen);
+		}
+
+		FlushDisplayZone(_game->mDisplaySettings, &boss->mEntity.mDisplayZone);
+	}
+}
+
+void Boss_PhaseA_Update(Boss* boss, Game* _game, GameScreenData* _data)
+{
+	if (boss->mShootCooldown > 0)
+	{
+		boss->mShootCooldown -= _game->mGameDt;
 	}
 	else
 	{
-		Enemy_Shoot(myBoss, _gameScreen);
+		Boss_Shoot(boss, _data);
 	}
 
-	FlushDisplayZone(_game->mDisplaySettings, &myBoss->mEntity.mDisplayZone);
+	if (boss->mEntity.mHealth <= 0)
+	{
+		boss->mCurrentPhaseUpdate = Boss_PhaseB_Update;
+		boss->mEntity.mHealth = 30;
+	}
 }
 
-void Boss_UpdateMovement(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
+void Boss_PhaseB_Update(Boss* boss, Game* game, GameScreenData* data)
 {
-	double
-		move_x = 0,
-		move_y = 0;
+	
+}
 
-	int
-		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x +
-		(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeX / 2) + 0.5,
-		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y +
-		(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeY / 2) + 0.5,
-		posEnemy_x = _boss->mEntity.mPosition_x +
-		(_boss->mEntity.mDisplayZone.mSizeX / 2) + 0.5,
-		posEnemy_y = _boss->mEntity.mPosition_y +
-		(_boss->mEntity.mDisplayZone.mSizeY / 2) + 0.5;
-
-	if (_boss->mChangeDirectionCooldown > 0)
+void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
+{
+	if (boss->mEntity.mPosition_x > WINDOW_WIDTH - boss->mEntity.mDisplayZone.mSizeX - 5)
 	{
-		_boss->mChangeDirectionCooldown -= _game->mGameDt;
+		boss->mCurrentDirectionX = -1;
+	}
+	if (boss->mEntity.mPosition_y > 0)
+	{
+		boss->mCurrentDirectionY = -1;
+	}
+
+	if (boss->mCurrentDirectionX != 0 || boss->mCurrentDirectionY != 0)
+	{
+		Entity_Move
+		(
+			boss, 
+			boss->mCurrentDirectionX * BOSS_SPEED * game->mGameDt, 
+			boss->mCurrentDirectionX * BOSS_SPEED * game->mGameDt
+		);
 	}
 	else
 	{
-		_boss->mChangeDirectionCooldown = 1;
-
-		_boss->mCurrentDirectionX = (rand() % 3) - 1;
-		_boss->mCurrentDirectionY = (rand() % 3) - 1;
+		boss->mCurrentMovementUpdate = Boss_Movement_UpDown;
+		boss->mCurrentDirectionX = 0;
 	}
+}
 
-	move_y = _boss->mCurrentDirectionY;
-	move_x = _boss->mCurrentDirectionX;
-
-	// Not shooting until moved enough to the left
-	if (posEnemy_x < WINDOW_WIDTH / 2)
+void Boss_Movement_UpDown(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
+{
+	if (_boss->mCurrentDirectionY >= WINDOW_HEIGHT - _boss->mEntity.mDisplayZone.mSizeY)
 	{
-		move_x += 2;
+		_boss->mCurrentDirectionY = -BOSS_SPEED * _game->mGameDt;
 	}
-	else if (posEnemy_x > WINDOW_WIDTH / 5 * 4)
+	else if (_boss->mCurrentDirectionY <= 0)
 	{
-		move_x -= 4;
+		_boss->mCurrentDirectionY = BOSS_SPEED * _game->mGameDt;
 	}
-
-	// Clamp movement
-	double movement = _boss->mEntity.mSpeed * _game->mGameDt;
-	double magnitude = sqrt(pow(move_x, 2) + pow(move_y, 2));
-	move_x = move_x / magnitude * movement;
-	move_y = move_y / magnitude * movement;
 
 	// Apply movement
-	Entity_Move(&_boss->mEntity, move_x, move_y);
+	Entity_Move(&_boss->mEntity, _boss->mCurrentDirectionX, _boss->mCurrentDirectionY);
 }
 
-void Boss_Shoot(Boss* _boss, GameScreenData* _gameScreen)
+void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
 	Proj_Initialize(&newProjectile, 10, 1,
-		-1, 0, _boss->mEntity.mPosition_x, _boss->mEntity.mPosition_y,
+		-1, 0, 
+		boss->mEntity.mPosition_x + EYE_LEFT_POS_X, 
+		boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
 		TYPE_ENEMY_PROJECTILE, _gameScreen,
 		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
 	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
-	_boss->mShootCooldown = 5;
+	boss->mShootCooldown = 1;
 }
 
 void Boss_OnCollide(Boss* _current, Entity* _entity, Game* game)

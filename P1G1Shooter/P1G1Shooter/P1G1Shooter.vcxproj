@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Boss.c" />
+    <ClCompile Include="BossScreen.c" />
     <ClCompile Include="EndScreen.c" />
     <ClCompile Include="EnemyShooter.c" />
     <ClCompile Include="Engine\bitmap.c" />
@@ -45,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Boss.h" />
+    <ClInclude Include="BossScreen.h" />
     <ClInclude Include="EndScreen.h" />
     <ClInclude Include="EnemyShooter.h" />
     <ClInclude Include="Engine\bitmap.h" />

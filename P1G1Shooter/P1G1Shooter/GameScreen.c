@@ -2,6 +2,7 @@
 #include "Engine/TimeManagement.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "Engine/ConsoleDisplay.h"
+#include "Boss.h"
 #include "Player.h"
 #include "Obstacle.h"
 #include "Projectile.h"
@@ -9,8 +10,8 @@
 #include "EnemyShooter.h"
 #include "PowerupHealth.h"
 #include "EndScreen.h"
-#include <stdio.h>
 #include "Engine/SoundManager.h"
+#include <stdio.h>
 
 const char* spritesNames[NUM_OF_ENTITY_TYPES] =
 {
@@ -21,7 +22,8 @@ const char* spritesNames[NUM_OF_ENTITY_TYPES] =
 	"Sprites/enemy.bmp",		// Enemies
 	"Sprites/kamikaze_nrv.bmp",	// Enemies kamikazes
 	"Sprites/health_pp.bmp",	// PowerUp Health
-	"Sprites/enemy.bmp"			// Boss
+	//"Sprites/balkaboss.bmp"		// Boss
+	"Sprites/enemy.bmp"
 };
 
 int GameScreenInit(Game* game, GameState* state)
@@ -30,12 +32,12 @@ int GameScreenInit(Game* game, GameState* state)
 	GameScreenData* data = state->mData;
 	
 	data->mAllEntities = DVectorCreate();
-	DVectorInit(data->mAllEntities, sizeof(Entity*), 0, 0);
+	DVectorInit(data->mAllEntities, sizeof(Entity*), ZERO, ZERO);
 
 	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * NUM_OF_ENTITY_TYPES);
 
 	DisplayZone* curDisplayZone = NULL;
-	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
+	for (int i = ZERO; i < NUM_OF_ENTITY_TYPES; i++)
 	{
 		curDisplayZone = CreateDisplayZoneFromBMP(spritesNames[i]);		// Player Sprite
 		data->mSprites[i] = *curDisplayZone;
@@ -47,13 +49,13 @@ int GameScreenInit(Game* game, GameState* state)
 	InitPlayer(&myPlayer, data);
 	data->mPlayer = myPlayer;
 
-	data->mGameSpawnObstacleTimer = 0;
-	data->mGameSpawnEnemyTimer = 0;
-	data->mGameSpawnEnemyKamikazeTimer = 0;
+	data->mGameSpawnObstacleTimer = ZERO;
+	data->mGameSpawnEnemyTimer = ZERO;
+	data->mGameSpawnEnemyKamikazeTimer = ZERO;
 
-	game->mScore = 0;
+	game->mScore = ZERO;
 	data->mScoreDisplayZone = malloc(sizeof(DisplayZone));
-	InitDisplayZone(data->mScoreDisplayZone, 0, 0, 20, 1, 0);
+	InitDisplayZone(data->mScoreDisplayZone, ZERO, ZERO, 20, 1, ZERO);
 
 	return 0;
 }
@@ -63,7 +65,7 @@ int GameScreenClose(Game* game, GameState* state)
 	GameScreenData* data = state->mData;
 
 	Entity* curEntity = NULL;
-	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
+	for (int i = ZERO; i < data->mAllEntities->mCurrentSize; i++)
 	{
 		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
 		curEntity->mDestroy(curEntity);
@@ -72,7 +74,7 @@ int GameScreenClose(Game* game, GameState* state)
 
 	data->mPlayer->mEntity.mDestroy(data->mPlayer);
 
-	for (int i = 0; i < NUM_OF_ENTITY_TYPES; i++)
+	for (int i = ZERO; i < NUM_OF_ENTITY_TYPES; i++)
 	{
 		CloseDisplayZone(&data->mSprites[i]);
 	}
@@ -101,9 +103,15 @@ int GameScreenUpdate(Game* game, GameState* state)
 	HandleCollision(data->mAllEntities,	game);
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
 	
+	if (game->mScore >= BOSS_SCORE)
+	{
+		game->mScore = BOSS_SCORE;
+		PushBossScreen(game);
+	}
+
 	char totalScore[20] = "";
 	snprintf(totalScore, 19, "Score : %d", game->mScore);
-	PrintInDisplayZone(data->mScoreDisplayZone, WHITE, BLACK, 0, 0, totalScore, 0, NO_FLAG);
+	PrintInDisplayZone(data->mScoreDisplayZone, WHITE, BLACK, ZERO, ZERO, totalScore, ZERO, NO_FLAG);
 
 	EndGame(game, data->mPlayer);
 	
@@ -120,7 +128,7 @@ void PushEntity(GameScreenData* _game, Entity** _entity)
 void PopEntity(GameScreenData* _game, Entity* _entity)
 {
 	Entity* curEntity = NULL;
-	for (int i = 0; i < _game->mAllEntities->mCurrentSize; i++)
+	for (int i = ZERO; i < _game->mAllEntities->mCurrentSize; i++)
 	{
 		if ((curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i)) == _entity)
 		{
@@ -134,7 +142,7 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 void HandleCollision(DVector* _list, Game* gameStruct)
 {
 	Entity* curEntity = NULL;
-	for (int i = 0; i < (int)_list->mCurrentSize - 1; i++)
+	for (int i = ZERO; i < (int)_list->mCurrentSize - 1; i++)
 	{
 		if ((curEntity = DVectorGetTyped(_list, Entity*, i)))
 		{
@@ -151,7 +159,7 @@ void HandleCollision(DVector* _list, Game* gameStruct)
 void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* gameStruct)
 {
 	Entity* curCompare = NULL;
-	for (int i = 0; i < _length; i++)
+	for (int i = ZERO; i < _length; i++)
 	{
 		if ((curCompare = _list[i])	&&
 			CompareCollision(_entity, curCompare))
@@ -164,7 +172,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 
 			// SCORE
 
-			if (_entity->mHealth == 0 && _entity->mEntityType == TYPE_PLAYER_PROJECTILE)
+			if (_entity->mHealth == ZERO && _entity->mEntityType == TYPE_PLAYER_PROJECTILE)
 			{
 				if (curCompare->mEntityType == TYPE_ENEMY_SHOOTER)
 				{
@@ -178,7 +186,7 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 				}
 			}
 
-			if (curCompare->mHealth == 0 && curCompare->mEntityType == TYPE_PLAYER_PROJECTILE) 
+			if (curCompare->mHealth == ZERO && curCompare->mEntityType == TYPE_PLAYER_PROJECTILE) 
 			{
 				if (_entity->mEntityType == TYPE_ENEMY_SHOOTER) 
 				{
@@ -312,7 +320,7 @@ void UpdateEntity(Game* game, GameScreenData* data)
 
 	// FOR EACH ENTITY
 	Entity* curEntity = NULL;
-	for (int i = 0; i < data->mAllEntities->mCurrentSize; i++)
+	for (int i = ZERO; i < data->mAllEntities->mCurrentSize; i++)
 	{
 		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
 
@@ -331,7 +339,7 @@ void UpdateEntity(Game* game, GameScreenData* data)
 void UpdateWeapon(Game* game, GameScreenData* data)
 {
 	// ENERGY RECHARGE
-	if (data->mPlayer->mReloadCooldown > 0)
+	if (data->mPlayer->mReloadCooldown > ZERO)
 	{
 		data->mPlayer->mReloadCooldown -= game->mGameDt;
 	}
@@ -346,7 +354,7 @@ void UpdateWeapon(Game* game, GameScreenData* data)
 	}
 
 	// SHOOT COOLDOWN
-	if (data->mPlayer->mShootCooldown > 0)
+	if (data->mPlayer->mShootCooldown > ZERO)
 	{
 		data->mPlayer->mShootCooldown -= game->mGameDt;
 	}

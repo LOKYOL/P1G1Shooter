@@ -7,6 +7,8 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 
+#define BOSS_SCORE	10
+
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \
 	gameScreen.mStateClose = &GameScreenClose; \

@@ -52,6 +52,16 @@ void EnemyShooter_UpdateMovement(EnemyShooter* enemy, GameScreenData* gameScreen
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Enemy_Shoot(EnemyShooter* enemy, GameScreenData* gameScreen);
 
+/// <summary>
+/// Check collision of an ennemy shooter
+/// </summary>
+/// <param name="current">Current ennemy shooter</param>
+/// <param name="entity">Other entity which collide with the current</param>
+/// <param name="game">Current game</param>
 void EnemyShooter_OnCollide(EnemyShooter* current, Entity* entity, Game* game);
 
+/// <summary>
+/// Free components of an enemy shooter and destroy him
+/// </summary>
+/// <param name="entity">Entity casted to an enemy shooter to destroy</param>
 void EnemyShooter_Destroy(Entity* entity);

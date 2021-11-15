@@ -68,6 +68,9 @@
     <ClCompile Include="EnemyKamikaze.c">
       <Filter>Entities\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="BossScreen.c">
+      <Filter>GameStates\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h">
@@ -135,6 +138,9 @@
     </ClInclude>
     <ClInclude Include="EnemyKamikaze.h">
       <Filter>Entities\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BossScreen.h">
+      <Filter>GameStates\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
