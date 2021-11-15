@@ -13,7 +13,8 @@
 #include "Engine/SoundManager.h"
 #include <stdio.h>
 
-const char* spritesNames[NUM_OF_ENTITY_TYPES] =
+#define SIZEOF_SPRITES_NAMES 10
+const char* spritesNames[SIZEOF_SPRITES_NAMES] =
 {
 	"Sprites/submarine.bmp",	// Player
 	"Sprites/sealion.bmp",		// Obstacles
@@ -22,8 +23,9 @@ const char* spritesNames[NUM_OF_ENTITY_TYPES] =
 	"Sprites/enemy.bmp",		// Enemies
 	"Sprites/kamikaze_nrv.bmp",	// Enemies kamikazes
 	"Sprites/health_pp.bmp",	// PowerUp Health
-	//"Sprites/balkaboss.bmp"		// Boss
-	"Sprites/enemy.bmp"
+	"Sprites/balkaboss.bmp"		// Boss
+	"Sprites/balkaboss_PasContent.bmp" // Boss hit
+	"Sprites/balkaboss_Oula.bmp" // Boss phase 2
 };
 
 int GameScreenInit(Game* game, GameState* state)
@@ -37,7 +39,7 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * NUM_OF_ENTITY_TYPES);
 
 	DisplayZone* curDisplayZone = NULL;
-	for (int i = ZERO; i < NUM_OF_ENTITY_TYPES; i++)
+	for (int i = ZERO; i < SIZEOF_SPRITES_NAMES; i++)
 	{
 		curDisplayZone = CreateDisplayZoneFromBMP(spritesNames[i]);		// Player Sprite
 		data->mSprites[i] = *curDisplayZone;

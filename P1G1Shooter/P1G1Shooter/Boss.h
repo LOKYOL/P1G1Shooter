@@ -21,6 +21,8 @@ typedef struct Boss
 	double mShootCooldown;
 	double mChangeDirectionCooldown;
 
+	double mHitTimer;
+
 	double mCurrentDirectionX;
 	double mCurrentDirectionY;
 
@@ -62,14 +64,14 @@ void Boss_Movement_EnterScreen(Boss* boss, Game* game, struct GameScreenData* da
 /// <param name="game">Current game</param>
 void Boss_Movement_UpDown(Boss* boss, struct GameScreenData* gameScreen, Game* game);
 
-
-
 /// <summary>
 /// Makes the boss shoot
 /// </summary>
 /// <param name="boss">Boss to update</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Boss_Shoot(Boss* boss, struct GameScreenData* gameScreen);
+
+void Boss_TakeDamages(Boss* boss, float damages);
 
 void Boss_OnCollide(Boss* current, Entity* entity, Game* game);
 

@@ -22,6 +22,7 @@ void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 	newBoss->mChangeDirectionCooldown = 1;
 	newBoss->mCurrentDirectionX = (rand() % 3) - 1;
 	newBoss->mCurrentDirectionY = (rand() % 3) - 1;
+	newBoss->mHitTimer = 0;
 
 	newBoss->mCurrentPhaseUpdate = Boss_PhaseA_Update;
 	newBoss->mCurrentMovementUpdate = Boss_Movement_EnterScreen;
@@ -33,6 +34,28 @@ void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
 
 	if (boss)
 	{
+		if (boss->mHitTimer > 0)
+		{
+			boss->mHitTimer -= _game->mGameDt;
+
+			// SPRITE HITTED
+			if(boss->mHitTimer <= 0)
+			{
+				if (boss->mCurrentPhaseUpdate == Boss_PhaseA_Update)
+				{
+					boss->mEntity.mDisplayZone.mBuffer = _gameScreen->mSprites[TYPE_ENEMY_BOSS].mBuffer;
+				}
+				else
+				{
+					boss->mEntity.mDisplayZone.mBuffer = _gameScreen->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
+				}
+			}
+			else
+			{
+				boss->mEntity.mDisplayZone.mBuffer = _gameScreen->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
+			}
+		}
+
 		boss->mCurrentMovementUpdate(boss, _game, _gameScreen);
 		if (boss->mShootCooldown > 0)
 		{
@@ -133,6 +156,7 @@ void Boss_OnCollide(Boss* _current, Entity* _entity, Game* game)
 	{
 	case TYPE_PLAYER_PROJECTILE:
 		Entity_TakeDamages(_current, 1);
+		_current->mHitTimer = 0.5;
 		if (_current->mEntity.mHealth > 0)
 		{
 			Play_Sound("enemy_hit", game->mSoundManager);
