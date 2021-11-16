@@ -155,8 +155,8 @@ void	UpdateWeapon(struct Game* game, GameScreenData* data);
 /// ENds the game if the player is dead
 /// </summary>
 /// <param name="game">Current game</param>
-/// <param name="player">Current player</param>
-void	EndGame(struct Game* game, struct Player* player);
+/// <param name="data">Current gamescreen data</param>
+void	EndGame(struct Game* game, struct GameScreenData* data);
 
 /// <summary>
 /// Give a random Int between a min and max given in parameters

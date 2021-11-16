@@ -120,7 +120,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 	snprintf(totalScore, 19, "Score : %d", game->mScore);
 	PrintInDisplayZone(data->mScoreDisplayZone, WHITE, BLACK, ZERO, ZERO, totalScore, ZERO, NO_FLAG);
 
-	EndGame(game, data->mPlayer);
+	EndGame(game, data);
 	
 	FlushDisplayZone(game->mDisplaySettings, data->mScoreDisplayZone);
 
@@ -371,10 +371,14 @@ void UpdateWeapon(Game* game, GameScreenData* data)
 	}
 }
 
-void EndGame(Game* _game, Player* _player)
+void EndGame(Game* _game, struct GameScreenData* _data)
 {
-	if (Entity_IsDead(&_player->mEntity))
+	if (Entity_IsDead(_data->mPlayer))
 	{
+		if (_game->mScore > _data->mNextBossScore)
+		{
+			_game->mScore = _data->mNextBossScore;
+		}
 		PushEndScreen(_game);
 	}
 }

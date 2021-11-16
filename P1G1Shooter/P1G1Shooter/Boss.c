@@ -23,7 +23,7 @@ void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 	newBoss->mCurrentPhaseUpdate = Boss_PhaseA_Update;
 	newBoss->mCurrentMovementUpdate = Boss_Movement_EnterScreen;
 
-	newBoss->mShootCooldown = 1;
+	newBoss->mShootCooldown = BOSS_SHOOT_COOLDOWN;
 	newBoss->mChangeDirectionCooldown = 1;
 	newBoss->mCurrentDirectionX = RandomInt(-1, 1);
 	newBoss->mCurrentDirectionY = RandomInt(-1, 1);
@@ -39,60 +39,9 @@ void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
 
 	if (boss)
 	{
-		if (boss->mHitTimer > 0)
-		{
-			boss->mHitTimer -= _game->mGameDt;
-
-			// SPRITE HITTED
-			if(boss->mHitTimer <= 0)
-			{
-				if (boss->mCurrentPhaseUpdate == Boss_PhaseA_Update)
-				{
-					boss->mEntity.mDisplayZone.mBuffer = 
-						_gameScreen->mSprites[TYPE_ENEMY_BOSS].mBuffer;
-				}
-				else
-				{
-					boss->mEntity.mDisplayZone.mBuffer = 
-						_gameScreen->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
-				}
-			}
-			else
-			{
-				boss->mEntity.mDisplayZone.mBuffer = 
-					_gameScreen->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
-			}
-		}
+		
 
 		boss->mCurrentMovementUpdate(boss, _game, _gameScreen);
-		if (boss->mShootCooldown > 0)
-		{
-			boss->mShootCooldown -= _game->mGameDt;
-		}
-		else
-		{
-			Enemy_Shoot((Entity*)boss, _gameScreen);
-		}
-
-		if (boss->mCanSpawnKamikaze && boss->mSpawnKamikazeCooldown <= 0)
-		{
-			_gameScreen->mGameSpawnEnemyKamikazeTimer -= ENEMY_KAMIKAZE_SPAWN_TIMER;
-
-			if (rand() % 2)
-			{
-				Boss_SpawnKamikaze(boss, _game, _gameScreen);
-			}
-			else
-			{
-				Boss_SpawnShooter(boss, _game, _gameScreen);
-			}
-			boss->mSpawnKamikazeCooldown = SPAWNKAMIKAZE_TIMER;
-		}
-		else
-		{
-			boss->mSpawnKamikazeCooldown -= _game->mGameDt;
-		}
-
 		FlushDisplayZone(_game->mDisplaySettings, &boss->mEntity.mDisplayZone);
 	}
 }
@@ -114,6 +63,23 @@ void Boss_PhaseA_Update(Boss* boss, Game* _game, GameScreenData* _data)
 		boss->mCurrentPhaseUpdate = Boss_PhaseB_Update;
 		boss->mCurrentMovementUpdate = Boss_Movement_Dash;
 	}
+
+	if (boss->mHitTimer > 0)
+	{
+		boss->mHitTimer -= _game->mGameDt;
+
+		// SPRITE HITTED
+		if (boss->mHitTimer <= 0)
+		{
+			boss->mEntity.mDisplayZone.mBuffer =
+				_data->mSprites[TYPE_ENEMY_BOSS].mBuffer;
+		}
+		else
+		{
+			boss->mEntity.mDisplayZone.mBuffer =
+				_data->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
+		}
+	}
 }
 
 void Boss_PhaseB_Update(Boss* _boss, Game* _game, GameScreenData* _data)
@@ -125,6 +91,42 @@ void Boss_PhaseB_Update(Boss* _boss, Game* _game, GameScreenData* _data)
 	else
 	{
 		Boss_Shoot(_boss, _data);
+	}
+
+	if (_boss->mCanSpawnKamikaze && _boss->mSpawnKamikazeCooldown <= 0)
+	{
+		_boss->mSpawnKamikazeCooldown -= ENEMY_KAMIKAZE_SPAWN_TIMER;
+
+		if (rand() % 2)
+		{
+			Boss_SpawnKamikaze(_boss, _game, _data);
+		}
+		else
+		{
+			Boss_SpawnShooter(_boss, _game, _data);
+		}
+		_boss->mSpawnKamikazeCooldown = SPAWNKAMIKAZE_TIMER;
+	}
+	else
+	{
+		_boss->mSpawnKamikazeCooldown -= _game->mGameDt;
+	}
+
+	if (_boss->mHitTimer > 0)
+	{
+		_boss->mHitTimer -= _game->mGameDt;
+
+		// SPRITE HITTED
+		if (_boss->mHitTimer <= 0)
+		{
+			_boss->mEntity.mDisplayZone.mBuffer =
+				_data->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
+		}
+		else
+		{
+			_boss->mEntity.mDisplayZone.mBuffer =
+				_data->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
+		}
 	}
 }
 
@@ -196,6 +198,8 @@ void Boss_Movement_UpDown(Boss* _boss, Game* _game, struct GameScreenData* _game
 
 void Boss_Movement_Dash(Boss* _boss, Game* _game, struct GameScreenData* _gameScreen)
 {
+	_boss->mShootCooldown = BOSS_SHOOT_COOLDOWN;
+
 	if (_boss->mEntity.mPosition_x < -(int)_boss->mEntity.mDisplayZone.mSizeX)
 	{
 		Entity_MoveTo((Entity*)_boss, WINDOW_WIDTH, _boss->mEntity.mPosition_y);
@@ -213,16 +217,47 @@ void Boss_Movement_Dash(Boss* _boss, Game* _game, struct GameScreenData* _gameSc
 void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
-	Proj_Initialize(&newProjectile, 10, 1,
-		-1, 0, 
-		boss->mEntity.mPosition_x + EYE_LEFT_POS_X, 
-		boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
-		TYPE_ENEMY_PROJECTILE, _gameScreen,
-		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
-	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
+	if (rand() % 2)
+	{
+		double
+			dir_x = _gameScreen->mPlayer->mEntity.mPosition_x - 
+			(boss->mEntity.mPosition_x + EYE_LEFT_POS_X),
+			dir_y = _gameScreen->mPlayer->mEntity.mPosition_y - 
+			(boss->mEntity.mPosition_y + EYE_LEFT_POS_Y);
 
-	boss->mShootCooldown = 1;
+		float magnitude = sqrt((dir_x * dir_x) + (dir_y * dir_y));
+
+		dir_x /= magnitude;
+		dir_y /= magnitude;
+
+		Proj_Initialize(&newProjectile, RandomInt(25, 40), 1,
+			dir_x, dir_y,
+			boss->mEntity.mPosition_x + EYE_LEFT_POS_X,
+			boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
+			TYPE_ENEMY_PROJECTILE, _gameScreen,
+			Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
+
+		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
+	}
+
+	if (rand() % 2)
+	{
+		double
+			dir_x = -1,
+			dir_y = 0;
+
+		Proj_Initialize(&newProjectile, RandomInt(25, 30), 1,
+			dir_x, dir_y,
+			boss->mEntity.mPosition_x + EYE_RIGHT_POS_X,
+			boss->mEntity.mPosition_y + EYE_RIGHT_POS_Y,
+			TYPE_ENEMY_PROJECTILE, _gameScreen,
+			Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
+
+		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
+	}
+
+	boss->mShootCooldown = BOSS_SHOOT_COOLDOWN;
 }
 
 void Boss_SpawnKamikaze(Boss* _boss, Game* _game, GameScreenData* _gameScreen)
