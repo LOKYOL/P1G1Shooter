@@ -7,7 +7,7 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 
-#define BOSS_SCORE	10
+#define BOSS_SCORE	500
 
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \

@@ -369,7 +369,7 @@ void UpdateWeapon(Game* game, GameScreenData* data)
 
 void EndGame(Game* _game, struct GameScreenData* _data)
 {
-	if (Entity_IsDead(&_data->mPlayer->mEntity))
+	if (Entity_IsDead(_data->mPlayer))
 	{
 		if (_game->mScore > _data->mNextBossScore)
 		{
