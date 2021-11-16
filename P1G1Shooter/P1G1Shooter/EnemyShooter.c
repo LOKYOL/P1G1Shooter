@@ -12,7 +12,7 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy,	GameScreenData* _gameScreen)
 
 	*_enemy = newEnemy;
 
-	float speed = rand() % (ENEMYK_SPEED_MAX - ENEMYK_SPEED_MIN + 1) + ENEMYK_SPEED_MIN;
+	float speed = ((float)RandomInt(ENEMYK_SPEED_MIN, ENEMYK_SPEED_MAX));
 
 	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_SHOOTER,
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
@@ -68,7 +68,7 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 	{
 		move_x += 2;
 	}
-	else if (_enemy->mEntity.mPosition_x > WINDOW_WIDTH / 5 * 4)
+	else if (_enemy->mEntity.mPosition_x > (double)(WINDOW_WIDTH / 5 * 4))
 	{
 		move_x -= 4;
 	}
