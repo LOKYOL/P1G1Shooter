@@ -82,7 +82,9 @@ void HandleCollision(DVector* list, Game* gameStruct);
 /// <param name="list">List of other entities</param>
 /// <param name="length">Size of entity list</param>
 /// <param name="gameStruct">Current gamescreen</param>
-void HandleEntityCollision(Entity* entity, Entity** list, int length, Game* gameStruct);
+void HandleEntityCollision(Entity* entity, Entity** list, int length, Game* game);
+
+void HandleEntitiesCollision(Entity* entityA, Entity* entityB, Game* game);
 
 /// <summary>
 /// Check if 2 entities are colliding

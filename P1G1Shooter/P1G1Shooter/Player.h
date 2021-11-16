@@ -10,6 +10,7 @@
 #define SHOOT_COST			10.f
 #define RELOAD_COOLDOWN		0.5f
 #define OVERHEAT_COOLDOWN	5.f
+#define HIT_TIME			0.5f
 
 #define PlayerUpdate(player, inputs, deltaTime) \
 	Player_Update((void*)player, &inputs, deltaTime)
@@ -20,6 +21,8 @@ typedef struct Player
 
 	DisplayZone*	mChargeZone;
 	DisplayZone*	mHealthZone;
+
+	double mTouchedTime;
 
 	float mCurrentEnergy;
 	float mReloadCooldown;

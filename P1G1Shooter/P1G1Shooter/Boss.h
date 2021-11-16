@@ -3,28 +3,37 @@
 #include "Engine/Game.h"
 #include "BossScreen.h"
 
-#define BOSS_HEALTH		20
-#define BOSS_SPEED		4
+#define BOSS_HEALTH		60
+#define BOSS_PHASE_B_HEALTH	40
+#define BOSS_SPEED		12
 
 #define EYE_LEFT_POS_X	10
-#define EYE_LEFT_POS_Y	10
+#define EYE_LEFT_POS_Y	6
 
-#define EYE_RIGHT_POS_X	20
-#define EYE_RIGHT_POS_Y	10
+#define EYE_RIGHT_POS_X	28
+#define EYE_RIGHT_POS_Y	8
+
+#define MOUNTH_POS_X	15
+#define MOUNTH_POS_Y	25
+
+#define SPAWNKAMIKAZE_TIMER	2
 
 typedef void (*BossPhaseUpdate)(struct Boss*, Game*, struct GameScreenData*);
 
 typedef struct Boss
 {
-	Entity mEntity;
+	Entity	mEntity;
 
-	double mShootCooldown;
-	double mChangeDirectionCooldown;
+	double	mShootCooldown;
+	double	mChangeDirectionCooldown;
 
-	double mHitTimer;
+	double	mHitTimer;
 
-	double mCurrentDirectionX;
-	double mCurrentDirectionY;
+	double	mCurrentDirectionX;
+	double	mCurrentDirectionY;
+
+	double	mSpawnKamikazeCooldown;
+	char	mCanSpawnKamikaze;
 
 	BossPhaseUpdate mCurrentPhaseUpdate;
 	BossPhaseUpdate mCurrentMovementUpdate;
@@ -55,6 +64,7 @@ void Boss_PhaseB_Update(Boss* boss, Game* game, struct GameScreenData* data);
 // MOVEMENTS PHASES
 
 void Boss_Movement_EnterScreen(Boss* boss, Game* game, struct GameScreenData* data);
+void Boss_Movement_Re_EnterScreen(Boss* boss, Game* game, struct GameScreenData* data);
 
 /// <summary>
 /// Change the position of a boss
@@ -62,7 +72,9 @@ void Boss_Movement_EnterScreen(Boss* boss, Game* game, struct GameScreenData* da
 /// <param name="boss">Boss to edit</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 /// <param name="game">Current game</param>
-void Boss_Movement_UpDown(Boss* boss, struct GameScreenData* gameScreen, Game* game);
+void Boss_Movement_UpDown(Boss* boss, Game* game, struct GameScreenData* gameScreen);
+
+void Boss_Movement_Dash(Boss* boss, Game* game, struct GameScreenData* gameScreen);
 
 /// <summary>
 /// Makes the boss shoot
@@ -70,6 +82,9 @@ void Boss_Movement_UpDown(Boss* boss, struct GameScreenData* gameScreen, Game* g
 /// <param name="boss">Boss to update</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Boss_Shoot(Boss* boss, struct GameScreenData* gameScreen);
+
+void Boss_SpawnKamikaze(Boss* boss, Game* game, struct GameScreenData* gameScreen);
+void Boss_SpawnShooter(Boss* boss, Game* game, struct GameScreenData* gameScreen);
 
 void Boss_TakeDamages(Boss* boss, float damages);
 

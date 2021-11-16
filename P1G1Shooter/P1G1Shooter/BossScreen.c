@@ -39,6 +39,8 @@ int BossScreenUpdate(Game* _game, GameState* _gameState)
 		gameData->mAllEntities->mCurrentSize,
 		_game);
 
+	HandleEntitiesCollision(data->mBoss, gameData->mPlayer, _game);
+
 	EndGame(_game, gameData->mPlayer);
 	EndBoss(data->mBoss, _game);
 	return 0;

@@ -22,7 +22,7 @@ void	InitGame(Game* game)
 	InitTime();
 
 	game->mGameTime = GetTime();
-	game->mGameDt = ZERO;
+	game->mGameDt = 0.0;
 
 	game->mStateStack = DVectorCreate();
 	DVectorInit(game->mStateStack, sizeof(GameState), ZERO, NULL);

@@ -23,8 +23,8 @@ const char* spritesNames[SIZEOF_SPRITES_NAMES] =
 	"Sprites/enemy.bmp",		// Enemies
 	"Sprites/kamikaze_nrv.bmp",	// Enemies kamikazes
 	"Sprites/health_pp.bmp",	// PowerUp Health
-	"Sprites/balkaboss.bmp"		// Boss
-	"Sprites/balkaboss_PasContent.bmp" // Boss hit
+	"Sprites/Balkaboss.bmp",		// Boss
+	"Sprites/Balkaboss_PasContent.bmp", // Boss hit
 	"Sprites/balkaboss_Oula.bmp" // Boss phase 2
 };
 
@@ -36,7 +36,7 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), ZERO, ZERO);
 
-	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * NUM_OF_ENTITY_TYPES);
+	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * SIZEOF_SPRITES_NAMES);
 
 	DisplayZone* curDisplayZone = NULL;
 	for (int i = ZERO; i < SIZEOF_SPRITES_NAMES; i++)
@@ -104,7 +104,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 	// COLLISIONS
 	HandleCollision(data->mAllEntities,	game);
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
-	
+
 	if (game->mScore >= BOSS_SCORE)
 	{
 		game->mScore = BOSS_SCORE;
@@ -163,47 +163,51 @@ void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* g
 	Entity* curCompare = NULL;
 	for (int i = ZERO; i < _length; i++)
 	{
-		if ((curCompare = _list[i])	&&
-			CompareCollision(_entity, curCompare))
+		HandleEntitiesCollision(_entity, _list[i], gameStruct);
+	}
+}
+
+void HandleEntitiesCollision(Entity* _entityA, Entity* _entityB, Game* _game)
+{
+	if (_entityB && CompareCollision(_entityA, _entityB))
+	{
+		if (_entityA->mOnCollide)
+			_entityA->mOnCollide(_entityA, _entityB, _game);
+
+		if (_entityB->mOnCollide)
+			_entityB->mOnCollide(_entityB, _entityA, _game);
+
+		// SCORE
+
+		if (_entityA->mHealth == ZERO && _entityA->mEntityType == TYPE_PLAYER_PROJECTILE)
 		{
-			if (_entity->mOnCollide)
-				_entity->mOnCollide(_entity, curCompare, gameStruct);
-
-			if (curCompare->mOnCollide)
-				curCompare->mOnCollide(curCompare, _entity, gameStruct);
-
-			// SCORE
-
-			if (_entity->mHealth == ZERO && _entity->mEntityType == TYPE_PLAYER_PROJECTILE)
+			if (_entityB->mEntityType == TYPE_ENEMY_SHOOTER)
 			{
-				if (curCompare->mEntityType == TYPE_ENEMY_SHOOTER)
-				{
-					//score += 3
-					gameStruct->mScore += 3;
-				}
-				else if (curCompare->mEntityType == TYPE_ENEMY_KAMIKAZE)
-				{
-					//score += 4
-					gameStruct->mScore += 4;
-				}
+				//score += 3
+				_game->mScore += 3;
 			}
-
-			if (curCompare->mHealth == ZERO && curCompare->mEntityType == TYPE_PLAYER_PROJECTILE) 
+			else if (_entityB->mEntityType == TYPE_ENEMY_KAMIKAZE)
 			{
-				if (_entity->mEntityType == TYPE_ENEMY_SHOOTER) 
-				{
-					gameStruct->mScore += 3;
-					//score += 3
-				}
-				else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
-				{
-					gameStruct->mScore += 4;
-					//score += 4
-				}
-				else if (_entity->mEntityType == TYPE_OBSTACLE)
-				{
-					gameStruct->mScore += 1;
-				}
+				//score += 4
+				_game->mScore += 4;
+			}
+		}
+
+		if (_entityB->mHealth == ZERO && _entityB->mEntityType == TYPE_PLAYER_PROJECTILE)
+		{
+			if (_entityA->mEntityType == TYPE_ENEMY_SHOOTER)
+			{
+				_game->mScore += 3;
+				//score += 3
+			}
+			else if (_entityA->mEntityType == TYPE_ENEMY_KAMIKAZE)
+			{
+				_game->mScore += 4;
+				//score += 4
+			}
+			else if (_entityA->mEntityType == TYPE_OBSTACLE)
+			{
+				_game->mScore += 1;
 			}
 		}
 	}

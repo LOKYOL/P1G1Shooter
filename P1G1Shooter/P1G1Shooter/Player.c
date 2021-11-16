@@ -23,6 +23,7 @@ void InitPlayer(Player** _player, GameScreenData* gameScreen)
 	InitDisplayZone(newPlayer->mHealthZone, 0, 0, 4, 1, 1);
 	DrawHealthInDisplayZone(newPlayer);
 
+	newPlayer->mTouchedTime = 0;
 	newPlayer->mEntity.mPosition_x = 5;
 	newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
 	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
@@ -34,6 +35,11 @@ void InitPlayer(Player** _player, GameScreenData* gameScreen)
 void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 {
 	Player* myPlayer = (Player*)_player;
+
+	if (myPlayer->mTouchedTime > 0)
+	{
+		myPlayer->mTouchedTime -= _game->mGameDt;
+	}
 
 	Player_UpdateMovement(myPlayer, _game);
 	FlushDisplayZone(_game->mDisplaySettings, &myPlayer->mEntity.mDisplayZone);
@@ -73,29 +79,33 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 
 void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
 {
-	switch (_entity->mEntityType)
+	if (_current->mTouchedTime <= 0)
 	{
-	case TYPE_OBSTACLE:
-	case TYPE_ENEMY_PROJECTILE:
-	case TYPE_ENEMY_SHOOTER:
-	case TYPE_ENEMY_KAMIKAZE:
-	case TYPE_ENEMY_BOSS:
-		Entity_TakeDamages(_current, 1);
-		if (_current->mEntity.mHealth > 0)
+		switch (_entity->mEntityType)
 		{
-			Play_Sound("player_enemyhit", game->mSoundManager);
+		case TYPE_OBSTACLE:
+		case TYPE_ENEMY_PROJECTILE:
+		case TYPE_ENEMY_SHOOTER:
+		case TYPE_ENEMY_KAMIKAZE:
+		case TYPE_ENEMY_BOSS:
+			Entity_TakeDamages(_current, 1);
+			_current->mTouchedTime = HIT_TIME;
+			if (_current->mEntity.mHealth > 0)
+			{
+				Play_Sound("player_enemyhit", game->mSoundManager);
+			}
+			else
+			{
+				Play_Sound("player_die", game->mSoundManager);
+			}
+			return;
+		case TYPE_POWERUP_HEALTH:
+			Entity_ReceiveHeal(_current, 1);
+			Play_Sound("powerup_health", game->mSoundManager);
+			return;
+		default:
+			return;
 		}
-		else
-		{
-			Play_Sound("player_die", game->mSoundManager);
-		}
-		return;
-	case TYPE_POWERUP_HEALTH:
-		Entity_ReceiveHeal(_current, 1);
-		Play_Sound("powerup_health", game->mSoundManager);
-		return;
-	default:
-		return;
 	}
 }
 

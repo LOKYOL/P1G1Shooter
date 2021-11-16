@@ -3,6 +3,8 @@
 #include "Engine/DisplayZoneDrawing.h"
 #include "Player.h"
 #include "Projectile.h"
+#include "EnemyKamikaze.h"
+#include "EnemyShooter.h"
 #include <math.h>
 
 void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
@@ -18,14 +20,17 @@ void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 		&_gameScreen->mSprites[TYPE_ENEMY_BOSS],
 		Boss_Update, Boss_OnCollide, Boss_Destroy);
 
+	newBoss->mCurrentPhaseUpdate = Boss_PhaseA_Update;
+	newBoss->mCurrentMovementUpdate = Boss_Movement_EnterScreen;
+
 	newBoss->mShootCooldown = 2;
 	newBoss->mChangeDirectionCooldown = 1;
 	newBoss->mCurrentDirectionX = (rand() % 3) - 1;
 	newBoss->mCurrentDirectionY = (rand() % 3) - 1;
 	newBoss->mHitTimer = 0;
 
-	newBoss->mCurrentPhaseUpdate = Boss_PhaseA_Update;
-	newBoss->mCurrentMovementUpdate = Boss_Movement_EnterScreen;
+	newBoss->mSpawnKamikazeCooldown = SPAWNKAMIKAZE_TIMER;
+	newBoss->mCanSpawnKamikaze = 0;
 }
 
 void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
@@ -43,16 +48,19 @@ void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
 			{
 				if (boss->mCurrentPhaseUpdate == Boss_PhaseA_Update)
 				{
-					boss->mEntity.mDisplayZone.mBuffer = _gameScreen->mSprites[TYPE_ENEMY_BOSS].mBuffer;
+					boss->mEntity.mDisplayZone.mBuffer = 
+						_gameScreen->mSprites[TYPE_ENEMY_BOSS].mBuffer;
 				}
 				else
 				{
-					boss->mEntity.mDisplayZone.mBuffer = _gameScreen->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
+					boss->mEntity.mDisplayZone.mBuffer = 
+						_gameScreen->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
 				}
 			}
 			else
 			{
-				boss->mEntity.mDisplayZone.mBuffer = _gameScreen->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
+				boss->mEntity.mDisplayZone.mBuffer = 
+					_gameScreen->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
 			}
 		}
 
@@ -64,6 +72,25 @@ void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
 		else
 		{
 			Enemy_Shoot(boss, _gameScreen);
+		}
+
+		if (boss->mCanSpawnKamikaze && boss->mSpawnKamikazeCooldown <= 0)
+		{
+			_gameScreen->mGameSpawnEnemyKamikazeTimer -= ENEMY_KAMIKAZE_SPAWN_TIMER;
+
+			if (rand() % 2)
+			{
+				Boss_SpawnKamikaze(boss, _game, _gameScreen);
+			}
+			else
+			{
+				Boss_SpawnShooter(boss, _game, _gameScreen);
+			}
+			boss->mSpawnKamikazeCooldown = SPAWNKAMIKAZE_TIMER;
+		}
+		else
+		{
+			boss->mSpawnKamikazeCooldown -= _game->mGameDt;
 		}
 
 		FlushDisplayZone(_game->mDisplaySettings, &boss->mEntity.mDisplayZone);
@@ -81,16 +108,24 @@ void Boss_PhaseA_Update(Boss* boss, Game* _game, GameScreenData* _data)
 		Boss_Shoot(boss, _data);
 	}
 
-	if (boss->mEntity.mHealth <= 0)
+	if (boss->mEntity.mHealth <= BOSS_PHASE_B_HEALTH)
 	{
+		boss->mCanSpawnKamikaze = 0;
 		boss->mCurrentPhaseUpdate = Boss_PhaseB_Update;
-		boss->mEntity.mHealth = 30;
+		boss->mCurrentMovementUpdate = Boss_Movement_Dash;
 	}
 }
 
-void Boss_PhaseB_Update(Boss* boss, Game* game, GameScreenData* data)
+void Boss_PhaseB_Update(Boss* _boss, Game* _game, GameScreenData* _data)
 {
-	
+	if (_boss->mShootCooldown > 0)
+	{
+		_boss->mShootCooldown -= _game->mGameDt;
+	}
+	else
+	{
+		Boss_Shoot(_boss, _data);
+	}
 }
 
 void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
@@ -118,8 +153,8 @@ void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
 		Entity_Move
 		(
 			boss, 
-			boss->mCurrentDirectionX * BOSS_SPEED * game->mGameDt, 
-			boss->mCurrentDirectionY * BOSS_SPEED * game->mGameDt
+			boss->mCurrentDirectionX * boss->mEntity.mSpeed * game->mGameDt, 
+			boss->mCurrentDirectionY * boss->mEntity.mSpeed * game->mGameDt
 		);
 	}
 	else
@@ -130,19 +165,49 @@ void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
 	}
 }
 
-void Boss_Movement_UpDown(Boss* _boss, GameScreenData* _gameScreen, Game* _game)
+void Boss_Movement_Re_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
+{
+	if (boss->mEntity.mPosition_x > WINDOW_WIDTH - boss->mEntity.mDisplayZone.mSizeX - 5)
+	{
+		Entity_Move(boss, -boss->mEntity.mSpeed * game->mGameDt, 0);
+	}
+	else
+	{
+		boss->mCurrentMovementUpdate = Boss_Movement_UpDown;
+		boss->mCurrentDirectionX = 0;
+		boss->mCurrentDirectionY = -1;
+	}
+}
+
+void Boss_Movement_UpDown(Boss* _boss, Game* _game, struct GameScreenData* _gameScreen)
 {
 	if (_boss->mEntity.mPosition_y >= WINDOW_HEIGHT - _boss->mEntity.mDisplayZone.mSizeY)
 	{
-		_boss->mCurrentDirectionY = -BOSS_SPEED * _game->mGameDt;
+		_boss->mCurrentDirectionY = -_boss->mEntity.mSpeed * _game->mGameDt;
 	}
 	else if (_boss->mEntity.mPosition_y <= 0)
 	{
-		_boss->mCurrentDirectionY = BOSS_SPEED * _game->mGameDt;
+		_boss->mCurrentDirectionY = _boss->mEntity.mSpeed * _game->mGameDt;
 	}
 
 	// Apply movement
 	Entity_Move(&_boss->mEntity, _boss->mCurrentDirectionX, _boss->mCurrentDirectionY);
+}
+
+void Boss_Movement_Dash(Boss* _boss, Game* _game, struct GameScreenData* _gameScreen)
+{
+	if (_boss->mEntity.mPosition_x < -(int)_boss->mEntity.mDisplayZone.mSizeX)
+	{
+		Entity_MoveTo(_boss, WINDOW_WIDTH, _boss->mEntity.mPosition_y);
+		_boss->mEntity.mSpeed = BOSS_SPEED;
+		_boss->mCanSpawnKamikaze = 1;
+		_boss->mCurrentMovementUpdate = Boss_Movement_Re_EnterScreen;
+	}
+	else
+	{
+		_boss->mEntity.mSpeed += _game->mGameDt * BOSS_SPEED;
+		Entity_Move(_boss, -_boss->mEntity.mSpeed * _game->mGameDt, 0);
+	}
 }
 
 void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
@@ -158,6 +223,26 @@ void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 	boss->mShootCooldown = 1;
+}
+
+void Boss_SpawnKamikaze(Boss* _boss, Game* _game, GameScreenData* _gameScreen)
+{
+	EnemyKamikaze* newEnemy = NULL;
+	Enemy_Initialize(&newEnemy, _gameScreen);
+	Entity_MoveTo(newEnemy, 
+		_boss->mEntity.mPosition_x + MOUNTH_POS_X, 
+		_boss->mEntity.mPosition_y + MOUNTH_POS_Y);
+	DVectorPushBack(_gameScreen->mAllEntities, &newEnemy);
+}
+
+void Boss_SpawnShooter(Boss* _boss, Game* _game, GameScreenData* _gameScreen)
+{
+	EnemyShooter* newEnemy = NULL;
+	EnemyShooter_Initialize(&newEnemy, _gameScreen);
+	Entity_MoveTo(newEnemy, 
+		_boss->mEntity.mPosition_x + MOUNTH_POS_X, 
+		_boss->mEntity.mPosition_y + MOUNTH_POS_Y);
+	DVectorPushBack(_gameScreen->mAllEntities, &newEnemy);
 }
 
 void Boss_OnCollide(Boss* _current, Entity* _entity, Game* game)
