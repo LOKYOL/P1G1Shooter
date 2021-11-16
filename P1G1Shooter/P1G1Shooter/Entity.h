@@ -47,7 +47,7 @@ typedef struct Entity
 /// </summary>
 /// <param name="entity">Entity to initialize</param>
 void Entity_Initialize(Entity* entity, EntityType type, int posx, int posy, 
-	int health, float speed,
+	float health, float speed,
 	DisplayZone* displayZone,
 	Update update, OnCollide onCollide, Destroy destroy);
 

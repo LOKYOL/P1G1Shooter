@@ -7,7 +7,7 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 
-#define BOSS_SCORE	500
+#define BOSS_SCORE	50
 
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \
@@ -157,3 +157,8 @@ void	UpdateWeapon(struct Game* game, GameScreenData* data);
 /// <param name="game">Current game</param>
 /// <param name="player">Current player</param>
 void	EndGame(struct Game* game, struct Player* player);
+
+/// <summary>
+/// Give a random Int between a min and max given in parameters
+/// </summary>
+int RandomInt(int min, int max);

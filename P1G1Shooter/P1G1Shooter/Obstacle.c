@@ -9,9 +9,9 @@ void Obstacle_Initialize(Obstacle** _obstacle, GameScreenData* gameScreen)
 
 	*_obstacle = newObstacle;
 
-	Entity_Initialize(newObstacle, TYPE_OBSTACLE, 
+	Entity_Initialize((Entity*)newObstacle, TYPE_OBSTACLE, 
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newObstacle->mEntity.mDisplayZone.mSizeY),
-		OBSTACLE_HEALTH, rand() % 5 + 3, &gameScreen->mSprites[TYPE_OBSTACLE],
+		OBSTACLE_HEALTH, ((float)RandomInt(4, 7)), &gameScreen->mSprites[TYPE_OBSTACLE],
 		Obstacle_Update, Obstacle_OnCollide, Obstacle_Destroy);
 }
 
@@ -29,7 +29,7 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 
 	Entity_MoveTo(&_obstacle->mEntity, newpos_x, _obstacle->mEntity.mPosition_y);
 
-	if (_obstacle->mEntity.mPosition_x < -5.0 || _obstacle->mEntity.mPosition_x > WINDOW_WIDTH + 5)
+	if (_obstacle->mEntity.mPosition_x < -5.0 || _obstacle->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
 		_obstacle->mEntity.mHealth = 0;
 	}
@@ -43,7 +43,7 @@ void Obstacle_OnCollide(Obstacle* _current, Entity* _entity, Game* game)
 	case TYPE_PLAYER_PROJECTILE:
 	case TYPE_ENEMY_PROJECTILE:
 	case TYPE_ENEMY_KAMIKAZE:
-		Entity_Kill(_current);
+		Entity_Kill((Entity*)_current);
 		return;
 	default:
 		return;

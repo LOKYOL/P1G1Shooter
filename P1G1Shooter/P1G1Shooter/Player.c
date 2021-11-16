@@ -10,7 +10,7 @@ void InitPlayer(Player** _player, GameScreenData* gameScreen)
 
 	*_player = newPlayer;
 
-	Entity_Initialize(newPlayer, TYPE_PLAYER, 5, 
+	Entity_Initialize((Entity*)newPlayer, TYPE_PLAYER, 5,
 		WINDOW_HEIGHT / 2, 3, PLAYER_SPEED,
 		&gameScreen->mSprites[TYPE_PLAYER],
 		Player_Update, Player_OnCollide, Player_Destroy);
@@ -167,8 +167,8 @@ void UpdateBatteryDisplayZonePosition(Player* _player)
 void UpdateHealthDisplayZonePosition(Player* _player)
 {
 	MoveDisplayZone(_player->mHealthZone, 
-		_player->mEntity.mPosition_x + 5, 
-		_player->mEntity.mPosition_y + 3);
+		(int)_player->mEntity.mPosition_x + 5, 
+		(int)_player->mEntity.mPosition_y + 3);
 }
 
 const ConsoleColors ChargeColors[5] =

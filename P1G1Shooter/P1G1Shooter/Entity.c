@@ -9,7 +9,7 @@
 #include "Engine/Game.h"
 
 void Entity_Initialize(Entity* _entity, EntityType _type, int _posx, int _posy, 
-	int _health, float _speed,
+	float _health, float _speed,
 	DisplayZone* _displayZone,
 	Update _update, OnCollide _onCollide, Destroy _destroy)
 {

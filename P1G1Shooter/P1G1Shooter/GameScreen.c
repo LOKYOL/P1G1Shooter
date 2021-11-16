@@ -13,7 +13,7 @@
 #include "Engine/SoundManager.h"
 #include <stdio.h>
 
-#define SIZEOF_SPRITES_NAMES 10
+#define SIZEOF_SPRITES_NAMES 14
 const char* spritesNames[SIZEOF_SPRITES_NAMES] =
 {
 	"Sprites/submarine.bmp",	// Player
@@ -25,7 +25,11 @@ const char* spritesNames[SIZEOF_SPRITES_NAMES] =
 	"Sprites/health_pp.bmp",	// PowerUp Health
 	"Sprites/Balkaboss.bmp",		// Boss
 	"Sprites/Balkaboss_PasContent.bmp", // Boss hit
-	"Sprites/balkaboss_Oula.bmp" // Boss phase 2
+	"Sprites/balkaboss_Oula.bmp", // Boss phase 2
+	"Sprites/submarine_Damage.bmp",	// Player hit
+	"Sprites/sealion_Damage.bmp",		// Obstacles hit
+	"Sprites/enemy_Damage.bmp",		// Enemies hit
+	"Sprites/kamikaze_nrv_Damage.bmp",	// Enemies kamikazes hit
 };
 
 int GameScreenInit(Game* game, GameState* state)
@@ -69,7 +73,7 @@ int GameScreenClose(Game* game, GameState* state)
 	GameScreenData* data = state->mData;
 
 	Entity* curEntity = NULL;
-	for (int i = ZERO; i < data->mAllEntities->mCurrentSize; i++)
+	for (unsigned int i = ZERO; i < data->mAllEntities->mCurrentSize; i++)
 	{
 		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
 		curEntity->mDestroy(curEntity);
@@ -105,7 +109,7 @@ int GameScreenUpdate(Game* game, GameState* state)
 
 	// COLLISIONS
 	HandleCollision(data->mAllEntities,	game);
-	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
+	HandleEntityCollision((Entity*)data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
 
 	if (game->mScore >= data->mNextBossScore)
 	{
@@ -131,7 +135,7 @@ void PushEntity(GameScreenData* _game, Entity** _entity)
 void PopEntity(GameScreenData* _game, Entity* _entity)
 {
 	Entity* curEntity = NULL;
-	for (int i = ZERO; i < _game->mAllEntities->mCurrentSize; i++)
+	for (unsigned int i = ZERO; i < _game->mAllEntities->mCurrentSize; i++)
 	{
 		if ((curEntity = DVectorGetTyped(_game->mAllEntities, Entity*, i)) == _entity)
 		{
@@ -327,7 +331,7 @@ void UpdateEntity(Game* game, GameScreenData* data)
 
 	// FOR EACH ENTITY
 	Entity* curEntity = NULL;
-	for (int i = ZERO; i < data->mAllEntities->mCurrentSize; i++)
+	for (unsigned int i = 0; i < data->mAllEntities->mCurrentSize; i++)
 	{
 		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
 
@@ -352,7 +356,7 @@ void UpdateWeapon(Game* game, GameScreenData* data)
 	}
 	else
 	{
-		data->mPlayer->mCurrentEnergy += game->mGameDt * RELOAD_SPEED;
+		data->mPlayer->mCurrentEnergy += (float)(game->mGameDt * RELOAD_SPEED);
 
 		if (data->mPlayer->mCurrentEnergy >= MAX_ENERGY)
 		{
@@ -372,5 +376,17 @@ void EndGame(Game* _game, Player* _player)
 	if (Entity_IsDead(&_player->mEntity))
 	{
 		PushEndScreen(_game);
+	}
+}
+
+int RandomInt(int min, int max)
+{
+	if (min < max)
+	{
+		return (rand() % (max - min + 1)) + min;
+	}
+	else
+	{
+		return min;
 	}
 }

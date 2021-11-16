@@ -2,7 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void Proj_Initialize(Projectile** _proj, float _speed, int _health,
+void Proj_Initialize(Projectile** _proj, float _speed, float _health,
 	float _velocity_x, float _velocity_y,
 	double _pos_x, double _pos_y,
 	EntityType _type, GameScreenData* _gameScreen,
@@ -13,7 +13,7 @@ void Proj_Initialize(Projectile** _proj, float _speed, int _health,
 
 	*_proj = newProjectile;
 
-	Entity_Initialize(newProjectile, _type, _pos_x, _pos_y, _health, _speed,
+	Entity_Initialize((Entity*)newProjectile, _type, _pos_x, _pos_y, _health, _speed,
 		&_gameScreen->mSprites[_type],
 		_update, _onCollide, _destroy);
 
@@ -38,7 +38,7 @@ void Projectile_UpdateMovement(Projectile * _proj, Game* _game, GameScreenData* 
 
 	Entity_Move(&_proj->mEntity, move_x, move_y);
 
-	if (_proj->mEntity.mPosition_x < -5 || _proj->mEntity.mPosition_x > WINDOW_WIDTH + 5)
+	if (_proj->mEntity.mPosition_x < -5 || _proj->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
 		_proj->mEntity.mHealth = 0;
 	}
@@ -52,7 +52,7 @@ void Projectile_OnCollide(Projectile* _current, Entity* _entity, Game* game)
 	case TYPE_OBSTACLE:
 	case TYPE_PLAYER_PROJECTILE:
 	case TYPE_ENEMY_KAMIKAZE:
-		Entity_Kill(_current);
+		Entity_Kill((Entity*)_current);
 		return;
 	default:
 		return;

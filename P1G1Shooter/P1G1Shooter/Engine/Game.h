@@ -30,7 +30,7 @@ typedef struct Game
 	double				mGameTime;
 	double				mGameDt;
 
-	int					mScore;
+	unsigned int		mScore;
 	
 }Game;
 

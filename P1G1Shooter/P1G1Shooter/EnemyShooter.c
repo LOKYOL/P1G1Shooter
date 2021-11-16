@@ -101,7 +101,7 @@ void EnemyShooter_OnCollide(EnemyShooter* _current, Entity* _entity, Game* game)
 	switch (_entity->mEntityType)
 	{
 	case TYPE_PLAYER_PROJECTILE:
-		Entity_TakeDamages(_current, 1);
+		Entity_TakeDamages((Entity*)_current, 1);
 		if (_current->mEntity.mHealth > 0)
 		{
 			Play_Sound("enemy_hit", game->mSoundManager);

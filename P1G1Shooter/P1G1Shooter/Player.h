@@ -6,7 +6,7 @@
 #define PLAYER_SPEED		WINDOW_HEIGHT / 3
 
 #define MAX_ENERGY			100.f
-#define RELOAD_SPEED		25.f
+#define RELOAD_SPEED		25.0
 #define SHOOT_COST			10.f
 #define RELOAD_COOLDOWN		0.5f
 #define OVERHEAT_COOLDOWN	5.f
@@ -22,11 +22,11 @@ typedef struct Player
 	DisplayZone*	mChargeZone;
 	DisplayZone*	mHealthZone;
 
-	double mTouchedTime;
+	double			mTouchedTime;
 
-	float mCurrentEnergy;
-	float mReloadCooldown;
-	float mShootCooldown;
+	float			mCurrentEnergy;
+	double			mReloadCooldown;
+	double			mShootCooldown;
 } Player;
 
 /// <summary>

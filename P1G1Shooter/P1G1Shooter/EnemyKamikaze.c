@@ -11,8 +11,8 @@ void Enemy_Initialize(EnemyKamikaze** _enemy, GameScreenData* _gameScreen)
 
 	*_enemy = newEnemy;
 
-	int health = RandomInt(ENEMYK_HEALTH_MIN, ENEMYK_HEALTH_MAX),
-		speed = RandomInt(ENEMYK_SPEED_MIN, ENEMYK_SPEED_MAX);
+	float	health = (float)RandomInt(ENEMYK_HEALTH_MIN, ENEMYK_HEALTH_MAX),
+			speed = (float)RandomInt(ENEMYK_SPEED_MIN, ENEMYK_SPEED_MAX);
 
 	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_KAMIKAZE,
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY), 
@@ -64,14 +64,14 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	double minDistance = minDistanceBase;
 	Entity* curEntity = NULL;
 	double curDistance = 0;
-	for (int i = 0; i < _gameScreen->mAllEntities->mCurrentSize; i++)
+	for (unsigned int i = 0; i < _gameScreen->mAllEntities->mCurrentSize; i++)
 	{
 		if ((curEntity = DVectorGetTyped(_gameScreen->mAllEntities, Entity*, i))	&&
 				(curEntity->mEntityType == TYPE_OBSTACLE)					&&
 			InRange(_enemy->mEntity.mDisplayZone.mPosY, 
 			curEntity->mDisplayZone.mPosY - _enemy->mEntity.mDisplayZone.mSizeY - 2, 
 			curEntity->mDisplayZone.mPosY + curEntity->mDisplayZone.mSizeY + 2)		&&
-			(curDistance = Entity_GetDistance(_enemy, curEntity)) < minDistance)
+			(curDistance = Entity_GetDistance(((Entity*)_enemy), curEntity)) < minDistance)
 		{
 			mostNear = curEntity;
 			minDistance = curDistance;
@@ -102,9 +102,9 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	// Apply movement
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
 
-	if (_enemy->mEntity.mPosition_x < -5.f || _enemy->mEntity.mPosition_x > 5.f + (float)WINDOW_WIDTH)
+	if (_enemy->mEntity.mPosition_x < -5.f || _enemy->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
-		Entity_Kill(_enemy);
+		Entity_Kill((Entity*)_enemy);
 	}
 }
 
@@ -133,7 +133,7 @@ void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 	int type = (int)_entity->mEntityType;
 	if (type >= 0 && type <= 3)
 	{
-		Entity_TakeDamages(_current, 1);
+		Entity_TakeDamages((Entity*)_current, 1);
 		if (type == TYPE_PLAYER_PROJECTILE)
 		{
 			if (_current->mEntity.mHealth > 0)
@@ -151,16 +151,4 @@ void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 void Enemy_Destroy(Entity* _entity)
 {
 	free(_entity);
-}
-
-int RandomInt(int min, int max)
-{
-	if (min < max)
-	{
-		return (rand() % (max - min + 1)) + min;
-	}
-	else
-	{
-		return min;
-	}
 }

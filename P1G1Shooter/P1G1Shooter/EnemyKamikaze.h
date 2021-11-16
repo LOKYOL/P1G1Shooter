@@ -52,8 +52,3 @@ void Enemy_OnCollide(EnemyKamikaze* current, Entity* entity, Game* game);
 /// </summary>
 /// <param name="entity">Entity casted to an enemy to destroy</param>
 void Enemy_Destroy(Entity* entity);
-
-/// <summary>
-/// Give a random Int between a min and max given in parameters
-/// </summary>
-int RandomInt(int min, int max);
