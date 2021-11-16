@@ -61,7 +61,7 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 
 	ClearBuffer(game->mDisplaySettings, WHITE, BLACK, ' ');
 
-	if (KeyPressStart(*game->mInputs, VK_RETURN))
+	if (KeyPressStart(*game->mInputs, VK_RETURN) || KeyPressStart(*game->mInputs, VK_SPACE))
 	{
 		switch (datascreen->mCurrentSelector)
 		{
@@ -79,13 +79,13 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 	else
 	{
 		int selector = datascreen->mCurrentSelector;
-		if (KeyPressStart(*game->mInputs, VK_DOWN))
+		if (KeyPressStart(*game->mInputs, VK_DOWN) || KeyPressStart(*game->mInputs, 'S'))
 		{
 			selector++;
 			selector %= datascreen->mNbOptions;
 			Play_Sound("click.wav", game->mSoundManager);
 		}
-		if (KeyPressStart(*game->mInputs, VK_UP))
+		if (KeyPressStart(*game->mInputs, VK_UP) || KeyPressStart(*game->mInputs, 'Z'))
 		{
 			selector--;
 			selector = (selector + datascreen->mNbOptions) % datascreen->mNbOptions;
