@@ -7,7 +7,7 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 
-#define BOSS_SCORE	500
+#define BOSS_SCORE	10
 
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \
@@ -156,4 +156,4 @@ void	UpdateWeapon(struct Game* game, GameScreenData* data);
 /// </summary>
 /// <param name="game">Current game</param>
 /// <param name="player">Current player</param>
-void	EndGame(struct Game* game, struct Player* player);
+void	EndGame(struct Game* game, struct GameScreenData* data);
