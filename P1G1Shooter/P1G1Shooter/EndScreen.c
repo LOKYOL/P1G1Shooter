@@ -47,7 +47,7 @@ int EndScreenClose(struct Game* game, struct GameState* state)
 	free(datascreen->mScoreDisplayZone);
 
 	free(state->mData);
-	ClearBuffer(game->mDisplaySettings, BLACK, BLACK);
+	ClearBuffer(game->mDisplaySettings, BLACK, BLACK, ' ');
 
 	return 0;
 }

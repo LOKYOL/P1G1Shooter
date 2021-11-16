@@ -332,7 +332,7 @@ DisplaySettings* InitDisplay(unsigned int sx, unsigned int sy,unsigned int newFo
 	// black screen
 	SetColor(result, 0, 0);
 
-	ClearBuffer(result, BLACK, BLACK);
+	ClearBuffer(result, BLACK, BLACK, ' ');
 	
 	GetConsoleCursorInfo(result->mConsoleHandle, &result->mBackupCursorState);
 	HideCursor(result);
@@ -627,22 +627,19 @@ void	SwapBuffer(DisplaySettings* settings)
 
 	COORD coord = { 0, 0 }, size = { settings->mSizeX, settings->mSizeY };
 	SMALL_RECT rect = { 0, 0, settings->mSizeX, settings->mSizeY };
-	WriteConsoleOutputA(settings->mConsoleHandle, buffer, size,coord , &rect);
+	WriteConsoleOutputA(settings->mConsoleHandle, buffer, size, coord, &rect);
 
 	free(buffer);
 }
 
-
-
-
-void	ClearBuffer(DisplaySettings* settings, ConsoleColors FG, ConsoleColors BG)
+void	ClearBuffer(DisplaySettings* settings, ConsoleColors FG, ConsoleColors BG, unsigned char c)
 {
 	// black screen
 
 	DisplayCharacter* drawB = settings->mDrawBuffer;
 	DisplayCharacter colorToSet;
 	CodeColors(&colorToSet,FG, BG);
-	colorToSet.mCharacter = ' ';
+	colorToSet.mCharacter = c;
 	colorToSet.mCharactersFlag = NO_FLAG;
 	for (int j = 0; j < settings->mSizeY; j++)
 	{

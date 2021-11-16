@@ -120,7 +120,7 @@ extern "C"
 	// show the current display buffer
 	void	SwapBuffer(DisplaySettings* settings);
 	// clear the current display buffer
-	void	ClearBuffer(DisplaySettings* settings, ConsoleColors FG, ConsoleColors BG);
+	void	ClearBuffer(DisplaySettings* settings, ConsoleColors FG, ConsoleColors BG, unsigned char c);
 
 	// if show == 0 don't display FPS else display FPS
 	void	ShowFPS(DisplaySettings* settings, int show);

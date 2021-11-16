@@ -50,7 +50,7 @@ int TitleScreenClose(struct Game* game, struct GameState* state)
 	free(datascreen->mTitleAsciiZone);
 
 	free(state->mData);
-	ClearBuffer(game->mDisplaySettings, BLACK, BLACK);
+	ClearBuffer(game->mDisplaySettings, BLACK, BLACK, ' ');
 
 	return 0;
 }
@@ -59,7 +59,7 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 {
 	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
 
-	ClearBuffer(game->mDisplaySettings, WHITE, BLACK);
+	ClearBuffer(game->mDisplaySettings, WHITE, BLACK, ' ');
 
 	if (KeyPressStart(*game->mInputs, VK_RETURN))
 	{
