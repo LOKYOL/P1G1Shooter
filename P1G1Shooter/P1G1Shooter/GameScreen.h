@@ -25,6 +25,8 @@ typedef struct GameScreenData
 
 	DisplayZone*		mScoreDisplayZone;
 
+	unsigned int		mNextBossScore;
+
 	double				mGameSpawnObstacleTimer;
 	double				mGameSpawnEnemyTimer;
 	double				mGameSpawnEnemyKamikazeTimer;

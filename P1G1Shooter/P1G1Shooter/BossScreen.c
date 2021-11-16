@@ -50,6 +50,10 @@ int BossScreenClose(Game* _game, GameState* _gameState)
 {
 	BossScreenData* data = _gameState->mData;
 
+	_game->mScore += 100;
+
+	data->mGameScreenData->mNextBossScore = _game->mScore + BOSS_SCORE;
+
 	data->mBoss->mEntity.mDestroy(data->mBoss);
 	data->mBoss = NULL;
 

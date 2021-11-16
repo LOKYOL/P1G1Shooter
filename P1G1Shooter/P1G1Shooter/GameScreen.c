@@ -51,6 +51,8 @@ int GameScreenInit(Game* game, GameState* state)
 	InitPlayer(&myPlayer, data);
 	data->mPlayer = myPlayer;
 
+	data->mNextBossScore = BOSS_SCORE;
+
 	data->mGameSpawnObstacleTimer = ZERO;
 	data->mGameSpawnEnemyTimer = ZERO;
 	data->mGameSpawnEnemyKamikazeTimer = ZERO;
@@ -105,9 +107,8 @@ int GameScreenUpdate(Game* game, GameState* state)
 	HandleCollision(data->mAllEntities,	game);
 	HandleEntityCollision(data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
 
-	if (game->mScore >= BOSS_SCORE)
+	if (game->mScore >= data->mNextBossScore)
 	{
-		game->mScore = BOSS_SCORE;
 		PushBossScreen(game);
 	}
 
