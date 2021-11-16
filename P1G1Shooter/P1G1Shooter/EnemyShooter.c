@@ -47,16 +47,6 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 	double
 		move_x = 0,
 		move_y = 0;
-
-	int
-		posPlayer_x = _gameScreen->mPlayer->mEntity.mPosition_x +
-			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeX / 2) + 0.5,
-		posPlayer_y = _gameScreen->mPlayer->mEntity.mPosition_y +
-			(_gameScreen->mPlayer->mEntity.mDisplayZone.mSizeY / 2) + 0.5,
-		posEnemy_x = _enemy->mEntity.mPosition_x +
-			(_enemy->mEntity.mDisplayZone.mSizeX / 2) + 0.5,
-		posEnemy_y = _enemy->mEntity.mPosition_y +
-			(_enemy->mEntity.mDisplayZone.mSizeY / 2) + 0.5;
 	
 	if (_enemy->mChangeDirectionCooldown > 0)
 	{
@@ -74,18 +64,18 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 	move_x = _enemy->mCurrentDirectionX;
 
 	// Not shooting until moved enough to the left
-	if (posEnemy_x < WINDOW_WIDTH / 2)
+	if (_enemy->mEntity.mPosition_x < WINDOW_WIDTH / 2)
 	{
 		move_x += 2;
 	}
-	else if (posEnemy_x > WINDOW_WIDTH / 5 * 4)
+	else if (_enemy->mEntity.mPosition_x > WINDOW_WIDTH / 5 * 4)
 	{
 		move_x -= 4;
 	}
 
 	// Clamp movement
 	double movement = _enemy->mEntity.mSpeed * _game->mGameDt;
-	double magnitude = sqrt(pow(move_x, 2) + pow(move_y, 2));
+	double magnitude = sqrt((move_x * move_x) + (move_y * move_y));
 	move_x = move_x / magnitude * movement;
 	move_y = move_y / magnitude * movement;
 
