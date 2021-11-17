@@ -13,25 +13,6 @@
 #include "Engine/SoundManager.h"
 #include <stdio.h>
 
-#define SIZEOF_SPRITES_NAMES 15
-const char* spritesNames[SIZEOF_SPRITES_NAMES] =
-{
-	"Sprites/submarine.bmp",	// Player
-	"Sprites/sealion.bmp",		// Obstacles
-	"Sprites/bubulle.bmp",		// Player Projectiles
-	"Sprites/bubulle_auto.bmp",	// Player Projectile auto
-	"Sprites/bubulle.bmp",		// Enemies Projectiles
-	"Sprites/enemy.bmp",		// Enemies
-	"Sprites/kamikaze_nrv.bmp",	// Enemies kamikazes
-	"Sprites/health_pp.bmp",	// PowerUp Health
-	"Sprites/Balkaboss.bmp",		// Boss
-	"Sprites/Balkaboss_PasContent.bmp", // Boss hit
-	"Sprites/balkaboss_Oula.bmp", // Boss phase 2
-	"Sprites/submarine_Damage.bmp",	// Player hit
-	"Sprites/sealion_Damage.bmp",		// Obstacles hit
-	"Sprites/enemy_Damage.bmp",		// Enemies hit
-	"Sprites/kamikaze_nrv_Damage.bmp",	// Enemies kamikazes hit
-};
 
 int GameScreenInit(Game* game, GameState* state)
 {
@@ -43,6 +24,7 @@ int GameScreenInit(Game* game, GameState* state)
 
 	data->mParamsList = InitParamListFromIniFile(INI_PATH);
 
+	// To Do REFACTORING
 	ParamSection* spritesSection = GetSection(data->mParamsList, "Sprites");
 
 	if (spritesSection) {
@@ -55,12 +37,12 @@ int GameScreenInit(Game* game, GameState* state)
 			char* path = (char*)malloc(sizeof(char) * 200);
 			char* spriteParam = (char*)malloc(sizeof(char) * 10);
 			
-			for (int i = 1; i < spritesSize->mValue; i++)
+			for (int i = 0; i < spritesSize->mValue; i++)
 			{
 				snprintf(spriteParam, 10, "Sprite_%d", i);
 				GetParamElemString(spritesSection, path, 200, spriteParam);
 				curDisplayZone = CreateDisplayZoneFromBMP(path);
-				data->mSprites[i - 1] = *curDisplayZone;
+				data->mSprites[i] = *curDisplayZone;
 				free(curDisplayZone);
 			}
 

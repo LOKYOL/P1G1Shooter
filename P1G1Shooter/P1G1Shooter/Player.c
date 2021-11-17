@@ -139,7 +139,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 		_player->mEntity.mPosition_x + 7, 
 		_player->mEntity.mPosition_y, 
 		TYPE_PLAYER_PROJECTILE,
-		TYPE_PLAYER_PROJECTILE, _gameScreen, 
+		TYPE_PLAYER_PROJECTILE + 1, _gameScreen, 
 		Projectile_Movement_AimAssist,
 		Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
 
