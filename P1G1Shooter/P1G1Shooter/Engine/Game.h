@@ -5,6 +5,8 @@
 #include "../Inputs.h"
 #include "../Entity.h"
 #include "SoundManager.h"
+#include "ParamsList.h"
+#include "ini.h"
 
 #define WINDOW_HEIGHT		120
 #define WINDOW_WIDTH		220

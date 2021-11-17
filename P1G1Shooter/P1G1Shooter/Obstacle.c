@@ -2,7 +2,7 @@
 #include "GameScreen.h"
 #include "Engine/DisplayZoneDrawing.h"
 
-void Obstacle_Initialize(Obstacle** _obstacle, GameScreenData* gameScreen)
+void Obstacle_Initialize(Obstacle** _obstacle, GameScreenData * _gameScreen)
 {
 	Obstacle* newObstacle = (Obstacle*)malloc(sizeof(Obstacle));
 	memset(newObstacle, 0, sizeof(Obstacle));
@@ -11,7 +11,7 @@ void Obstacle_Initialize(Obstacle** _obstacle, GameScreenData* gameScreen)
 
 	Entity_Initialize((Entity*)newObstacle, TYPE_OBSTACLE, 
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newObstacle->mEntity.mDisplayZone.mSizeY),
-		OBSTACLE_HEALTH, ((float)RandomInt(4, 7)), &gameScreen->mSprites[TYPE_OBSTACLE],
+		OBSTACLE_HEALTH, ((float)RandomInt(4, 7)), &_gameScreen->mSprites[TYPE_OBSTACLE],
 		Obstacle_Update, Obstacle_OnCollide, Obstacle_Destroy);
 }
 

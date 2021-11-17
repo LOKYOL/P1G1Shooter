@@ -40,15 +40,37 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), ZERO, ZERO);
 
-	data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * SIZEOF_SPRITES_NAMES);
+	data->mParamsList = InitParamListFromIniFile(INI_PATH);
 
-	DisplayZone* curDisplayZone = NULL;
-	for (int i = ZERO; i < SIZEOF_SPRITES_NAMES; i++)
-	{
-		curDisplayZone = CreateDisplayZoneFromBMP(spritesNames[i]);		// Player Sprite
-		data->mSprites[i] = *curDisplayZone;
-		free(curDisplayZone);
+	ParamSection* spritesSection = GetSection(data->mParamsList, "Sprites");
+
+	if (spritesSection) {
+		ParamInt* spritesSize = (ParamInt*)GetParamInSection(spritesSection, "SIZEOF_SPRITES_NAMES");
+
+		if (spritesSize) {
+			data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * spritesSize->mValue);
+
+			DisplayZone* curDisplayZone = NULL;
+			char* path = (char*)malloc(sizeof(char) * 200);
+			char* spriteParam = (char*)malloc(sizeof(char) * 10);
+			
+			for (int i = 1; i < spritesSize->mValue; i++)
+			{
+				snprintf(spriteParam, 10, "Sprite_%d", i);
+				GetParamElemString(spritesSection, path, 200, spriteParam);
+				curDisplayZone = CreateDisplayZoneFromBMP(path);
+				data->mSprites[i - 1] = *curDisplayZone;
+				free(curDisplayZone);
+			}
+
+			free(spriteParam);
+			free(path);
+		}
+
+		free(spritesSize);
 	}
+
+	free(spritesSection);
 
 	// Create Player
 	Player* myPlayer;
@@ -91,6 +113,8 @@ int GameScreenClose(Game* game, GameState* state)
 	free(data->mScoreDisplayZone);
 
 	free(data->mSprites);
+
+	free(data->mParamsList);
 
 	free(state->mData);
 

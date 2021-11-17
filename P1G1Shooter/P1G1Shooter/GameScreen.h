@@ -7,6 +7,8 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 
+#define INI_PATH "Assets/GameScreen.ini"
+
 #define BOSS_SCORE	500
 
 #define PushGameScreen(game)	GameState gameScreen; \
@@ -24,6 +26,8 @@ typedef struct GameScreenData
 	DisplayZone*		mSprites;
 
 	DisplayZone*		mScoreDisplayZone;
+
+	ParamsList*			mParamsList;
 
 	unsigned int		mNextBossScore;
 

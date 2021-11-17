@@ -3,10 +3,10 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
-#define OBSTACLE_SPEED_MIN	
 
 #define OBSTACLE_HEALTH		1
 #define OBSTACLE_DAMAGES	1
+#define OBSTACLE_INIT_SECTION "Obstacle"
 
 typedef struct Obstacle 
 {
@@ -17,7 +17,7 @@ typedef struct Obstacle
 /// Initialize an obstacle
 /// </summary>
 /// <param name="obstacle">Obstacle to initialize</param>
-void Obstacle_Initialize(Obstacle** obstacle, GameScreenData* gameScreen);
+void Obstacle_Initialize(Obstacle** obstacle, GameScreenData * _gameScreen);
 
 /// <summary>
 /// Update an obstacle's movement and appearance
