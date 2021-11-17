@@ -27,6 +27,8 @@ typedef struct Player
 	float			mCurrentEnergy;
 	double			mReloadCooldown;
 	double			mShootCooldown;
+
+	double			mShootAimAssistTimer;
 } Player;
 
 /// <summary>

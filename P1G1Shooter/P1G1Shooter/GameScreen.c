@@ -12,6 +12,7 @@
 #include "EndScreen.h"
 #include "Engine/SoundManager.h"
 #include <stdio.h>
+#include "PowerupAimAssist.h"
 
 
 int GameScreenInit(Game* game, GameState* state)
@@ -314,16 +315,30 @@ void SpawnHealthPowerup(GameScreenData* _game, double posX, double posY)
 	DVectorPushBack(_game->mAllEntities, &newPowerup);
 }
 
+void SpawnAimAssistPowerup(GameScreenData* _game, double posX, double posY)
+{
+	PowerupAimAssist* newPowerup = NULL;
+	PowerupAimAssist_Initialize(&newPowerup, _game, posX, posY);
+	DVectorPushBack(_game->mAllEntities, &newPowerup);
+}
+
 char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
 {
 	char res = Entity_IsDead(_entity);
 	if (res)
 	{
-		if (/*_entity->mEntityType == TYPE_ENEMY_KAMIKAZE || */_entity->mEntityType == TYPE_ENEMY_SHOOTER)
+		if (_entity->mEntityType == TYPE_ENEMY_SHOOTER)
 		{
-			if (RandomInt(1,10) == 1) // 10% de chance de spawner un bonus
+			if (RandomInt(1, 10) == 1) // 10% de chance de spawner un bonus
 			{
 				SpawnHealthPowerup(_game, _entity->mPosition_x, _entity->mPosition_y);
+			}
+		}
+		else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
+		{
+			if (RandomInt(1, 10) == 1) // 10% de chance de spawner un bonus
+			{
+				SpawnAimAssistPowerup(_game, _entity->mPosition_x, _entity->mPosition_y);
 			}
 		}
 

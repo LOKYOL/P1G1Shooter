@@ -71,6 +71,9 @@
     <ClCompile Include="BossScreen.c">
       <Filter>GameStates\Sources</Filter>
     </ClCompile>
+    <ClCompile Include="PowerupAimAssist.c">
+      <Filter>Entities\Sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\bitmap.h">
@@ -141,6 +144,9 @@
     </ClInclude>
     <ClInclude Include="BossScreen.h">
       <Filter>GameStates\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerupAimAssist.h">
+      <Filter>Entities\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

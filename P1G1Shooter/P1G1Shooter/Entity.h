@@ -21,7 +21,8 @@ typedef enum EntityType
 	TYPE_ENEMY_SHOOTER		= 7,
 	TYPE_ENEMY_KAMIKAZE		= 9,
 	TYPE_POWERUP_HEALTH		= 11,
-	TYPE_ENEMY_BOSS			= 12
+	TYPE_POWERUP_AIMASSIST		= 12,
+	TYPE_ENEMY_BOSS			= 13
 } EntityType;
 
 typedef struct Entity

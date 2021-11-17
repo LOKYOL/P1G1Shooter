@@ -15,7 +15,7 @@ void Enemy_Initialize(EnemyKamikaze** _enemy, GameScreenData* _gameScreen)
 			speed = (float)RandomInt(ENEMYK_SPEED_MIN, ENEMYK_SPEED_MAX);
 
 	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_KAMIKAZE,
-		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY), 
+		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
 		health, speed, &_gameScreen->mSprites[TYPE_ENEMY_KAMIKAZE],
 		Enemy_Update, Enemy_OnCollide, Enemy_Destroy);
 }
@@ -110,7 +110,7 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 
 void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 {
-	/*switch (_entity->mEntityType)
+	switch (_entity->mEntityType)
 	{
 	case TYPE_PLAYER:
 	case TYPE_OBSTACLE:
@@ -128,23 +128,6 @@ void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 		return;
 	default:
 		return;
-	}*/
-
-	int type = (int)_entity->mEntityType;
-	if (type >= 0 && type <= 3)
-	{
-		Entity_TakeDamages((Entity*)_current, 1);
-		if (type == TYPE_PLAYER_PROJECTILE)
-		{
-			if (_current->mEntity.mHealth > 0)
-			{
-				Play_Sound("enemy_hit", game->mSoundManager);
-			}
-			else
-			{
-				Play_Sound("enemy_die", game->mSoundManager);
-			}
-		}
 	}
 }
 

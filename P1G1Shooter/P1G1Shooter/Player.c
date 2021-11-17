@@ -2,6 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "Projectile.h"
+#include "PowerupAimAssist.h"
 
 void InitPlayer(Player** _player, GameScreenData* gameScreen)
 {
@@ -30,6 +31,7 @@ void InitPlayer(Player** _player, GameScreenData* gameScreen)
 	newPlayer->mCurrentEnergy = MAX_ENERGY;
 	newPlayer->mReloadCooldown = 0.f;
 	newPlayer->mShootCooldown = 0.f;
+	newPlayer->mShootAimAssistTimer = 0.f;
 }
 
 void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
@@ -39,6 +41,11 @@ void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)
 	if (myPlayer->mTouchedTime > 0)
 	{
 		myPlayer->mTouchedTime -= _game->mGameDt;
+	}
+
+	if (myPlayer->mShootAimAssistTimer > 0)
+	{
+		myPlayer->mShootAimAssistTimer -= _game->mGameDt;
 	}
 
 	Player_UpdateMovement(myPlayer, _game);
@@ -103,6 +110,10 @@ void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
 			Entity_ReceiveHeal(_current, 1);
 			Play_Sound("powerup_health", game->mSoundManager);
 			return;
+		case TYPE_POWERUP_AIMASSIST:
+			_current->mShootAimAssistTimer = POWERUP_AIMASSIST_DELAY;
+			Play_Sound("powerup_health", game->mSoundManager);
+			return;
 		default:
 			return;
 		}
@@ -135,13 +146,27 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 	if (_player->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 40, 1, 1, 0,
-		_player->mEntity.mPosition_x + 7, 
-		_player->mEntity.mPosition_y, 
-		TYPE_PLAYER_PROJECTILE,
-		TYPE_PLAYER_PROJECTILE + 1, _gameScreen, 
-		Projectile_Movement_AimAssist,
-		Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
+		if (_player->mShootAimAssistTimer > 0)
+		{
+			Proj_Initialize(&newProjectile, 40, 1, 1, 0,
+				_player->mEntity.mPosition_x + 7, 
+				_player->mEntity.mPosition_y, 
+				TYPE_PLAYER_PROJECTILE,
+				TYPE_PLAYER_PROJECTILE + 1, _gameScreen, 
+				Projectile_Movement_AimAssist,
+				Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
+		}
+		else
+		{
+			Proj_Initialize(&newProjectile, 40, 1, 1, 0,
+				_player->mEntity.mPosition_x + 7, 
+				_player->mEntity.mPosition_y, 
+				TYPE_PLAYER_PROJECTILE,
+				TYPE_PLAYER_PROJECTILE, _gameScreen, 
+				Projectile_Movement_Standard,
+				Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
+		}
+		
 
 		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
