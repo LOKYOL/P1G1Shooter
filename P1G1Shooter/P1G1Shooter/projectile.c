@@ -6,7 +6,7 @@
 void Proj_Initialize(Projectile** _proj, float _speed, float _health,
 	float _velocity_x, float _velocity_y,
 	double _pos_x, double _pos_y,
-	EntityType _type, GameScreenData* _gameScreen,
+	EntityType _type, int sprite, GameScreenData* _gameScreen,
 	ProjectileMovement _movement, Update _update, OnCollide _onCollide, Destroy _destroy)
 {
 	Projectile* newProjectile = (Projectile*)malloc(sizeof(Projectile));
@@ -15,7 +15,7 @@ void Proj_Initialize(Projectile** _proj, float _speed, float _health,
 	*_proj = newProjectile;
 
 	Entity_Initialize((Entity*)newProjectile, _type, _pos_x, _pos_y, _health, _speed,
-		&_gameScreen->mSprites[_type],
+		&_gameScreen->mSprites[sprite],
 		_update, _onCollide, _destroy);
 
 	newProjectile->mVelocity_x = _velocity_x;
@@ -73,8 +73,8 @@ void Projectile_Movement_AimAssist(Projectile * _proj, Game* _game, GameScreenDa
 
 		if (minDistance <= ULTRA_AIM_ASSIST_RANGE)
 		{
-			_proj->mVelocity_x = targetVelocityX;
-			_proj->mVelocity_y = targetVelocityY;
+			_proj->mVelocity_x = targetVelocityX / minDistance;
+			_proj->mVelocity_y = targetVelocityY / minDistance;
 		}
 		else
 		{

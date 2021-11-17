@@ -9,7 +9,7 @@ typedef void(*Destroy)(void* entity);
 #define AIM_ASSIST_RANGE	40
 #define ULTRA_AIM_ASSIST_RANGE	12
 
-#define NUM_OF_ENTITY_TYPES 9
+#define NUM_OF_ENTITY_TYPES 8
 
 typedef enum EntityType
 {
@@ -17,7 +17,6 @@ typedef enum EntityType
 	TYPE_PLAYER				= 0,
 	TYPE_OBSTACLE			= 1,
 	TYPE_PLAYER_PROJECTILE	= 2,
-	TYPE_PLAYER_PROJECTILE_AUTO = 3,
 	TYPE_ENEMY_PROJECTILE	= 4,
 	TYPE_ENEMY_SHOOTER		= 5,
 	TYPE_ENEMY_KAMIKAZE		= 6,
