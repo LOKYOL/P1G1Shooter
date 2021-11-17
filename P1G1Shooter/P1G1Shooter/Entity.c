@@ -89,11 +89,9 @@ double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
 
 	if (!(_entityA) || !(_entityB))
 		return 0;
-	double
-		posXA = _entityA->mPosition_x + ((double)_entityA->mDisplayZone.mSizeX / 2), // Center ?
-		posXB = _entityB->mPosition_x + ((double)_entityB->mDisplayZone.mSizeX / 2),
-		posYA = _entityA->mPosition_y + ((double)_entityA->mDisplayZone.mSizeY / 2),
-		posYB = _entityB->mPosition_y + ((double)_entityB->mDisplayZone.mSizeY / 2);
+	double posXA = 0, posXB = 0, posYA = 0, posYB = 0;
+	Entity_GetPosition(_entityA, &posXA, &posYA);
+	Entity_GetPosition(_entityB, &posXB, &posYB);
 
 	return sqrt(pow(posXB - posXA, 2) + pow(posYB - posYA, 2));
 }
@@ -117,4 +115,20 @@ void Entity_ClampXPosition(Entity* _entity)
 void Entity_Destroy(Entity* _entity)
 {
 	free(_entity);
+}
+
+void Entity_GetPosition(Entity* _entity, double* _posX, double* _posY)
+{
+	*_posX = Entity_GetXPosition(_entity);
+	*_posY = Entity_GetYPosition(_entity);
+}
+
+double Entity_GetXPosition(Entity* _entity)
+{
+	return _entity->mPosition_x + (_entity->mDisplayZone.mSizeX / 2);
+}
+
+double Entity_GetYPosition(Entity* _entity)
+{
+	return _entity->mPosition_y + (_entity->mDisplayZone.mSizeY / 2);
 }

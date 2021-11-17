@@ -13,12 +13,13 @@
 #include "Engine/SoundManager.h"
 #include <stdio.h>
 
-#define SIZEOF_SPRITES_NAMES 14
+#define SIZEOF_SPRITES_NAMES 15
 const char* spritesNames[SIZEOF_SPRITES_NAMES] =
 {
 	"Sprites/submarine.bmp",	// Player
 	"Sprites/sealion.bmp",		// Obstacles
 	"Sprites/bubulle.bmp",		// Player Projectiles
+	"Sprites/bubulle_auto.bmp",	// Player Projectile auto
 	"Sprites/bubulle.bmp",		// Enemies Projectiles
 	"Sprites/enemy.bmp",		// Enemies
 	"Sprites/kamikaze_nrv.bmp",	// Enemies kamikazes
