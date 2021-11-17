@@ -3,12 +3,16 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
+typedef void (*ProjectileMovement)(struct Projectile*, struct Game*, struct GameScreen*);
+
 typedef struct Projectile
 {
 	Entity mEntity;
 
-	float mVelocity_x;
-	float mVelocity_y;
+	double mVelocity_x;
+	double mVelocity_y;
+
+	ProjectileMovement mMovementUpdate;
 }Projectile;
 
 /// <summary>
@@ -20,10 +24,12 @@ typedef struct Projectile
 void Proj_Initialize(Projectile** proj, float speed, float health,
 	float velocity_x, float velocity_y,
 	double pos_x, double pos_y, 
-	EntityType type, GameScreenData* gameScreen,
-	Update update, // = Projectile_Update, 
-	OnCollide onCollide, // = Projectile_OnCollide, 
-	Destroy destroy // = Projectile_Destroy
+	EntityType type, int sprite, 
+	GameScreenData* gameScreen,
+	ProjectileMovement movement,
+	Update update,
+	OnCollide onCollide,
+	Destroy destroy
 	);
 
 /// <summary>
@@ -32,7 +38,7 @@ void Proj_Initialize(Projectile** proj, float speed, float health,
 /// <param name="proj">Projectile to edit</param>
 /// <param name="game">Current game</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void Projectile_Update(void* proj, Game* game, GameScreenData* gameScreen);
+void Projectile_Update(Projectile* proj, Game* game, GameScreenData* gameScreen);
 
 /// <summary>
 /// Change the position of a projectile
@@ -40,7 +46,17 @@ void Projectile_Update(void* proj, Game* game, GameScreenData* gameScreen);
 /// <param name="proj">Projectile to edit</param>
 /// <param name="game">Current game</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
-void Projectile_UpdateMovement(Projectile * proj, Game* game, GameScreenData* gameScreen);
+void Projectile_Movement_Standard(Projectile * proj, Game* game, GameScreenData* gameScreen);
+
+/// <summary>
+/// Change the position of a projectile
+/// </summary>
+/// <param name="proj">Projectile to edit</param>
+/// <param name="game">Current game</param>
+/// <param name="gameScreen">Datas bind to the game state</param>
+void Projectile_Movement_AimAssist(Projectile * proj, Game* game, GameScreenData* gameScreen);
+
+void Projectile_Move(Projectile* proj, double deltaTime);
 
 /// <summary>
 /// Check collision of a projectile

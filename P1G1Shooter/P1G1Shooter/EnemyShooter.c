@@ -88,7 +88,8 @@ void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 	Projectile* newProjectile;
 	Proj_Initialize(&newProjectile, 40, 1, -1, 0,
 		_enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y,
-		TYPE_ENEMY_PROJECTILE, _gameScreen,
+		TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
+		Projectile_Movement_Standard,
 		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
 	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);

@@ -135,10 +135,12 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 	if (_player->mShootCooldown <= 0)
 	{
 		Projectile* newProjectile;
-		Proj_Initialize(&newProjectile, 70, 1, 1, 0,
+		Proj_Initialize(&newProjectile, 40, 1, 1, 0,
 		_player->mEntity.mPosition_x + 7, 
 		_player->mEntity.mPosition_y, 
+		TYPE_PLAYER_PROJECTILE,
 		TYPE_PLAYER_PROJECTILE, _gameScreen, 
+		Projectile_Movement_Standard,
 		Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
 
 		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);

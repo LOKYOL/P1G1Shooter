@@ -235,7 +235,8 @@ void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 			dir_x, dir_y,
 			boss->mEntity.mPosition_x + EYE_LEFT_POS_X,
 			boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
-			TYPE_ENEMY_PROJECTILE, _gameScreen,
+			TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
+			Projectile_Movement_Standard,
 			Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
 		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
@@ -251,7 +252,8 @@ void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 			dir_x, dir_y,
 			boss->mEntity.mPosition_x + EYE_RIGHT_POS_X,
 			boss->mEntity.mPosition_y + EYE_RIGHT_POS_Y,
-			TYPE_ENEMY_PROJECTILE, _gameScreen,
+			TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
+			Projectile_Movement_Standard,
 			Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
 
 		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);

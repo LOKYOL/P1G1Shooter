@@ -6,6 +6,9 @@ typedef void(*Update)(void* entity, struct Game*, struct GameScreenData*);
 typedef void(*OnCollide)(void* current, void* other, struct Game*);
 typedef void(*Destroy)(void* entity);
 
+#define AIM_ASSIST_RANGE	40
+#define ULTRA_AIM_ASSIST_RANGE	12
+
 #define NUM_OF_ENTITY_TYPES 8
 
 typedef enum EntityType
@@ -14,11 +17,11 @@ typedef enum EntityType
 	TYPE_PLAYER				= 0,
 	TYPE_OBSTACLE			= 1,
 	TYPE_PLAYER_PROJECTILE	= 2,
-	TYPE_ENEMY_PROJECTILE	= 3,
-	TYPE_ENEMY_SHOOTER		= 4,
-	TYPE_ENEMY_KAMIKAZE		= 5,
-	TYPE_POWERUP_HEALTH		= 6,
-	TYPE_ENEMY_BOSS			= 7
+	TYPE_ENEMY_PROJECTILE	= 4,
+	TYPE_ENEMY_SHOOTER		= 5,
+	TYPE_ENEMY_KAMIKAZE		= 6,
+	TYPE_POWERUP_HEALTH		= 7,
+	TYPE_ENEMY_BOSS			= 8
 } EntityType;
 
 typedef struct Entity
@@ -124,3 +127,8 @@ void Entity_ClampXPosition(Entity* entity);
 /// </summary>
 /// <param name="entity">Entity to destroy</param>
 void Entity_Destroy(Entity* entity);
+
+void Entity_GetPosition(Entity* entity, double* posX, double* posY);
+
+double Entity_GetXPosition(Entity* entity);
+double Entity_GetYPosition(Entity* entity);
