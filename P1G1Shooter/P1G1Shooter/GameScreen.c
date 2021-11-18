@@ -72,7 +72,7 @@ void LoadSpritesFromIni(GameScreenData* data)
 				GetParamElemString(spritesSection, path, 200, spriteParam);
 				curDisplayZone = CreateDisplayZoneFromBMP(path);
 				data->mSprites[i] = *curDisplayZone;
-				//free(curDisplayZone); 
+				free(curDisplayZone); 
 			}
 
 			free(spriteParam);
@@ -95,10 +95,18 @@ int GameScreenClose(Game* game, GameState* state)
 
 	data->mPlayer->mEntity.mDestroy(data->mPlayer);
 
-	for (int i = ZERO; i < NUM_OF_ENTITY_TYPES; i++)
-	{
-		CloseDisplayZone(&data->mSprites[i]);
+
+	ParamSection* spritesSection = GetSection(data->mParamsList, "Sprites");
+
+	if (spritesSection) {
+		ParamInt* spritesSize = (ParamInt*)GetParamInSection(spritesSection, "SIZEOF_SPRITES_NAMES");
+
+		for (int i = ZERO; i < spritesSize->mValue; i++)
+		{
+			CloseDisplayZone(&data->mSprites[i]);
+		}
 	}
+	
 
 	CloseDisplayZone(data->mScoreDisplayZone);
 	free(data->mScoreDisplayZone);

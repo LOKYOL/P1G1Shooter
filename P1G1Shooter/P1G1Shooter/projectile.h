@@ -56,6 +56,11 @@ void Projectile_Movement_Standard(Projectile * proj, Game* game, GameScreenData*
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Projectile_Movement_AimAssist(Projectile * proj, Game* game, GameScreenData* gameScreen);
 
+/// <summary>
+/// Move the current projectile
+/// </summary>
+/// <param name="proj">Current projectile</param>
+/// <param name="deltaTime">Game deltaTime</param>
 void Projectile_Move(Projectile* proj, double deltaTime);
 
 /// <summary>

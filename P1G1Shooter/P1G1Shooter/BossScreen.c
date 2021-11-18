@@ -61,6 +61,8 @@ int BossScreenClose(Game* _game, GameState* _gameState)
 	data->mBoss->mEntity.mDestroy(data->mBoss);
 	data->mBoss = NULL;
 
+	free(data->mBoss);
+	free(data->mGameScreenData);
 	free(data);
 
 	return 0;
