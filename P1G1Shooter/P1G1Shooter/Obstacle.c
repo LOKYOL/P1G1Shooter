@@ -41,7 +41,7 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 
 	if (_obstacle->mEntity.mPosition_x < -5.0 || _obstacle->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
-		_obstacle->mEntity.mHealth = 0;
+		_obstacle->mEntity.mCurrentHealth = 0;
 	}
 }
 

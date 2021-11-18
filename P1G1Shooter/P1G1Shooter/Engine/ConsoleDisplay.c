@@ -327,7 +327,7 @@ DisplaySettings* InitDisplay(unsigned int sx, unsigned int sy,unsigned int newFo
 	EnableVirtualTerminal(result);
 
 	// init draw buffer
-	result->mDrawBuffer = malloc(sx * sy * sizeof(DisplayCharacter));
+	result->mDrawBuffer = malloc((long long)sx * sy * sizeof(DisplayCharacter));
 	
 	// black screen
 	SetColor(result, 0, 0);
@@ -381,7 +381,7 @@ void	PrintDisplayCharacterInDisplayZone(DisplayZone* zone, DisplayCharacter c, i
 	if (( px>=zone->mSizeX ) || (py >= zone->mSizeY) || (px < 0) || (py < 0) )
 		return;
 
-	DisplayCharacter* currentPos = zone->mBuffer + px + py * zone->mSizeX;
+	DisplayCharacter* currentPos = zone->mBuffer + px + (long long)py * zone->mSizeX;
 
 	DisplayCharacter	blended;
 	Blender(&c, currentPos, &blended);
@@ -396,7 +396,7 @@ void	PrintInDisplayZone(DisplayZone* zone, ConsoleColors FG, ConsoleColors BG, i
 	if (py >= zone->mSizeY)
 		return;
 
-	DisplayCharacter* currentPos = zone->mBuffer + px + py * zone->mSizeX;
+	DisplayCharacter* currentPos = zone->mBuffer + px + (long long)py * zone->mSizeX;
 
 	DisplayCharacter	putPixel;
 	CodeColors(&putPixel,FG, BG);
@@ -415,7 +415,7 @@ void	PrintInDisplayZone(DisplayZone* zone, ConsoleColors FG, ConsoleColors BG, i
 			{
 				++py;
 				px = 0;
-				currentPos = zone->mBuffer + px + py * zone->mSizeX;
+				currentPos = zone->mBuffer + px + (long long)py * zone->mSizeX;
 				if (py >= zone->mSizeY)
 				{
 					break;
@@ -492,8 +492,8 @@ void	CopyDisplayZonePart(DisplayZone* dest, DisplayZone* src, int px, int py, in
 						int srcPx = srcpx + i;
 						if ((srcPx >= 0) && (srcPx < src->mSizeX))
 						{
-							DisplayCharacter* currentPixel = dstPixels + dstPx + dstPy * dest->mSizeX;
-							DisplayCharacter* currentZonePos = srcPixels + srcPx + srcPy * src->mSizeX;
+							DisplayCharacter* currentPixel = dstPixels + dstPx + (long long)dstPy * dest->mSizeX;
+							DisplayCharacter* currentZonePos = srcPixels + srcPx + (long long)srcPy * src->mSizeX;
 
 							DisplayCharacter blended;
 							Blender(currentZonePos, currentPixel, &blended);
@@ -527,7 +527,7 @@ void	FlushDisplayZone(DisplaySettings* settings, DisplayZone* zone)
 
 	for (int j = 0; j < zone->mSizeY; j++)
 	{
-		DisplayCharacter* currentLPos = zone->mBuffer + j*zone->mSizeX;
+		DisplayCharacter* currentLPos = zone->mBuffer + (long long)j*zone->mSizeX;
 
 		int py = j + zone->mPosY;
 	
@@ -542,7 +542,7 @@ void	FlushDisplayZone(DisplaySettings* settings, DisplayZone* zone)
 				}
 				if ((px >= 0) && (px < settings->mSizeX))
 				{
-					DisplayCharacter* currentPixel = displayPixel + px + py * settings->mSizeX;
+					DisplayCharacter* currentPixel = displayPixel + px + (long long)py * settings->mSizeX;
 					DisplayCharacter* currentZonePos = currentLPos + i;
 					
 					DisplayCharacter blended;
@@ -602,8 +602,8 @@ void	SwapBuffer(DisplaySettings* settings)
 
 	DisplayCharacter* frontBuffer = settings->mDrawBuffer;
 
-	CHAR_INFO* buffer=malloc(settings->mSizeY* settings->mSizeX * sizeof(CHAR_INFO));
-	memset(buffer, 0, settings->mSizeY * settings->mSizeX * sizeof(CHAR_INFO));
+	CHAR_INFO* buffer=malloc((long long)settings->mSizeY* settings->mSizeX * sizeof(CHAR_INFO));
+	memset(buffer, 0, (long long)settings->mSizeY * settings->mSizeX * sizeof(CHAR_INFO));
 
 	CHAR_INFO* wbuffer = buffer;
 

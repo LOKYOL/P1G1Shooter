@@ -34,8 +34,8 @@ typedef struct Entity
 	double			mPosition_x, 
 					mPosition_y;
 
-	float			mHealth;
-
+	float			mMaxHealth;
+	float			mCurrentHealth;
 	//int				mDamages;
 
 	float			mSpeed;

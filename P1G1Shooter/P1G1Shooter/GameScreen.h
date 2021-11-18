@@ -43,6 +43,8 @@ typedef struct GameScreenData
 /// <returns>0 if successful</returns>
 int GameScreenInit(struct Game* game, struct GameState* state);
 
+void LoadSpritesFromIni(GameScreenData* data);
+
 /// <summary>
 /// Closes the game, reseting all memory allocated from the game
 /// </summary>

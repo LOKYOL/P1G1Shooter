@@ -19,11 +19,14 @@ void InitPlayer(Player** _player, GameScreenData* _gameScreen)
 		ParamInt* playerSpeed = (ParamInt*)GetParamInSection(playerSection, "Speed");
 
 		Entity_Initialize((Entity*)newPlayer, TYPE_PLAYER, 5,
-			WINDOW_HEIGHT / 2, playerHealth->mValue, playerSpeed->mValue,
+			WINDOW_HEIGHT / 2, (float)playerHealth->mValue, playerSpeed->mValue,
 			&_gameScreen->mSprites[TYPE_PLAYER],
 			Player_Update, Player_OnCollide, Player_Destroy);
 
 		ParamFloat* playerMaxEnergy = (ParamFloat*)GetParamInSection(playerSection, "Energy_max");
+		ParamFloat* playerReloadCooldown = (ParamFloat*)GetParamInSection(playerSection, "ReloadCooldown_max");
+		ParamFloat* playerOverheatCooldown = (ParamFloat*)GetParamInSection(playerSection, "OverheatCooldown_max");
+		ParamFloat* playerReloadGain = (ParamFloat*)GetParamInSection(playerSection, "ReloadGain");
 
 		newPlayer->mChargeZone = malloc(sizeof(DisplayZone));
 		InitDisplayZone(newPlayer->mChargeZone, 0, 0, 5, 2, 1);
@@ -38,8 +41,12 @@ void InitPlayer(Player** _player, GameScreenData* _gameScreen)
 		newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
 		newPlayer->mEntity.mEntityType = TYPE_PLAYER;
 		newPlayer->mCurrentEnergy = playerMaxEnergy->mValue;
-		newPlayer->mReloadCooldown = 0.f;
-		newPlayer->mShootCooldown = 0.f;
+		newPlayer->mMaxEnergy = playerMaxEnergy->mValue;
+		newPlayer->mCurrentReloadCooldown = 0.f;
+		newPlayer->mMaxReloadCooldown = playerReloadCooldown->mValue;
+		newPlayer->mReloadGain = playerReloadGain->mValue;
+		newPlayer->mOverheatCooldown = 0.f;
+		newPlayer->mMaxOverheatCooldown = playerOverheatCooldown->mValue;
 		newPlayer->mShootAimAssistTimer = 0.f;
 	}
 }
@@ -105,9 +112,9 @@ void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
 		case TYPE_ENEMY_SHOOTER:
 		case TYPE_ENEMY_KAMIKAZE:
 		case TYPE_ENEMY_BOSS:
-			Entity_TakeDamages(_current, 1);
+			Entity_TakeDamages(&_current->mEntity, 1);
 			_current->mTouchedTime = HIT_TIME;
-			if (_current->mEntity.mHealth > 0)
+			if (_current->mEntity.mCurrentHealth > 0)
 			{
 				Play_Sound("player_enemyhit", game->mSoundManager);
 			}
@@ -153,7 +160,7 @@ void ClampPlayerPos(Player* _player, double* _posX, double* _posY)
 
 void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct)
 {
-	if (_player->mShootCooldown <= 0)
+	if (_player->mOverheatCooldown <= 0)
 	{
 		Projectile* newProjectile;
 		if (_player->mShootAimAssistTimer > 0)
@@ -181,11 +188,11 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 		_player->mCurrentEnergy -= SHOOT_COST;
-		_player->mReloadCooldown = RELOAD_COOLDOWN;
+		_player->mCurrentReloadCooldown = _player->mMaxReloadCooldown;
 
 		if (_player->mCurrentEnergy <= 0)
 		{
-			_player->mShootCooldown = OVERHEAT_COOLDOWN;
+			_player->mOverheatCooldown = _player->mMaxOverheatCooldown;
 			_player->mCurrentEnergy = 0;
 			Play_Sound("player_recharge", gameStruct->mSoundManager);
 		}
@@ -198,7 +205,7 @@ void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct
 
 void UpdateBatteryDisplayZonePosition(Player* _player)
 {
-	MoveDisplayZone(_player->mChargeZone, 0, _player->mEntity.mPosition_y + 1);
+	MoveDisplayZone(_player->mChargeZone, 0, (int)(_player->mEntity.mPosition_y) + 1);
 }
 
 void UpdateHealthDisplayZonePosition(Player* _player)
@@ -222,16 +229,16 @@ void DrawBatteryInDisplayZone(Player* _player)
 	DisplayCharacter* buffer = _player->mChargeZone->mBuffer;
 
 	ConsoleColors edgeColor =  
-		(_player->mShootCooldown > 0) ? 
+		(_player->mOverheatCooldown > 0) ? 
 		RED : 
 		(DARKER | WHITE);
 
 	int colorLevel = 4;
 	
 	colorLevel -=
-		(_player->mCurrentEnergy < 100) +
-		(_player->mCurrentEnergy < 65) +
-		(_player->mCurrentEnergy < 30) +
+		(_player->mCurrentEnergy < _player->mMaxEnergy) +
+		(_player->mCurrentEnergy < (_player->mMaxEnergy / 3) * 2) +
+		(_player->mCurrentEnergy < _player->mMaxEnergy / 3) +
 		(_player->mCurrentEnergy <= 0);
 
 	ConsoleColors 
@@ -257,11 +264,11 @@ void DrawHealthInDisplayZone(Player* _player)
 	DisplayCharacter* buffer = _player->mHealthZone->mBuffer;
 
 	buffer[0] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
-	if (_player->mEntity.mHealth > 1)
+	if (_player->mEntity.mCurrentHealth > 1)
 	{
 		buffer[1] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
 
-		if (_player->mEntity.mHealth > 2)
+		if (_player->mEntity.mCurrentHealth > 2)
 		{
 			buffer[2] = ENCODE_DISPLAY_CHARACTER(RED, BACKGROUND, 3, NO_FLAG);
 		}

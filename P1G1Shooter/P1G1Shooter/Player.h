@@ -5,11 +5,7 @@
 
 #define PLAYER_INIT_SECTION "Player"
 
-#define MAX_ENERGY			100.f
-#define RELOAD_SPEED		25.0
 #define SHOOT_COST			10.f
-#define RELOAD_COOLDOWN		0.5f
-#define OVERHEAT_COOLDOWN	5.f
 #define HIT_TIME			0.5f
 
 #define PlayerUpdate(player, inputs, deltaTime) \
@@ -24,9 +20,16 @@ typedef struct Player
 
 	double			mTouchedTime;
 
+	float			mMaxEnergy;
 	float			mCurrentEnergy;
-	double			mReloadCooldown;
-	double			mShootCooldown;
+
+	double			mCurrentReloadCooldown; // Refactoring : Struct Weapon ?
+	double			mMaxReloadCooldown;
+
+	double			mReloadGain;
+
+	double			mOverheatCooldown;
+	double			mMaxOverheatCooldown;
 
 	double			mShootAimAssistTimer;
 } Player;
@@ -53,6 +56,12 @@ void Player_Update(void* player, struct Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 void Player_UpdateMovement(Player* player, struct Game* game);
 
+/// <summary>
+/// Execute this function when player collide with something
+/// </summary>
+/// <param name="current">Current player</param>
+/// <param name="entity">Entity which collide with Player</param>
+/// <param name="game">Current game</param>
 void Player_OnCollide(Player* current, Entity* entity, Game* game);
 
 /// <summary>

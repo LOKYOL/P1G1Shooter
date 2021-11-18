@@ -2,8 +2,7 @@
 
 #include "Engine/Game.h"
 #include "BossScreen.h"
-/*
-#define BOSS_HEALTH		60*/
+
 #define BOSS_PHASE_B_HEALTH	40
 #define BOSS_SPEED		20
 

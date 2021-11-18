@@ -21,7 +21,8 @@ void Entity_Initialize(Entity* _entity, EntityType _type, int _posx, int _posy,
 
 	_entity->mPosition_x = _posx;
 	_entity->mPosition_y = _posy;
-	_entity->mHealth = _health;
+	_entity->mMaxHealth = _health;
+	_entity->mCurrentHealth = _health;
 	_entity->mSpeed = _speed;
 	_entity->mUpdate = _update;
 	_entity->mOnCollide = _onCollide;
@@ -50,39 +51,39 @@ void Entity_MoveTo(Entity* _entity, double _posX, double _posY)
 
 void Entity_UpdateDisplayZone(Entity* _entity)
 {
-	MoveDisplayZone(&_entity->mDisplayZone, _entity->mPosition_x, _entity->mPosition_y);
+	MoveDisplayZone(&_entity->mDisplayZone, (int)_entity->mPosition_x, (int)_entity->mPosition_y);
 }
 
 void Entity_TakeDamages(Entity* _entity, int _damages)
 {
-	if (_entity->mHealth < _damages)
+	if (_entity->mCurrentHealth < _damages)
 	{
-		_entity->mHealth = 0;
+		_entity->mCurrentHealth = 0;
 	}
 	else
 	{
-		_entity->mHealth -= _damages;
+		_entity->mCurrentHealth -= _damages;
 	}
 }
 
 void Entity_ReceiveHeal(Entity* _entity, int _heal)
 {
-	_entity->mHealth += _heal;
+	_entity->mCurrentHealth += _heal;
 
-	if (_entity->mHealth > 3)
+	if (_entity->mCurrentHealth > _entity->mMaxHealth)
 	{
-		_entity->mHealth = 3;
+		_entity->mCurrentHealth = _entity->mMaxHealth;
 	}
 }
 
 void Entity_Kill(Entity* _entity)
 {
-	_entity->mHealth = 0.f;
+	_entity->mCurrentHealth = 0.f;
 }
 
 char Entity_IsDead(Entity* _entity)
 {
-	return _entity->mHealth < 1;
+	return _entity->mCurrentHealth < 1;
 }
 
 double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {

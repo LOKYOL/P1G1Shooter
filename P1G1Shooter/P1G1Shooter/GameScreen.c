@@ -25,7 +25,35 @@ int GameScreenInit(Game* game, GameState* state)
 
 	data->mParamsList = InitParamListFromIniFile(INI_PATH);
 
-	// To Do REFACTORING
+	LoadSpritesFromIni(data);
+	
+	// Create Player
+	Player* myPlayer;
+	InitPlayer(&myPlayer, data);
+	data->mPlayer = myPlayer;
+	data->mNextBossScore = 50; // Default value
+
+	ParamSection* gameSection = GetSection(data->mParamsList, GAMESCREEN_INIT_SECTION);
+
+	if (gameSection) {
+		ParamInt* bossScore = (ParamInt*)GetParamInSection(gameSection, "Boss_score");
+		data->mNextBossScore = bossScore->mValue;
+
+	}
+
+	data->mGameSpawnObstacleTimer = ZERO;
+	data->mGameSpawnEnemyTimer = ZERO;
+	data->mGameSpawnEnemyKamikazeTimer = ZERO;
+
+	game->mScore = ZERO;
+	data->mScoreDisplayZone = malloc(sizeof(DisplayZone));
+	InitDisplayZone(data->mScoreDisplayZone, ZERO, ZERO, 20, 1, ZERO);
+
+	return 0;
+}
+
+void LoadSpritesFromIni(GameScreenData* data)
+{
 	ParamSection* spritesSection = GetSection(data->mParamsList, "Sprites");
 
 	if (spritesSection) {
@@ -51,31 +79,6 @@ int GameScreenInit(Game* game, GameState* state)
 			free(path);
 		}
 	}
-	
-
-	// Create Player
-	Player* myPlayer;
-	InitPlayer(&myPlayer, data);
-	data->mPlayer = myPlayer;
-	data->mNextBossScore = 50; // Default value
-
-	ParamSection* gameSection = GetSection(data->mParamsList, GAMESCREEN_INIT_SECTION);
-
-	if (gameSection) {
-		ParamInt* bossScore = (ParamInt*)GetParamInSection(gameSection, "Boss_score");
-		data->mNextBossScore = bossScore->mValue;
-
-	}
-
-	data->mGameSpawnObstacleTimer = ZERO;
-	data->mGameSpawnEnemyTimer = ZERO;
-	data->mGameSpawnEnemyKamikazeTimer = ZERO;
-
-	game->mScore = ZERO;
-	data->mScoreDisplayZone = malloc(sizeof(DisplayZone));
-	InitDisplayZone(data->mScoreDisplayZone, ZERO, ZERO, 20, 1, ZERO);
-
-	return 0;
 }
 
 int GameScreenClose(Game* game, GameState* state)
@@ -197,7 +200,7 @@ void HandleEntitiesCollision(Entity* _entityA, Entity* _entityB, Game* _game)
 
 		// SCORE
 
-		if (_entityA->mHealth == ZERO && _entityA->mEntityType == TYPE_PLAYER_PROJECTILE)
+		if (_entityA->mCurrentHealth == ZERO && _entityA->mEntityType == TYPE_PLAYER_PROJECTILE)
 		{
 			if (_entityB->mEntityType == TYPE_ENEMY_SHOOTER)
 			{
@@ -211,7 +214,7 @@ void HandleEntitiesCollision(Entity* _entityA, Entity* _entityB, Game* _game)
 			}
 		}
 
-		if (_entityB->mHealth == ZERO && _entityB->mEntityType == TYPE_PLAYER_PROJECTILE)
+		if (_entityB->mCurrentHealth == ZERO && _entityB->mEntityType == TYPE_PLAYER_PROJECTILE)
 		{
 			if (_entityA->mEntityType == TYPE_ENEMY_SHOOTER)
 			{
@@ -377,24 +380,24 @@ void UpdateEntity(Game* game, GameScreenData* data)
 void UpdateWeapon(Game* game, GameScreenData* data)
 {
 	// ENERGY RECHARGE
-	if (data->mPlayer->mReloadCooldown > ZERO)
+	if (data->mPlayer->mCurrentReloadCooldown > ZERO)
 	{
-		data->mPlayer->mReloadCooldown -= game->mGameDt;
+		data->mPlayer->mCurrentReloadCooldown -= game->mGameDt;
 	}
 	else
 	{
-		data->mPlayer->mCurrentEnergy += (float)(game->mGameDt * RELOAD_SPEED);
+		data->mPlayer->mCurrentEnergy += (float)(game->mGameDt * data->mPlayer->mReloadGain);
 
-		if (data->mPlayer->mCurrentEnergy >= MAX_ENERGY)
+		if (data->mPlayer->mCurrentEnergy >= data->mPlayer->mMaxEnergy)
 		{
-			data->mPlayer->mCurrentEnergy = MAX_ENERGY;
+			data->mPlayer->mCurrentEnergy = data->mPlayer->mMaxEnergy;
 		}
 	}
 
 	// SHOOT COOLDOWN
-	if (data->mPlayer->mShootCooldown > ZERO)
+	if (data->mPlayer->mOverheatCooldown > ZERO)
 	{
-		data->mPlayer->mShootCooldown -= game->mGameDt;
+		data->mPlayer->mOverheatCooldown -= game->mGameDt;
 	}
 }
 

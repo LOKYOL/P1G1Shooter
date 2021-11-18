@@ -30,9 +30,9 @@ void PowerupHealth_UpdateMovement(PowerupHealth* _powerup, GameScreenData* _game
 
 	Entity_MoveTo(&_powerup->mEntity, newpos_x, _powerup->mEntity.mPosition_y);
 
-	if (_powerup->mEntity.mPosition_x < -5 || _powerup->mEntity.mPosition_x > WINDOW_WIDTH + 5)
+	if (_powerup->mEntity.mPosition_x < -5 || _powerup->mEntity.mPosition_x > (long long)WINDOW_WIDTH + 5)
 	{
-		_powerup->mEntity.mHealth = 0;
+		_powerup->mEntity.mCurrentHealth = 0;
 	}
 }
 

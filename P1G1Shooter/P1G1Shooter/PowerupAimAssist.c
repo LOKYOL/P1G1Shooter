@@ -29,7 +29,7 @@ void PowerupAimAssist_UpdateMovement(PowerupAimAssist* _powerup, GameScreenData*
 
 	if (_powerup->mEntity.mPosition_x < -5 || _powerup->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
-		_powerup->mEntity.mHealth = 0;
+		_powerup->mEntity.mCurrentHealth = 0;
 	}
 }
 

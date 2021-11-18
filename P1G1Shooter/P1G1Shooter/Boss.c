@@ -68,7 +68,7 @@ void Boss_PhaseA_Update(Boss* boss, Game* _game, GameScreenData* _data)
 		Boss_Shoot(boss, _data);
 	}
 
-	if (boss->mEntity.mHealth <= BOSS_PHASE_B_HEALTH)
+	if (boss->mEntity.mCurrentHealth <= BOSS_PHASE_B_HEALTH)
 	{
 		boss->mCanSpawnKamikaze = 0;
 		boss->mCurrentPhaseUpdate = Boss_PhaseB_Update;
@@ -243,7 +243,7 @@ void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 		dir_y /= magnitude;
 
 		Proj_Initialize(&newProjectile, RandomInt(25, 40), 1,
-			dir_x, dir_y,
+			(float)dir_x,(float)dir_y,
 			boss->mEntity.mPosition_x + EYE_LEFT_POS_X,
 			boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
 			TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
@@ -260,7 +260,7 @@ void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 			dir_y = 0;
 
 		Proj_Initialize(&newProjectile, RandomInt(25, 30), 1,
-			dir_x, dir_y,
+			(float)dir_x, (float)dir_y,
 			boss->mEntity.mPosition_x + EYE_RIGHT_POS_X,
 			boss->mEntity.mPosition_y + EYE_RIGHT_POS_Y,
 			TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
@@ -300,7 +300,7 @@ void Boss_OnCollide(Boss* _current, Entity* _entity, Game* game)
 	case TYPE_PLAYER_PROJECTILE:
 		Entity_TakeDamages((Entity*)_current, 1);
 		_current->mHitTimer = 0.5;
-		if (_current->mEntity.mHealth > 0)
+		if (_current->mEntity.mCurrentHealth > 0)
 		{
 			Play_Sound("enemy_hit", game->mSoundManager);
 		}

@@ -37,7 +37,7 @@ void Projectile_Movement_Standard(Projectile * _proj, Game* _game, GameScreenDat
 
 	if (_proj->mEntity.mPosition_x < -5 || _proj->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
-		_proj->mEntity.mHealth = 0;
+		_proj->mEntity.mCurrentHealth = 0;
 	}
 }
 

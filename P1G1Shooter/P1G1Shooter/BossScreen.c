@@ -68,7 +68,7 @@ int BossScreenClose(Game* _game, GameState* _gameState)
 
 void EndBoss(Boss* _boss, Game* _game)
 {
-	if (_boss->mEntity.mHealth <= 0)
+	if (_boss->mEntity.mCurrentHealth <= 0)
 	{
 		PopGameState(_game);
 	}

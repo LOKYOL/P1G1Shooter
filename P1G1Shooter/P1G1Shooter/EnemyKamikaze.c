@@ -57,7 +57,7 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	move_x = -abs(posPlayer_x - posEnemy_x);
 	move_y = (double)posPlayer_y - posEnemy_y;
 
-	if (abs(move_y) > abs(move_x))
+	if (abs((int)move_y) > abs((int)move_x))
 	{
 		if (move_y > 0)
 		{
@@ -128,7 +128,7 @@ void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 	case TYPE_PLAYER_PROJECTILE:
 	case TYPE_ENEMY_PROJECTILE:
 		Entity_TakeDamages(_current, 1);
-		if (_current->mEntity.mHealth > 0)
+		if (_current->mEntity.mCurrentHealth > 0)
 		{
 			Play_Sound("enemy_hit", game->mSoundManager);
 		}
