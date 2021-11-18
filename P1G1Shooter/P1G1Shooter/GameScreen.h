@@ -8,8 +8,7 @@
 #include "Engine/Game.h"
 
 #define INI_PATH "Assets/GameScreen.ini"
-
-#define BOSS_SCORE	500
+#define GAMESCREEN_INIT_SECTION "GameScreen"
 
 #define PushGameScreen(game)	GameState gameScreen; \
 	gameScreen.mStateInit = &GameScreenInit; \

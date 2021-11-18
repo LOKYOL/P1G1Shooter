@@ -3,7 +3,7 @@
 #include "Entity.h"
 #include "GameScreen.h"
 
-#define PLAYER_SPEED		WINDOW_HEIGHT / 3
+#define PLAYER_INIT_SECTION "Player"
 
 #define MAX_ENERGY			100.f
 #define RELOAD_SPEED		25.0

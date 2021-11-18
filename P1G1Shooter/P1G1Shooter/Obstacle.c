@@ -9,10 +9,20 @@ void Obstacle_Initialize(Obstacle** _obstacle, GameScreenData * _gameScreen)
 
 	*_obstacle = newObstacle;
 
-	Entity_Initialize((Entity*)newObstacle, TYPE_OBSTACLE, 
-		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newObstacle->mEntity.mDisplayZone.mSizeY),
-		OBSTACLE_HEALTH, ((float)RandomInt(4, 7)), &_gameScreen->mSprites[TYPE_OBSTACLE],
-		Obstacle_Update, Obstacle_OnCollide, Obstacle_Destroy);
+	ParamSection* obstacleSection = GetSection(_gameScreen->mParamsList, OBSTACLE_INIT_SECTION);
+
+	if (obstacleSection)
+	{
+		ParamInt* obstacleHealth = (ParamInt*)GetParamInSection(obstacleSection, "Health");
+		ParamInt* minObstacleSpeed = (ParamInt*)GetParamInSection(obstacleSection, "Speed_min");
+		ParamInt* maxObstacleSpeedMax = (ParamInt*)GetParamInSection(obstacleSection, "Speed_max");
+
+		Entity_Initialize((Entity*)newObstacle, TYPE_OBSTACLE,
+			WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newObstacle->mEntity.mDisplayZone.mSizeY),
+			obstacleHealth->mValue, ((float)RandomInt(minObstacleSpeed->mValue, maxObstacleSpeedMax->mValue)),
+			&_gameScreen->mSprites[TYPE_OBSTACLE],
+			Obstacle_Update, Obstacle_OnCollide, Obstacle_Destroy);
+	}
 }
 
 void Obstacle_Update(Obstacle* _obstacle, Game* _game, GameScreenData* _gameScreen)

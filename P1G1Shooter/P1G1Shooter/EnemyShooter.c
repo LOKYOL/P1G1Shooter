@@ -12,17 +12,26 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy,	GameScreenData* _gameScreen)
 
 	*_enemy = newEnemy;
 
-	float speed = ((float)RandomInt(ENEMYK_SPEED_MIN, ENEMYK_SPEED_MAX));
+	ParamSection* shooterSection = GetSection(_gameScreen->mParamsList, ENEMYS_INIT_SECTION);
 
-	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_SHOOTER,
+	if(shooterSection)
+	{
+		ParamInt* shooterHealth = (ParamInt*)GetParamInSection(shooterSection, "Health_min");
+		ParamInt* minShooterSpeed = (ParamInt*)GetParamInSection(shooterSection, "Speed_min");
+		ParamInt* maxShooterSpeed = (ParamInt*)GetParamInSection(shooterSection, "Speed_max");
+		ParamInt* ShootCooldown = (ParamInt*)GetParamInSection(shooterSection, "Shoot_cooldown");
+
+		Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_SHOOTER,
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
-		ENEMYS_HEALTH, speed, &_gameScreen->mSprites[TYPE_ENEMY_SHOOTER],
+		shooterHealth->mValue, ((float)RandomInt(minShooterSpeed->mValue, maxShooterSpeed->mValue)),
+		&_gameScreen->mSprites[TYPE_ENEMY_SHOOTER],
 		EnemyShooter_Update, EnemyShooter_OnCollide, EnemyShooter_Destroy);
 	
-	newEnemy->mShootCooldown = 2;
-	newEnemy->mChangeDirectionCooldown = 1;
-	newEnemy->mCurrentDirectionX = (rand() % 3) - 1;
-	newEnemy->mCurrentDirectionY = (rand() % 3) - 1;
+		newEnemy->mShootCooldown = ShootCooldown->mValue;
+		newEnemy->mChangeDirectionCooldown = 0;
+		newEnemy->mCurrentDirectionX = (rand() % 3) - 1;
+		newEnemy->mCurrentDirectionY = (rand() % 3) - 1;
+	}
 }
 
 void EnemyShooter_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)

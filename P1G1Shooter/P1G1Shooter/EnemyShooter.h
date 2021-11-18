@@ -3,10 +3,7 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
-#define ENEMYS_HEALTH	1
-
-#define ENEMYK_SPEED_MIN	40
-#define ENEMYK_SPEED_MAX	50
+#define ENEMYS_INIT_SECTION "EnemyShooter"
 
 typedef struct EnemyShooter
 {

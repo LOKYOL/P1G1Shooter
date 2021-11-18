@@ -37,31 +37,35 @@ int GameScreenInit(Game* game, GameState* state)
 			DisplayZone* curDisplayZone = NULL;
 			char* path = (char*)malloc(sizeof(char) * 200);
 			char* spriteParam = (char*)malloc(sizeof(char) * 10);
-			
+
 			for (int i = 0; i < spritesSize->mValue; i++)
 			{
 				snprintf(spriteParam, 10, "Sprite_%d", i);
 				GetParamElemString(spritesSection, path, 200, spriteParam);
 				curDisplayZone = CreateDisplayZoneFromBMP(path);
 				data->mSprites[i] = *curDisplayZone;
-				free(curDisplayZone);
+				//free(curDisplayZone); 
 			}
 
 			free(spriteParam);
 			free(path);
 		}
-
-		free(spritesSize);
 	}
-
-	free(spritesSection);
+	
 
 	// Create Player
 	Player* myPlayer;
 	InitPlayer(&myPlayer, data);
 	data->mPlayer = myPlayer;
+	data->mNextBossScore = 50; // Default value
 
-	data->mNextBossScore = BOSS_SCORE;
+	ParamSection* gameSection = GetSection(data->mParamsList, GAMESCREEN_INIT_SECTION);
+
+	if (gameSection) {
+		ParamInt* bossScore = (ParamInt*)GetParamInSection(gameSection, "Boss_score");
+		data->mNextBossScore = bossScore->mValue;
+
+	}
 
 	data->mGameSpawnObstacleTimer = ZERO;
 	data->mGameSpawnEnemyTimer = ZERO;
@@ -98,6 +102,7 @@ int GameScreenClose(Game* game, GameState* state)
 
 	free(data->mSprites);
 
+	ClearParamList(data->mParamsList);
 	free(data->mParamsList);
 
 	free(state->mData);
@@ -336,7 +341,7 @@ char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
 		}
 		else if (_entity->mEntityType == TYPE_ENEMY_KAMIKAZE)
 		{
-			if (RandomInt(1, 10) == 1) // 10% de chance de spawner un bonus
+			if (RandomInt(1, 15) == 1) // 10% de chance de spawner un bonus
 			{
 				SpawnAimAssistPowerup(_game, _entity->mPosition_x, _entity->mPosition_y);
 			}

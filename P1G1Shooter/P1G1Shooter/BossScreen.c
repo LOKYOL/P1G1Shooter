@@ -53,7 +53,7 @@ int BossScreenClose(Game* _game, GameState* _gameState)
 
 	_game->mScore = data->mGameScreenData->mNextBossScore;
 
-	data->mGameScreenData->mNextBossScore += BOSS_SCORE;
+	data->mGameScreenData->mNextBossScore += data->mGameScreenData->mNextBossScore;
 	data->mGameScreenData->mGameSpawnEnemyKamikazeTimer = 1;
 	data->mGameScreenData->mGameSpawnEnemyTimer = 0;
 	data->mGameScreenData->mGameSpawnObstacleTimer = 0;

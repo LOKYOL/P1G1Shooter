@@ -4,34 +4,44 @@
 #include "Projectile.h"
 #include "PowerupAimAssist.h"
 
-void InitPlayer(Player** _player, GameScreenData* gameScreen)
+void InitPlayer(Player** _player, GameScreenData* _gameScreen)
 {
 	Player* newPlayer = (Player*)malloc(sizeof(Player));
 	memset(newPlayer, 0, sizeof(Player));
 
 	*_player = newPlayer;
 
-	Entity_Initialize((Entity*)newPlayer, TYPE_PLAYER, 5,
-		WINDOW_HEIGHT / 2, 3, PLAYER_SPEED,
-		&gameScreen->mSprites[TYPE_PLAYER],
-		Player_Update, Player_OnCollide, Player_Destroy);
+	ParamSection* playerSection = GetSection(_gameScreen->mParamsList, PLAYER_INIT_SECTION);
 
-	newPlayer->mChargeZone = malloc(sizeof(DisplayZone));
-	InitDisplayZone(newPlayer->mChargeZone, 0, 0, 5, 2, 1);
-	DrawBatteryInDisplayZone(newPlayer);
+	if (playerSection)
+	{
+		ParamInt* playerHealth = (ParamInt*)GetParamInSection(playerSection, "Health");
+		ParamInt* playerSpeed = (ParamInt*)GetParamInSection(playerSection, "Speed");
 
-	newPlayer->mHealthZone = malloc(sizeof(DisplayZone));
-	InitDisplayZone(newPlayer->mHealthZone, 0, 0, 4, 1, 1);
-	DrawHealthInDisplayZone(newPlayer);
+		Entity_Initialize((Entity*)newPlayer, TYPE_PLAYER, 5,
+			WINDOW_HEIGHT / 2, playerHealth->mValue, playerSpeed->mValue,
+			&_gameScreen->mSprites[TYPE_PLAYER],
+			Player_Update, Player_OnCollide, Player_Destroy);
 
-	newPlayer->mTouchedTime = 0;
-	newPlayer->mEntity.mPosition_x = 5;
-	newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
-	newPlayer->mEntity.mEntityType = TYPE_PLAYER;
-	newPlayer->mCurrentEnergy = MAX_ENERGY;
-	newPlayer->mReloadCooldown = 0.f;
-	newPlayer->mShootCooldown = 0.f;
-	newPlayer->mShootAimAssistTimer = 0.f;
+		ParamFloat* playerMaxEnergy = (ParamFloat*)GetParamInSection(playerSection, "Energy_max");
+
+		newPlayer->mChargeZone = malloc(sizeof(DisplayZone));
+		InitDisplayZone(newPlayer->mChargeZone, 0, 0, 5, 2, 1);
+		DrawBatteryInDisplayZone(newPlayer);
+
+		newPlayer->mHealthZone = malloc(sizeof(DisplayZone));
+		InitDisplayZone(newPlayer->mHealthZone, 0, 0, 4, 1, 1);
+		DrawHealthInDisplayZone(newPlayer);
+
+		newPlayer->mTouchedTime = 0;
+		newPlayer->mEntity.mPosition_x = 5;
+		newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
+		newPlayer->mEntity.mEntityType = TYPE_PLAYER;
+		newPlayer->mCurrentEnergy = playerMaxEnergy->mValue;
+		newPlayer->mReloadCooldown = 0.f;
+		newPlayer->mShootCooldown = 0.f;
+		newPlayer->mShootAimAssistTimer = 0.f;
+	}
 }
 
 void Player_Update(void* _player, Game* _game, GameScreenData* _gameScreen)

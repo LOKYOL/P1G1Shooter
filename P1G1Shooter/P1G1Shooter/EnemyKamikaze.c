@@ -11,13 +11,24 @@ void Enemy_Initialize(EnemyKamikaze** _enemy, GameScreenData* _gameScreen)
 
 	*_enemy = newEnemy;
 
-	float	health = (float)RandomInt(ENEMYK_HEALTH_MIN, ENEMYK_HEALTH_MAX),
-			speed = (float)RandomInt(ENEMYK_SPEED_MIN, ENEMYK_SPEED_MAX);
+	ParamSection* kamikazeSection = GetSection(_gameScreen->mParamsList, ENEMYK_INIT_SECTION);
 
-	Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_KAMIKAZE,
-		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
-		health, speed, &_gameScreen->mSprites[TYPE_ENEMY_KAMIKAZE],
-		Enemy_Update, Enemy_OnCollide, Enemy_Destroy);
+	if (kamikazeSection)
+	{
+		ParamInt* enemyKamikazeHealthMin = (ParamInt*)GetParamInSection(kamikazeSection, "Health_min");
+		ParamInt* enemyKamikazeHealthMax = (ParamInt*)GetParamInSection(kamikazeSection, "Health_max");
+
+		ParamInt* enemyKamikazeSpeedMin = (ParamInt*)GetParamInSection(kamikazeSection, "Speed_min");
+		ParamInt* enemyKamikazeSpeedMax = (ParamInt*)GetParamInSection(kamikazeSection, "Speed_max");
+
+		float	health = (float)RandomInt(enemyKamikazeHealthMin->mValue, enemyKamikazeHealthMax->mValue),
+				speed = (float)RandomInt(enemyKamikazeSpeedMin->mValue, enemyKamikazeSpeedMax->mValue);
+
+		Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_KAMIKAZE,
+			WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),
+			health, speed, &_gameScreen->mSprites[TYPE_ENEMY_KAMIKAZE],
+			Enemy_Update, Enemy_OnCollide, Enemy_Destroy);
+	}
 }
 
 void Enemy_Update(void* _enemy, Game* _game, GameScreenData* _gameScreen)

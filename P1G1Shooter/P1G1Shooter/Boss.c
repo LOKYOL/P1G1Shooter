@@ -14,23 +14,34 @@ void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 
 	*_boss = newBoss;
 
-	Entity_Initialize((Entity*)newBoss, TYPE_ENEMY_BOSS, 
-		WINDOW_WIDTH, (WINDOW_HEIGHT - newBoss->mEntity.mDisplayZone.mSizeY) / 2, 
-		BOSS_HEALTH, BOSS_SPEED,
-		&_gameScreen->mSprites[TYPE_ENEMY_BOSS],
-		Boss_Update, Boss_OnCollide, Boss_Destroy);
+	ParamSection* bossSection = GetSection(_gameScreen->mParamsList, BOSS_INIT_SECTION);
+
+	if(bossSection)
+	{
+		ParamInt* bossHealth = (ParamInt*)GetParamInSection(bossSection, "Boss_health");
+		ParamInt* bossPhaseBHealth = (ParamInt*)GetParamInSection(bossSection, "Boss_phase_b_health");
+		ParamInt* bossSpeed = (ParamInt*)GetParamInSection(bossSection, "Boss_speed");
+		ParamInt* bossShootCooldown = (ParamInt*)GetParamInSection(bossSection, "Boss_shoot_cooldown");
+		ParamInt* bossSpawnKamikazeTimer = (ParamInt*)GetParamInSection(bossSection, "Spawn_kamikaze_timer");
+
+		Entity_Initialize((Entity*)newBoss, TYPE_ENEMY_BOSS, 
+			WINDOW_WIDTH, (WINDOW_HEIGHT - newBoss->mEntity.mDisplayZone.mSizeY) / 2, 
+			bossHealth->mValue, bossSpeed->mValue,
+			&_gameScreen->mSprites[TYPE_ENEMY_BOSS],
+			Boss_Update, Boss_OnCollide, Boss_Destroy);
 
 	newBoss->mCurrentPhaseUpdate = Boss_PhaseA_Update;
 	newBoss->mCurrentMovementUpdate = Boss_Movement_EnterScreen;
 
-	newBoss->mShootCooldown = BOSS_SHOOT_COOLDOWN;
+	newBoss->mShootCooldown = bossShootCooldown->mValue;
 	newBoss->mChangeDirectionCooldown = 1;
 	newBoss->mCurrentDirectionX = RandomInt(-1, 1);
 	newBoss->mCurrentDirectionY = RandomInt(-1, 1);
 	newBoss->mHitTimer = 0;
 
-	newBoss->mSpawnKamikazeCooldown = SPAWNKAMIKAZE_TIMER;
+	newBoss->mSpawnKamikazeCooldown = bossSpawnKamikazeTimer->mValue;
 	newBoss->mCanSpawnKamikaze = 0;
+	}
 }
 
 void Boss_Update(Boss* boss, Game* _game, GameScreenData* _gameScreen)
@@ -105,7 +116,7 @@ void Boss_PhaseB_Update(Boss* _boss, Game* _game, GameScreenData* _data)
 		{
 			Boss_SpawnShooter(_boss, _game, _data);
 		}
-		_boss->mSpawnKamikazeCooldown = SPAWNKAMIKAZE_TIMER;
+		_boss->mSpawnKamikazeCooldown = SPAWN_KAMIKAZE_TIMER;
 	}
 	else
 	{

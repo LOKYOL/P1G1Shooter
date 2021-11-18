@@ -2,10 +2,15 @@
 
 #include "Engine/Game.h"
 #include "BossScreen.h"
-
-#define BOSS_HEALTH		60
+/*
+#define BOSS_HEALTH		60*/
 #define BOSS_PHASE_B_HEALTH	40
 #define BOSS_SPEED		20
+
+#define BOSS_SHOOT_COOLDOWN 0.3
+#define SPAWN_KAMIKAZE_TIMER	1
+
+#define BOSS_INIT_SECTION "Boss"
 
 #define EYE_LEFT_POS_X	10
 #define EYE_LEFT_POS_Y	6
@@ -15,9 +20,6 @@
 
 #define MOUNTH_POS_X	15
 #define MOUNTH_POS_Y	25
-
-#define BOSS_SHOOT_COOLDOWN 0.3
-#define SPAWNKAMIKAZE_TIMER	1
 
 typedef void (*BossPhaseUpdate)(struct Boss*, Game*, struct GameScreenData*);
 

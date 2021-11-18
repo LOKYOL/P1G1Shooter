@@ -3,13 +3,8 @@
 #include "Engine/Game.h"
 #include "GameScreen.h" 
 
-#define ENEMYK_HEALTH_MIN	1
-#define ENEMYK_HEALTH_MAX	2
-
-#define ENEMYK_SPEED_MIN	40
-#define ENEMYK_SPEED_MAX	50
-
 #define ENEMYK_DAMAGES		1
+#define ENEMYK_INIT_SECTION "EnemyKamikaze"
 
 typedef struct EnemyKamikaze
 {

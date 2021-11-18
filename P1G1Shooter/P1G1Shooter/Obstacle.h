@@ -3,8 +3,6 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
-
-#define OBSTACLE_HEALTH		1
 #define OBSTACLE_DAMAGES	1
 #define OBSTACLE_INIT_SECTION "Obstacle"
 
