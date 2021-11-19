@@ -295,7 +295,7 @@ void DrawHealthInDisplayZone(Player* _player)
 
 void Player_TakeDamages(Player* _player, Game* _game)
 {
-	Entity_TakeDamages(&_player->mEntity, 1);
+	Entity_TakeDamages(_player, 1);
 	_player->mTouchedTime = HIT_TIME;
 	if (_player->mEntity.mCurrentHealth > 0)
 	{
