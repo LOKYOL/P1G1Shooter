@@ -3,8 +3,9 @@
 #include "Engine/Game.h"
 #include "GameScreen.h" 
 
+#define POWERUP_AIMASSIST_SECTION "PowerUpAimAssist"
+
 #define POWERUP_AIMASSIST_DELAY		8.0
-#define POWERUP_AIMASSIST_SPEED		2
 
 typedef struct PowerupAimAssist
 {

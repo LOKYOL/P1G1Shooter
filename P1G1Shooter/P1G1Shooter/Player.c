@@ -2,6 +2,7 @@
 #include "Engine/Game.h"
 #include "Engine/DisplayZoneDrawing.h"
 #include "Projectile.h"
+#include "PowerupHealth.h"
 #include "PowerupAimAssist.h"
 
 void InitPlayer(Player** _player, GameScreenData* _gameScreen)
@@ -27,6 +28,7 @@ void InitPlayer(Player** _player, GameScreenData* _gameScreen)
 		ParamFloat* playerReloadCooldown = (ParamFloat*)GetParamInSection(playerSection, "ReloadCooldown_max");
 		ParamFloat* playerOverheatCooldown = (ParamFloat*)GetParamInSection(playerSection, "OverheatCooldown_max");
 		ParamFloat* playerReloadGain = (ParamFloat*)GetParamInSection(playerSection, "ReloadGain");
+		ParamFloat* playerShootCost = (ParamFloat*)GetParamInSection(playerSection, "ShootCost");
 
 		newPlayer->mChargeZone = malloc(sizeof(DisplayZone));
 		InitDisplayZone(newPlayer->mChargeZone, 0, 0, 5, 2, 1);
@@ -40,8 +42,9 @@ void InitPlayer(Player** _player, GameScreenData* _gameScreen)
 		newPlayer->mEntity.mPosition_x = 5;
 		newPlayer->mEntity.mPosition_y = WINDOW_HEIGHT / 2 - 5;
 		newPlayer->mEntity.mEntityType = TYPE_PLAYER;
-		newPlayer->mCurrentEnergy = playerMaxEnergy->mValue;
 		newPlayer->mMaxEnergy = playerMaxEnergy->mValue;
+		newPlayer->mCurrentEnergy = playerMaxEnergy->mValue;
+		newPlayer->mShootCost = playerShootCost->mValue;
 		newPlayer->mCurrentReloadCooldown = 0.f;
 		newPlayer->mMaxReloadCooldown = playerReloadCooldown->mValue;
 		newPlayer->mReloadGain = playerReloadGain->mValue;
@@ -101,7 +104,7 @@ void Player_UpdateMovement(Player* _player, Game* _game)
 	UpdateHealthDisplayZonePosition(_player);
 }
 
-void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
+void Player_OnCollide(Player* _current, Entity* _entity, Game* _game)
 {
 	if (_current->mTouchedTime <= 0)
 	{
@@ -116,20 +119,20 @@ void Player_OnCollide(Player* _current, Entity* _entity, Game* game)
 			_current->mTouchedTime = HIT_TIME;
 			if (_current->mEntity.mCurrentHealth > 0)
 			{
-				Play_Sound("player_enemyhit", game->mSoundManager);
+				Play_Sound("player_enemyhit", _game->mSoundManager);
 			}
 			else
 			{
-				Play_Sound("player_die", game->mSoundManager);
+				Play_Sound("player_die", _game->mSoundManager);
 			}
 			return;
 		case TYPE_POWERUP_HEALTH:
-			Entity_ReceiveHeal(_current, 1);
-			Play_Sound("powerup_health", game->mSoundManager);
+			Entity_ReceiveHeal(_current, POWERUPHEALTH_HEAL);
+			Play_Sound("powerup_health", _game->mSoundManager);
 			return;
 		case TYPE_POWERUP_AIMASSIST:
 			_current->mShootAimAssistTimer = POWERUP_AIMASSIST_DELAY;
-			Play_Sound("powerup_health", game->mSoundManager);
+			Play_Sound("powerup_health", _game->mSoundManager);
 			return;
 		default:
 			return;
@@ -158,47 +161,49 @@ void ClampPlayerPos(Player* _player, double* _posX, double* _posY)
 	}
 }
 
-void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* gameStruct)
+void Player_Shoot(Player* _player, GameScreenData* _gameScreen, Game* _gameStruct)
 {
 	if (_player->mOverheatCooldown <= 0)
 	{
 		Projectile* newProjectile;
 		if (_player->mShootAimAssistTimer > 0)
 		{
-			Proj_Initialize(&newProjectile, 40, 1, 1, 0,
-				_player->mEntity.mPosition_x + 7, 
-				_player->mEntity.mPosition_y, 
+			Proj_Initialize(&newProjectile, 1, 1,
+				0, _player->mEntity.mPosition_x + 7,
+				_player->mEntity.mPosition_y,
 				TYPE_PLAYER_PROJECTILE,
-				TYPE_PLAYER_PROJECTILE + 1, _gameScreen, 
-				Projectile_Movement_AimAssist,
-				Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
+				TYPE_PLAYER_PROJECTILE + 1,
+				_gameScreen, Projectile_Movement_AimAssist,
+				Projectile_Update,
+				PlayerProjectile_OnCollide, Projectile_Destroy);
 		}
 		else
 		{
-			Proj_Initialize(&newProjectile, 40, 1, 1, 0,
-				_player->mEntity.mPosition_x + 7, 
-				_player->mEntity.mPosition_y, 
+			Proj_Initialize(&newProjectile, 1, 1,
+				0, _player->mEntity.mPosition_x + 7,
+				_player->mEntity.mPosition_y,
 				TYPE_PLAYER_PROJECTILE,
-				TYPE_PLAYER_PROJECTILE, _gameScreen, 
-				Projectile_Movement_Standard,
-				Projectile_Update, PlayerProjectile_OnCollide, Projectile_Destroy);
+				TYPE_PLAYER_PROJECTILE,
+				_gameScreen, Projectile_Movement_Standard,
+				Projectile_Update,
+				PlayerProjectile_OnCollide, Projectile_Destroy);
 		}
 		
 
 		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
-		_player->mCurrentEnergy -= SHOOT_COST;
+		_player->mCurrentEnergy -= _player->mShootCost;
 		_player->mCurrentReloadCooldown = _player->mMaxReloadCooldown;
 
 		if (_player->mCurrentEnergy <= 0)
 		{
 			_player->mOverheatCooldown = _player->mMaxOverheatCooldown;
 			_player->mCurrentEnergy = 0;
-			Play_Sound("player_recharge", gameStruct->mSoundManager);
+			Play_Sound("player_recharge", _gameStruct->mSoundManager);
 		}
 		else
 		{
-			Play_Sound("player_shoot.wav", gameStruct->mSoundManager);
+			Play_Sound("player_shoot.wav", _gameStruct->mSoundManager);
 		}
 	}
 }
@@ -295,7 +300,7 @@ void Player_Destroy(Player* _player)
 	free(_player);
 }
 
-void PlayerProjectile_OnCollide(Projectile* _current, Entity* _entity, Game* game)
+void PlayerProjectile_OnCollide(Projectile* _current, Entity* _entity, Game* _game)
 {
 	switch (_entity->mEntityType)
 	{

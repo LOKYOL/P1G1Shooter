@@ -15,7 +15,7 @@ typedef struct Obstacle
 /// Initialize an obstacle
 /// </summary>
 /// <param name="obstacle">Obstacle to initialize</param>
-void Obstacle_Initialize(Obstacle** obstacle, GameScreenData * _gameScreen);
+void Obstacle_Initialize(Obstacle** obstacle, GameScreenData * gameScreen);
 
 /// <summary>
 /// Update an obstacle's movement and appearance
@@ -38,7 +38,7 @@ void Obstacle_UpdateMovement(Obstacle* obstacle, Game* game);
 /// <param name="current">Current obstacle</param>
 /// <param name="entity">Other entity which collide with the current </param>
 /// <param name="game">Current game</param>
-void Obstacle_OnCollide(Obstacle* _current, Entity* entity, Game* game);
+void Obstacle_OnCollide(Obstacle* current, Entity* entity, Game* game);
 
 /// <summary>
 /// Free components of an obstacle and destroy him

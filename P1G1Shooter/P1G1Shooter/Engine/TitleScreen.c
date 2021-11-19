@@ -4,12 +4,12 @@
 #include "DisplayZoneDrawing.h"
 #include <time.h>
 
-int TitleScreenInit(struct Game* game, struct GameState* state)
+int TitleScreenInit(struct Game* _game, struct GameState* _state)
 {
-	state->mData = malloc(sizeof(TitleScreenData));
-	memset(state->mData, 0, sizeof(TitleScreenData));
+	_state->mData = malloc(sizeof(TitleScreenData));
+	memset(_state->mData, 0, sizeof(TitleScreenData));
 
-	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
+	TitleScreenData* datascreen = (TitleScreenData*)_state->mData;
 	datascreen->mOptionsZone = (DisplayZone*)malloc(sizeof(DisplayZone));
 	datascreen->mTitleAsciiZone = (DisplayZone*)malloc(sizeof(DisplayZone));
 
@@ -36,9 +36,9 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 	datascreen->mTitleAsciiZone->mPosY = 32;
 	return 0;
 }
-int TitleScreenClose(struct Game* game, struct GameState* state)
+int TitleScreenClose(struct Game* _game, struct GameState* _state)
 {
-	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
+	TitleScreenData* datascreen = (TitleScreenData*)_state->mData;
 	CloseDisplayZone(datascreen->mOptionsZone);
 	CloseDisplayZone(datascreen->mKeybindsZone);
 	CloseDisplayZone(datascreen->mTitleAsciiZone);
@@ -49,25 +49,25 @@ int TitleScreenClose(struct Game* game, struct GameState* state)
 	free(datascreen->mKeybindsZone);
 	free(datascreen->mTitleAsciiZone);
 
-	free(state->mData);
-	ClearBuffer(game->mDisplaySettings, BLACK, BLACK, ' ');
+	free(_state->mData);
+	ClearBuffer(_game->mDisplaySettings, BLACK, BLACK, ' ');
 
 	return 0;
 }
 
-int TitleScreenUpdate(struct Game* game, struct GameState* state)
+int TitleScreenUpdate(struct Game* _game, struct GameState* _state)
 {
-	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
+	TitleScreenData* datascreen = (TitleScreenData*)_state->mData;
 
-	ClearBuffer(game->mDisplaySettings, WHITE, BLACK, ' ');
+	ClearBuffer(_game->mDisplaySettings, WHITE, BLACK, ' ');
 
-	if (KeyPressStart(*game->mInputs, VK_RETURN) || KeyPressStart(*game->mInputs, VK_SPACE))
+	if (KeyPressStart(*_game->mInputs, VK_RETURN) || KeyPressStart(*_game->mInputs, VK_SPACE))
 	{
 		switch (datascreen->mCurrentSelector)
 		{
 		case 0:
-			PushGamescreen(game);
-			Play_Sound("new_game.wav", game->mSoundManager);
+			PushGamescreen(_game);
+			Play_Sound("new_game.wav", _game->mSoundManager);
 			break;
 		case 1:
 			return 1;
@@ -79,25 +79,25 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 	else
 	{
 		int selector = datascreen->mCurrentSelector;
-		if (KeyPressStart(*game->mInputs, VK_DOWN) || KeyPressStart(*game->mInputs, 'S'))
+		if (KeyPressStart(*_game->mInputs, VK_DOWN) || KeyPressStart(*_game->mInputs, 'S'))
 		{
 			selector++;
 			selector %= datascreen->mNbOptions;
-			Play_Sound("click.wav", game->mSoundManager);
+			Play_Sound("click.wav", _game->mSoundManager);
 		}
-		if (KeyPressStart(*game->mInputs, VK_UP) || KeyPressStart(*game->mInputs, 'Z'))
+		if (KeyPressStart(*_game->mInputs, VK_UP) || KeyPressStart(*_game->mInputs, 'Z'))
 		{
 			selector--;
 			selector = (selector + datascreen->mNbOptions) % datascreen->mNbOptions;
-			Play_Sound("click.wav", game->mSoundManager);
+			Play_Sound("click.wav", _game->mSoundManager);
 		}
 		datascreen->mCurrentSelector = selector;
 
 		PrintOptions(datascreen);
 	}
 
-	FlushDisplayZone(game->mDisplaySettings, datascreen->mOptionsZone);
-	FlushDisplayZone(game->mDisplaySettings, datascreen->mKeybindsZone);
+	FlushDisplayZone(_game->mDisplaySettings, datascreen->mOptionsZone);
+	FlushDisplayZone(_game->mDisplaySettings, datascreen->mKeybindsZone);
 
 	if (datascreen->mTempClock < clock() - 400) {
 		datascreen->mCurrentColor++;
@@ -106,7 +106,7 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 		SetTitleColor(datascreen->mTitleAsciiZone, datascreen->mCurrentColor, 0);
 	}
 
-	FlushDisplayZone(game->mDisplaySettings, datascreen->mTitleAsciiZone);
+	FlushDisplayZone(_game->mDisplaySettings, datascreen->mTitleAsciiZone);
 
 	return 0;
 }
@@ -140,16 +140,17 @@ void PrintOption(TitleScreenData* _datascreen, int _index)
 	);
 }
 
-void PushGamescreen(struct Game* game)
+void PushGamescreen(struct Game* _game)
 {
-	PushGameScreen(game);
+	PushGameScreen(_game);
 }
 
-void SetTitleColor(DisplayZone* dz, int FColor, int BColor) {
-	PrintInDisplayZone(dz, FColor, BColor, 0, 0, "\260\333\333\333\333\333\273\260\333\333\333\273\260\260\333\333\273\260\333\333\333\333\333\333\273\260\333\333\333\333\333\333\273\260\333\333\273\260\260\260\333\333\273\040\040\333\333\333\333\333\333\333\273\333\333\273\260\333\333\333\333\333\333\273\333\333\273\260\260\333\333\273", 0, NO_FLAG);
-	PrintInDisplayZone(dz, FColor, BColor, 0, 1, "\333\333\311\315\315\333\333\273\333\333\333\333\273\260\333\333\272\333\333\311\315\315\315\315\274\260\333\333\311\315\315\333\333\273\310\333\333\273\260\333\333\311\274\040\040\333\333\311\315\315\315\315\274\333\333\272\333\333\311\315\315\315\315\274\333\333\272\260\260\333\333\272", 0, NO_FLAG);
-	PrintInDisplayZone(dz, FColor, BColor, 0, 2, "\333\333\333\333\333\333\333\272\333\333\311\333\333\273\333\333\272\333\333\272\260\260\333\333\273\260\333\333\333\333\333\333\311\274\260\310\333\333\333\333\311\274\260\040\040\333\333\333\333\333\273\260\260\333\333\272\310\333\333\333\333\333\273\260\333\333\333\333\333\333\333\272", 0, NO_FLAG);
-	PrintInDisplayZone(dz, FColor, BColor, 0, 3, "\333\333\311\315\315\333\333\272\333\333\272\310\333\333\333\333\272\333\333\272\260\260\310\333\333\273\333\333\311\315\315\333\333\273\260\260\310\333\333\311\274\260\260\040\040\333\333\311\315\315\274\260\260\333\333\272\260\310\315\315\315\333\333\273\333\333\311\315\315\333\333\272", 0, NO_FLAG);
-	PrintInDisplayZone(dz, FColor, BColor, 0, 4, "\333\333\272\260\260\333\333\272\333\333\272\260\310\333\333\333\272\310\333\333\333\333\333\333\311\274\333\333\272\260\260\333\333\272\260\260\260\333\333\272\260\260\260\040\040\333\333\272\260\260\260\260\260\333\333\272\333\333\333\333\333\333\311\274\333\333\272\260\260\333\333\272", 0, NO_FLAG);
-	PrintInDisplayZone(dz, FColor, BColor, 0, 5, "\310\315\274\260\260\310\315\274\310\315\274\260\260\310\315\315\274\260\310\315\315\315\315\315\274\260\310\315\274\260\260\310\315\274\260\260\260\310\315\274\260\260\260\040\040\310\315\274\260\260\260\260\260\310\315\274\310\315\315\315\315\315\274\260\310\315\274\260\260\310\315\274", 0, NO_FLAG);
+void SetTitleColor(DisplayZone* _dz, int _FColor, int _BColor) 
+{
+	PrintInDisplayZone(_dz, _FColor, _BColor, 0, 0, "\260\333\333\333\333\333\273\260\333\333\333\273\260\260\333\333\273\260\333\333\333\333\333\333\273\260\333\333\333\333\333\333\273\260\333\333\273\260\260\260\333\333\273\040\040\333\333\333\333\333\333\333\273\333\333\273\260\333\333\333\333\333\333\273\333\333\273\260\260\333\333\273", 0, NO_FLAG);
+	PrintInDisplayZone(_dz, _FColor, _BColor, 0, 1, "\333\333\311\315\315\333\333\273\333\333\333\333\273\260\333\333\272\333\333\311\315\315\315\315\274\260\333\333\311\315\315\333\333\273\310\333\333\273\260\333\333\311\274\040\040\333\333\311\315\315\315\315\274\333\333\272\333\333\311\315\315\315\315\274\333\333\272\260\260\333\333\272", 0, NO_FLAG);
+	PrintInDisplayZone(_dz, _FColor, _BColor, 0, 2, "\333\333\333\333\333\333\333\272\333\333\311\333\333\273\333\333\272\333\333\272\260\260\333\333\273\260\333\333\333\333\333\333\311\274\260\310\333\333\333\333\311\274\260\040\040\333\333\333\333\333\273\260\260\333\333\272\310\333\333\333\333\333\273\260\333\333\333\333\333\333\333\272", 0, NO_FLAG);
+	PrintInDisplayZone(_dz, _FColor, _BColor, 0, 3, "\333\333\311\315\315\333\333\272\333\333\272\310\333\333\333\333\272\333\333\272\260\260\310\333\333\273\333\333\311\315\315\333\333\273\260\260\310\333\333\311\274\260\260\040\040\333\333\311\315\315\274\260\260\333\333\272\260\310\315\315\315\333\333\273\333\333\311\315\315\333\333\272", 0, NO_FLAG);
+	PrintInDisplayZone(_dz, _FColor, _BColor, 0, 4, "\333\333\272\260\260\333\333\272\333\333\272\260\310\333\333\333\272\310\333\333\333\333\333\333\311\274\333\333\272\260\260\333\333\272\260\260\260\333\333\272\260\260\260\040\040\333\333\272\260\260\260\260\260\333\333\272\333\333\333\333\333\333\311\274\333\333\272\260\260\333\333\272", 0, NO_FLAG);
+	PrintInDisplayZone(_dz, _FColor, _BColor, 0, 5, "\310\315\274\260\260\310\315\274\310\315\274\260\260\310\315\315\274\260\310\315\315\315\315\315\274\260\310\315\274\260\260\310\315\274\260\260\260\310\315\274\260\260\260\040\040\310\315\274\260\260\260\260\260\310\315\274\310\315\315\315\315\315\274\260\310\315\274\260\260\310\315\274", 0, NO_FLAG);
 }

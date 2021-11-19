@@ -3,6 +3,9 @@
 #include "Engine/Game.h"
 #include "GameScreen.h"
 
+#define PROJECTILE_STANDARD_INIT_SECTION "PlayerProjectileStandard"
+#define PROJECTILE_AIMASSIST_INIT_SECTION "PlayerProjectileAimAssist"
+
 typedef void (*ProjectileMovement)(struct Projectile*, struct Game*, struct GameScreen*);
 
 typedef struct Projectile
@@ -21,14 +24,20 @@ typedef struct Projectile
 /// <param name="proj">Projectile to initialize</param>
 /// <param name="speed">Speed of the projectile</param>
 /// <param name="direction">Direction of the projectile, either left or right</param>
-void Proj_Initialize(Projectile** proj, float speed, float health,
-	float velocity_x, float velocity_y,
-	double pos_x, double pos_y, 
-	EntityType type, int sprite, 
-	GameScreenData* gameScreen,
+void Proj_Initialize(Projectile** proj, float health,
+ float velocity_x,
+	float velocity_y,
+ double pos_x,
+	double pos_y,
+ EntityType type, 
+	int sprite,
+ GameScreenData* gameScreen,
+ 
 	ProjectileMovement movement,
+
 	Update update,
 	OnCollide onCollide,
+
 	Destroy destroy
 	);
 

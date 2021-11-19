@@ -5,8 +5,7 @@
 
 #define PLAYER_INIT_SECTION "Player"
 
-#define SHOOT_COST			10.f
-#define HIT_TIME			0.5f
+#define HIT_TIME			0.5f // Invincibility frame
 
 #define PlayerUpdate(player, inputs, deltaTime) \
 	Player_Update((void*)player, &inputs, deltaTime)
@@ -20,9 +19,6 @@ typedef struct Player
 
 	double			mTouchedTime;
 
-	float			mMaxEnergy;
-	float			mCurrentEnergy;
-
 	double			mCurrentReloadCooldown; // Refactoring : Struct Weapon ?
 	double			mMaxReloadCooldown;
 
@@ -32,6 +28,13 @@ typedef struct Player
 	double			mMaxOverheatCooldown;
 
 	double			mShootAimAssistTimer;
+
+	float			mMaxEnergy;
+	float			mCurrentEnergy;
+
+	float			mShootCost;
+
+	
 } Player;
 
 /// <summary>

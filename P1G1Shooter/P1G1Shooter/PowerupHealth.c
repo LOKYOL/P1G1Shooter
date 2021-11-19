@@ -3,17 +3,24 @@
 #include "Engine/DisplayZoneDrawing.h"
 #include "PlayerStruct.h"
 
-void PowerupHealth_Initialize(PowerupHealth** _powerup, GameScreenData* _gameScreen, double _posX, double _posY)
+void PowerupHealth_Initialize(PowerupHealth** _powerUp, GameScreenData* _gameScreen, double _posX, double _posY)
 {
-	PowerupHealth* newPowerup = (PowerupHealth*)malloc(sizeof(PowerupHealth));
-	memset(newPowerup, 0, sizeof(PowerupHealth));
+	PowerupHealth* newPowerUp = (PowerupHealth*)malloc(sizeof(PowerupHealth));
+	memset(newPowerUp, 0, sizeof(PowerupHealth));
 
-	*_powerup = newPowerup;
+	*_powerUp = newPowerUp;
 
-	Entity_Initialize(&newPowerup->mEntity, TYPE_POWERUP_HEALTH, 
-		_posX, _posY, POWERUPHEALTH_HEALTH, POWERUPHEALTH_SPEED,
+	ParamSection* healthSection = GetSection(_gameScreen->mParamsList, POWERUP_HEALTH_SECTION);
+
+	if(healthSection)
+	{
+		ParamInt* healthSpeed = (ParamInt*)GetParamInSection(healthSection, "Speed");
+
+		Entity_Initialize(&newPowerUp->mEntity, TYPE_POWERUP_HEALTH, 
+		_posX, _posY, POWERUPHEALTH_HEALTH, healthSpeed->mValue,
 		&_gameScreen->mSprites[TYPE_POWERUP_HEALTH], 
 		PowerupHealth_Update, PowerupHealth_OnCollide, PowerupHealth_Destroy);
+	}
 }
 
 void PowerupHealth_Update(PowerupHealth* _powerup, Game* _game, GameScreenData* _gameScreen)

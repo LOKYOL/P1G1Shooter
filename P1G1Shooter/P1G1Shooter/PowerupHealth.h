@@ -1,11 +1,13 @@
+
 #pragma once
 
 #include "Engine/Game.h"
-#include "GameScreen.h" 
+#include "GameScreen.h"
 
+#define POWERUP_HEALTH_SECTION "PowerUpHealth"
+
+#define POWERUPHEALTH_HEAL 1
 #define POWERUPHEALTH_HEALTH	1
-#define POWERUPHEALTH_SPEED		2
-#define POWERUPHEALTH_HEAL		1
 
 typedef struct PowerupHealth
 {

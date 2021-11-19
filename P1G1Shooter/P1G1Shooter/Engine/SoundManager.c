@@ -1,11 +1,11 @@
 #include "SoundManager.h"
 
-int FindSoundPriority(char* SoundName, SoundManager* _sound) 
+int FindSoundPriority(char* _SoundName, SoundManager* _sound) 
 {
     int n = 3;
 
     for (int i = 0; i < 6; i++) {
-        if (strcmp(SoundName, _sound->mSounds[i].mSoundPath)) {
+        if (strcmp(_SoundName, _sound->mSounds[i].mSoundPath)) {
             n = _sound->mSounds[i].mPriority;
             break;
         }
@@ -14,22 +14,22 @@ int FindSoundPriority(char* SoundName, SoundManager* _sound)
     return n;
 }
 
-void Play_Sound(char* SoundName, SoundManager* _sound) 
+void Play_Sound(char* _SoundName, SoundManager* _sound) 
 {
     int mBool = 0;
 
     if (_sound->mSound == NULL) 
     {
         Sound* newSound = (Sound*)malloc(sizeof(Sound));
-        newSound->mSoundPath = SoundName;
-        newSound->mPriority = FindSoundPriority(SoundName, _sound);
+        newSound->mSoundPath = _SoundName;
+        newSound->mPriority = FindSoundPriority(_SoundName, _sound);
         _sound->mSound = newSound;
         mBool = 1;
     } 
-    else if (_sound->mSound != NULL && _sound->mSound->mPriority < FindSoundPriority(SoundName, _sound)) 
+    else if (_sound->mSound != NULL && _sound->mSound->mPriority < FindSoundPriority(_SoundName, _sound)) 
     {
-        _sound->mSound->mPriority = FindSoundPriority(SoundName, _sound);
-        _sound->mSound->mSoundPath = SoundName;
+        _sound->mSound->mPriority = FindSoundPriority(_SoundName, _sound);
+        _sound->mSound->mSoundPath = _SoundName;
         mBool = 1;
     }
 
@@ -50,11 +50,11 @@ void Play_Sound(char* SoundName, SoundManager* _sound)
     }
 }
 
-void Play_SoundThread(char* SoundName) 
+void Play_SoundThread(char* _SoundName) 
 {
     char soundSearch[50] = "Sounds/";
 
-    snprintf(soundSearch, 50, "Sounds/%s", SoundName);
+    snprintf(soundSearch, 50, "Sounds/%s", _SoundName);
     wchar_t wc[50];
     size_t size = strlen(soundSearch) + 1;
     size_t outSize;
@@ -63,16 +63,16 @@ void Play_SoundThread(char* SoundName)
     PlaySound(wc, NULL, SND_ASYNC | SND_NOSTOP);
 }
 
-void Play_Music(char* MusicName) 
+void Play_Music(char* _MusicName) 
 {
-    CreateThread(0, 0, Play_MusicThread, MusicName, 0, NULL);
+    CreateThread(0, 0, Play_MusicThread, _MusicName, 0, NULL);
 }
 
-void Play_MusicThread(char* MusicName) 
+void Play_MusicThread(char* _MusicName) 
 {
     char musicSearch[50] = "Music/";
 
-    snprintf(musicSearch, 50, "Music/%s", MusicName);
+    snprintf(musicSearch, 50, "Music/%s", _MusicName);
 
     wchar_t wcMusic[50];
     size_t size = strlen(musicSearch) + 1;

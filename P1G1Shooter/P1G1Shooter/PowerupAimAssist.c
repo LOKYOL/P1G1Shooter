@@ -1,16 +1,23 @@
 #include "PowerupAimAssist.h"
 
-void PowerupAimAssist_Initialize(PowerupAimAssist** _powerup, GameScreenData* _gameScreen, double _posX, double _posY)
+void PowerupAimAssist_Initialize(PowerupAimAssist** _powerUp, GameScreenData* _gameScreen, double _posX, double _posY)
 {
-	PowerupAimAssist* newPowerup = (PowerupAimAssist*)malloc(sizeof(PowerupAimAssist));
-	memset(newPowerup, 0, sizeof(PowerupAimAssist));
+	PowerupAimAssist* newPowerUp = (PowerupAimAssist*)malloc(sizeof(PowerupAimAssist));
+	memset(newPowerUp, 0, sizeof(PowerupAimAssist));
 
-	*_powerup = newPowerup;
+	*_powerUp = newPowerUp;
 
-	Entity_Initialize(&newPowerup->mEntity, TYPE_POWERUP_AIMASSIST,
-		_posX, _posY, 1, POWERUP_AIMASSIST_SPEED,
-		&_gameScreen->mSprites[TYPE_POWERUP_AIMASSIST],
-		PowerupAimAssist_Update, PowerupAimAssist_OnCollide, PowerupAimAssist_Destroy);
+	ParamSection* aimAssistSection = GetSection(_gameScreen->mParamsList, POWERUP_AIMASSIST_SECTION);
+
+	if(aimAssistSection)
+	{
+		ParamInt* aimAssistSpeed = (ParamInt*)GetParamInSection(aimAssistSection, "Speed");
+
+		Entity_Initialize(&newPowerUp->mEntity, TYPE_POWERUP_AIMASSIST,
+			_posX, _posY, 1, aimAssistSpeed->mValue,
+			&_gameScreen->mSprites[TYPE_POWERUP_AIMASSIST],
+			PowerupAimAssist_Update, PowerupAimAssist_OnCollide, PowerupAimAssist_Destroy);
+	}
 }
 
 void PowerupAimAssist_Update(PowerupAimAssist* _powerup, Game* _game, GameScreenData* _gameScreen)

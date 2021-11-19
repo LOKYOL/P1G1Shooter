@@ -15,10 +15,10 @@
 #include "PowerupAimAssist.h"
 
 
-int GameScreenInit(Game* game, GameState* state)
+int GameScreenInit(Game* _game, GameState* _state)
 {
-	state->mData = malloc(sizeof(GameScreenData));
-	GameScreenData* data = state->mData;
+	_state->mData = malloc(sizeof(GameScreenData));
+	GameScreenData* data = _state->mData;
 	
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), ZERO, ZERO);
@@ -45,22 +45,22 @@ int GameScreenInit(Game* game, GameState* state)
 	data->mGameSpawnEnemyTimer = ZERO;
 	data->mGameSpawnEnemyKamikazeTimer = ZERO;
 
-	game->mScore = ZERO;
+	_game->mScore = ZERO;
 	data->mScoreDisplayZone = malloc(sizeof(DisplayZone));
 	InitDisplayZone(data->mScoreDisplayZone, ZERO, ZERO, 20, 1, ZERO);
 
 	return 0;
 }
 
-void LoadSpritesFromIni(GameScreenData* data)
+void LoadSpritesFromIni(GameScreenData* _data)
 {
-	ParamSection* spritesSection = GetSection(data->mParamsList, "Sprites");
+	ParamSection* spritesSection = GetSection(_data->mParamsList, "Sprites");
 
 	if (spritesSection) {
 		ParamInt* spritesSize = (ParamInt*)GetParamInSection(spritesSection, "SIZEOF_SPRITES_NAMES");
 
 		if (spritesSize) {
-			data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * spritesSize->mValue);
+			_data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * spritesSize->mValue);
 
 			DisplayZone* curDisplayZone = NULL;
 			char* path = (char*)malloc(sizeof(char) * 200);
@@ -71,7 +71,7 @@ void LoadSpritesFromIni(GameScreenData* data)
 				snprintf(spriteParam, 10, "Sprite_%d", i);
 				GetParamElemString(spritesSection, path, 200, spriteParam);
 				curDisplayZone = CreateDisplayZoneFromBMP(path);
-				data->mSprites[i] = *curDisplayZone;
+				_data->mSprites[i] = *curDisplayZone;
 				free(curDisplayZone); 
 			}
 
@@ -81,9 +81,9 @@ void LoadSpritesFromIni(GameScreenData* data)
 	}
 }
 
-int GameScreenClose(Game* game, GameState* state)
+int GameScreenClose(Game* _game, GameState* _state)
 {
-	GameScreenData* data = state->mData;
+	GameScreenData* data = _state->mData;
 
 	Entity* curEntity = NULL;
 	for (unsigned int i = ZERO; i < data->mAllEntities->mCurrentSize; i++)
@@ -116,37 +116,37 @@ int GameScreenClose(Game* game, GameState* state)
 	ClearParamList(data->mParamsList);
 	free(data->mParamsList);
 
-	free(state->mData);
+	free(_state->mData);
 
 	return 0;
 }
 
-int GameScreenUpdate(Game* game, GameState* state)
+int GameScreenUpdate(Game* _game, GameState* _state)
 {
-	GameScreenData* data = state->mData;
+	GameScreenData* data = _state->mData;
 
-	SpawnEntity(game, data);
+	SpawnEntity(_game, data);
 
-	UpdateEntity(game, data);
+	UpdateEntity(_game, data);
 
-	UpdateWeapon(game, data);
+	UpdateWeapon(_game, data);
 
 	// COLLISIONS
-	HandleCollision(data->mAllEntities,	game);
-	HandleEntityCollision((Entity*)data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, game);
+	HandleCollision(data->mAllEntities,	_game);
+	HandleEntityCollision((Entity*)data->mPlayer, data->mAllEntities->mBuffer, data->mAllEntities->mCurrentSize, _game);
 
-	if (game->mScore >= data->mNextBossScore)
+	if (_game->mScore >= data->mNextBossScore)
 	{
-		PushBossScreen(game);
+		PushBossScreen(_game);
 	}
 
 	char totalScore[20] = "";
-	snprintf(totalScore, 19, "Score : %d", game->mScore);
+	snprintf(totalScore, 19, "Score : %d", _game->mScore);
 	PrintInDisplayZone(data->mScoreDisplayZone, WHITE, BLACK, ZERO, ZERO, totalScore, ZERO, NO_FLAG);
 
-	EndGame(game, data);
+	EndGame(_game, data);
 	
-	FlushDisplayZone(game->mDisplaySettings, data->mScoreDisplayZone);
+	FlushDisplayZone(_game->mDisplaySettings, data->mScoreDisplayZone);
 
 	return 0;
 }
@@ -170,7 +170,7 @@ void PopEntity(GameScreenData* _game, Entity* _entity)
 	}
 }
 
-void HandleCollision(DVector* _list, Game* gameStruct)
+void HandleCollision(DVector* _list, Game* _gameStruct)
 {
 	Entity* curEntity = NULL;
 	for (int i = ZERO; i < (int)_list->mCurrentSize - 1; i++)
@@ -181,18 +181,18 @@ void HandleCollision(DVector* _list, Game* gameStruct)
 				curEntity, 
 				DVectorGet(_list, i + 1), 
 				_list->mCurrentSize - i - 1, 
-				gameStruct
+				_gameStruct
 			);
 		}
 	}
 }
 
-void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* gameStruct)
+void HandleEntityCollision(Entity* _entity, Entity** _list, int _length, Game* _gameStruct)
 {
 	Entity* curCompare = NULL;
 	for (int i = ZERO; i < _length; i++)
 	{
-		HandleEntitiesCollision(_entity, _list[i], gameStruct);
+		HandleEntitiesCollision(_entity, _list[i], _gameStruct);
 	}
 }
 
@@ -267,15 +267,15 @@ char	CompareCollision(Entity* _entityA, Entity* _entityB)
 		zoneA->mPosY + zoneA->mSizeY > zoneB->mPosY*/;
 }
 
-char InRange(int value, int min, int max)
+char InRange(int _value, int _min, int _max)
 {
-	return value < max && value > min;
+	return _value < _max && _value > _min;
 }
 
-void SpawnEntity(Game* game, GameScreenData* _data)
+void SpawnEntity(Game* _game, GameScreenData* _data)
 {
 	// SPAWN OBSTACLE
-	_data->mGameSpawnObstacleTimer += game->mGameDt;
+	_data->mGameSpawnObstacleTimer += _game->mGameDt;
 	if (_data->mGameSpawnObstacleTimer >= OBSTACLE_SPAWN_TIMER)
 	{
 		_data->mGameSpawnObstacleTimer -= OBSTACLE_SPAWN_TIMER;
@@ -284,8 +284,8 @@ void SpawnEntity(Game* game, GameScreenData* _data)
 	}
 
 	// SPAWN ENEMY
-	_data->mGameSpawnEnemyTimer += game->mGameDt;
-	_data->mGameSpawnEnemyKamikazeTimer += game->mGameDt;
+	_data->mGameSpawnEnemyTimer += _game->mGameDt;
+	_data->mGameSpawnEnemyKamikazeTimer += _game->mGameDt;
 
 	if (_data->mGameSpawnEnemyTimer >= ENEMY_SPAWN_TIMER)
 	{
@@ -324,21 +324,21 @@ void SpawnEnemyKamikaze(GameScreenData* _game)
 	DVectorPushBack(_game->mAllEntities, &newEnemy);
 }
 
-void SpawnHealthPowerup(GameScreenData* _game, double posX, double posY)
+void SpawnHealthPowerup(GameScreenData* _game, double _posX, double _posY)
 {
 	PowerupHealth* newPowerup = NULL;
-	PowerupHealth_Initialize(&newPowerup, _game, posX, posY);
+	PowerupHealth_Initialize(&newPowerup, _game, _posX, _posY);
 	DVectorPushBack(_game->mAllEntities, &newPowerup);
 }
 
-void SpawnAimAssistPowerup(GameScreenData* _game, double posX, double posY)
+void SpawnAimAssistPowerup(GameScreenData* _game, double _posX, double _posY)
 {
 	PowerupAimAssist* newPowerup = NULL;
-	PowerupAimAssist_Initialize(&newPowerup, _game, posX, posY);
+	PowerupAimAssist_Initialize(&newPowerup, _game, _posX, _posY);
 	DVectorPushBack(_game->mAllEntities, &newPowerup);
 }
 
-char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
+char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* _gameStruct)
 {
 	char res = Entity_IsDead(_entity);
 	if (res)
@@ -363,49 +363,49 @@ char PopBackIfIsDead(GameScreenData* _game, Entity* _entity, Game* gameStruct)
 	return res;
 }
 
-void UpdateEntity(Game* game, GameScreenData* data)
+void UpdateEntity(Game* _game, GameScreenData* _data)
 {
-	data->mPlayer->mEntity.mUpdate(data->mPlayer, game, data);
+	_data->mPlayer->mEntity.mUpdate(_data->mPlayer, _game, _data);
 
 	// FOR EACH ENTITY
 	Entity* curEntity = NULL;
-	for (unsigned int i = 0; i < data->mAllEntities->mCurrentSize; i++)
+	for (unsigned int i = 0; i < _data->mAllEntities->mCurrentSize; i++)
 	{
-		curEntity = DVectorGetTyped(data->mAllEntities, Entity*, i);
+		curEntity = DVectorGetTyped(_data->mAllEntities, Entity*, i);
 
 		if (curEntity->mUpdate != NULL)
 		{
-			curEntity->mUpdate((void*)curEntity, game, data);
+			curEntity->mUpdate((void*)curEntity, _game, _data);
 		}
 
-		if (PopBackIfIsDead(data, DVectorGetTyped(data->mAllEntities, Entity*, i), game))
+		if (PopBackIfIsDead(_data, DVectorGetTyped(_data->mAllEntities, Entity*, i), _game))
 		{
 			i--;
 		}
 	}
 }
 
-void UpdateWeapon(Game* game, GameScreenData* data)
+void UpdateWeapon(Game* _game, GameScreenData* _data)
 {
 	// ENERGY RECHARGE
-	if (data->mPlayer->mCurrentReloadCooldown > ZERO)
+	if (_data->mPlayer->mCurrentReloadCooldown > ZERO)
 	{
-		data->mPlayer->mCurrentReloadCooldown -= game->mGameDt;
+		_data->mPlayer->mCurrentReloadCooldown -= _game->mGameDt;
 	}
 	else
 	{
-		data->mPlayer->mCurrentEnergy += (float)(game->mGameDt * data->mPlayer->mReloadGain);
+		_data->mPlayer->mCurrentEnergy += (float)(_game->mGameDt * _data->mPlayer->mReloadGain);
 
-		if (data->mPlayer->mCurrentEnergy >= data->mPlayer->mMaxEnergy)
+		if (_data->mPlayer->mCurrentEnergy >= _data->mPlayer->mMaxEnergy)
 		{
-			data->mPlayer->mCurrentEnergy = data->mPlayer->mMaxEnergy;
+			_data->mPlayer->mCurrentEnergy = _data->mPlayer->mMaxEnergy;
 		}
 	}
 
 	// SHOOT COOLDOWN
-	if (data->mPlayer->mOverheatCooldown > ZERO)
+	if (_data->mPlayer->mOverheatCooldown > ZERO)
 	{
-		data->mPlayer->mOverheatCooldown -= game->mGameDt;
+		_data->mPlayer->mOverheatCooldown -= _game->mGameDt;
 	}
 }
 
@@ -421,14 +421,14 @@ void EndGame(Game* _game, struct GameScreenData* _data)
 	}
 }
 
-int RandomInt(int min, int max)
+int RandomInt(int _min, int _max)
 {
-	if (min < max)
+	if (_min < _max)
 	{
-		return (rand() % (max - min + 1)) + min;
+		return (rand() % (_max - _min + 1)) + _min;
 	}
 	else
 	{
-		return min;
+		return _min;
 	}
 }

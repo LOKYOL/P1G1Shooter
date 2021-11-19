@@ -2,16 +2,16 @@
 #include "TimeManagement.h"
 #include "TitleScreen.h"
 #include "../GameScreen.h"
-#include "../PlayerStruct.h"
+#include "../Player.h"
 #include "../Obstacle.h"
 #include "../Projectile.h"
 #include "../EndScreen.h"
 
-void	InitGame(Game* game)
+void	InitGame(Game* _game)
 {
-	game->mScore = ZERO;
+	_game->mScore = ZERO;
 
-	game->mDisplaySettings = InitDisplay
+	_game->mDisplaySettings = InitDisplay
 	(
 		WINDOW_WIDTH,
 		WINDOW_HEIGHT,
@@ -21,80 +21,80 @@ void	InitGame(Game* game)
 
 	InitTime();
 
-	game->mGameTime = GetTime();
-	game->mGameDt = 0.0;
+	_game->mGameTime = GetTime();
+	_game->mGameDt = 0.0;
 
-	game->mStateStack = DVectorCreate();
-	DVectorInit(game->mStateStack, sizeof(GameState), ZERO, NULL);
+	_game->mStateStack = DVectorCreate();
+	DVectorInit(_game->mStateStack, sizeof(GameState), ZERO, NULL);
 
-	InitInputs(&game->mInputs);
+	InitInputs(&_game->mInputs);
 
-	game->mSoundManager = (SoundManager*)malloc(sizeof(SoundManager));
-	game->mSoundManager->mSound = NULL;
+	_game->mSoundManager = (SoundManager*)malloc(sizeof(SoundManager));
+	_game->mSoundManager->mSound = NULL;
 
-	InitSoundManager(game->mSoundManager);
+	InitSoundManager(_game->mSoundManager);
 
-	PushTitleScreen(game);
+	PushTitleScreen(_game);
 }
 
-void	CloseGame(Game* game)
+void	CloseGame(Game* _game)
 {
 	// clear stack
-	while (DVectorSize(game->mStateStack))
+	while (DVectorSize(_game->mStateStack))
 	{
-		PopGameState(game);
+		PopGameState(_game);
 	}
 
-	DVectorDestroy(game->mStateStack);
+	DVectorDestroy(_game->mStateStack);
 
-	DestroyInputs(game->mInputs);
+	DestroyInputs(_game->mInputs);
 
-	free(game->mSoundManager);
+	free(_game->mSoundManager);
 
-	CloseDisplay(game->mDisplaySettings);
+	CloseDisplay(_game->mDisplaySettings);
 }
 
-int		MainLoop(Game* game)
+int		MainLoop(Game* _game)
 {
 	double currentTime = GetTime();
-	game->mGameDt = currentTime - game->mGameTime;
-	game->mGameTime = currentTime;
+	_game->mGameDt = currentTime - _game->mGameTime;
+	_game->mGameTime = currentTime;
 	
-	ClearBuffer(game->mDisplaySettings, BLACK, BLUE, 178);
+	ClearBuffer(_game->mDisplaySettings, BLACK, BLUE, 178);
 
-	UpdateAllInputs(game->mInputs);
+	UpdateAllInputs(_game->mInputs);
 
 	int updateResult = ZERO;
 
-	if (DVectorSize(game->mStateStack))
+	if (DVectorSize(_game->mStateStack))
 	{
-		GameState current = (DVectorBackTyped(game->mStateStack, GameState));
-		updateResult = current.mStateUpdate(game, &current);
+		GameState current = (DVectorBackTyped(_game->mStateStack, GameState));
+		updateResult = current.mStateUpdate(_game, &current);
 	}
 
 	
-	SwapBuffer(game->mDisplaySettings);
+	SwapBuffer(_game->mDisplaySettings);
 
 	return updateResult;
 }
 
-void	PushGameState(Game* game, GameState state)
+void	PushGameState(Game* _game, GameState _state)
 {
-	DVectorPushBack(game->mStateStack, &state);
+	DVectorPushBack(_game->mStateStack, &_state);
 
-	GameState* currentState = DVectorBack(game->mStateStack);
-	currentState->mStateInit(game, currentState);
+	GameState* currentState = DVectorBack(_game->mStateStack);
+	currentState->mStateInit(_game, currentState);
 
 }
 
-void	PopGameState(Game* game)
+void	PopGameState(Game* _game)
 {
-	if (DVectorSize(game->mStateStack))
+	if (DVectorSize(_game->mStateStack))
 	{
-		GameState* currentState = DVectorBack(game->mStateStack);
-		currentState->mStateClose(game, currentState);
+		GameState* currentState = DVectorBack(_game->mStateStack);
+		currentState->mStateClose(_game, currentState);
 
-		DVectorPopBack(game->mStateStack);
+		DVectorPopBack(_game->mStateStack);
 	}
 }
 

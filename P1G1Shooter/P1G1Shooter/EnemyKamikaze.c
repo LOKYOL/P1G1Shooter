@@ -119,7 +119,7 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	}
 }
 
-void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
+void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* _game)
 {
 	switch (_entity->mEntityType)
 	{
@@ -130,11 +130,11 @@ void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
 		Entity_TakeDamages(_current, 1);
 		if (_current->mEntity.mCurrentHealth > 0)
 		{
-			Play_Sound("enemy_hit", game->mSoundManager);
+			Play_Sound("enemy_hit", _game->mSoundManager);
 		}
 		else
 		{
-			Play_Sound("enemy_die", game->mSoundManager);
+			Play_Sound("enemy_die", _game->mSoundManager);
 		}
 		return;
 	default:

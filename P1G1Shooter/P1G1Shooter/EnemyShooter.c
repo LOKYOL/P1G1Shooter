@@ -95,18 +95,22 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 void Enemy_Shoot(EnemyShooter* _enemy, GameScreenData* _gameScreen)
 {
 	Projectile* newProjectile;
-	Proj_Initialize(&newProjectile, 40, 1, -1, 0,
-		_enemy->mEntity.mPosition_x, _enemy->mEntity.mPosition_y,
-		TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
-		Projectile_Movement_Standard,
-		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
+	Proj_Initialize(&newProjectile, 1, -1,
+ 0, _enemy->mEntity.mPosition_x,
+		_enemy->mEntity.mPosition_y,
+ TYPE_ENEMY_PROJECTILE,
+		TYPE_ENEMY_PROJECTILE,
+_gameScreen, Projectile_Movement_Standard,
+
+		Projectile_Update,
+		Projectile_OnCollide, Projectile_Destroy);
 
 	DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
 
 	_enemy->mShootCooldown = 5;
 }
 
-void EnemyShooter_OnCollide(EnemyShooter* _current, Entity* _entity, Game* game)
+void EnemyShooter_OnCollide(EnemyShooter* _current, Entity* _entity, Game* _game)
 {
 	switch (_entity->mEntityType)
 	{
@@ -114,11 +118,11 @@ void EnemyShooter_OnCollide(EnemyShooter* _current, Entity* _entity, Game* game)
 		Entity_TakeDamages((Entity*)_current, 1);
 		if (_current->mEntity.mCurrentHealth > 0)
 		{
-			Play_Sound("enemy_hit", game->mSoundManager);
+			Play_Sound("enemy_hit", _game->mSoundManager);
 		}
 		else
 		{
-			Play_Sound("enemy_die", game->mSoundManager);
+			Play_Sound("enemy_die", _game->mSoundManager);
 		}
 		return;
 	default:

@@ -86,7 +86,8 @@ char Entity_IsDead(Entity* _entity)
 	return _entity->mCurrentHealth < 1;
 }
 
-double Entity_GetDistance(Entity* _entityA, Entity* _entityB) {
+double Entity_GetDistance(Entity* _entityA, Entity* _entityB) 
+{
 
 	if (!(_entityA) || !(_entityB))
 		return 0;

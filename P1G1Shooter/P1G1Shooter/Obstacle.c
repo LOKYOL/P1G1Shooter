@@ -45,7 +45,7 @@ void Obstacle_UpdateMovement(Obstacle* _obstacle, Game* _game)
 	}
 }
 
-void Obstacle_OnCollide(Obstacle* _current, Entity* _entity, Game* game)
+void Obstacle_OnCollide(Obstacle* _current, Entity* _entity, Game* _game)
 {
 	switch (_entity->mEntityType)
 	{

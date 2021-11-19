@@ -3,20 +3,35 @@
 #include "Engine/DisplayZoneDrawing.h"
 #include <math.h>
 
-void Proj_Initialize(Projectile** _proj, float _speed, float _health,
-	float _velocity_x, float _velocity_y,
-	double _pos_x, double _pos_y,
-	EntityType _type, int sprite, GameScreenData* _gameScreen,
-	ProjectileMovement _movement, Update _update, OnCollide _onCollide, Destroy _destroy)
+void Proj_Initialize(Projectile** _proj, float _health,
+ float _velocity_x,
+	float _velocity_y,
+ double _pos_x,
+	double _pos_y,
+ EntityType _type,
+	int sprite, GameScreenData* _gameScreen,
+ ProjectileMovement _movement,
+	Update _update, OnCollide _onCollide, Destroy _destroy)
 {
 	Projectile* newProjectile = (Projectile*)malloc(sizeof(Projectile));
 	memset(newProjectile, 0, sizeof(Projectile));
 
 	*_proj = newProjectile;
+	ParamSection* projectileSection;
 
-	Entity_Initialize((Entity*)newProjectile, _type, _pos_x, _pos_y, _health, _speed,
-		&_gameScreen->mSprites[sprite],
-		_update, _onCollide, _destroy);
+	if (sprite == TYPE_PLAYER_PROJECTILE + 1)
+		projectileSection = GetSection(_gameScreen->mParamsList, PROJECTILE_AIMASSIST_INIT_SECTION);
+	else
+		projectileSection = GetSection(_gameScreen->mParamsList, PROJECTILE_STANDARD_INIT_SECTION);
+
+
+	if (projectileSection) {
+		ParamInt* projectileAssistSpeed = (ParamInt*)GetParamInSection(projectileSection, "Speed");
+
+		Entity_Initialize((Entity*)newProjectile, _type, _pos_x, _pos_y, _health, projectileAssistSpeed->mValue,
+			&_gameScreen->mSprites[sprite],
+			_update, _onCollide, _destroy);
+	}
 
 	newProjectile->mVelocity_x = _velocity_x;
 	newProjectile->mVelocity_y = _velocity_y;
@@ -111,7 +126,7 @@ void Projectile_Move(Projectile* _proj, double _deltaTime)
 		_proj->mVelocity_y * _proj->mEntity.mSpeed * _deltaTime);
 }
 
-void Projectile_OnCollide(Projectile* _current, Entity* _entity, Game* game)
+void Projectile_OnCollide(Projectile* _current, Entity* _entity, Game* _game)
 {
 	switch (_entity->mEntityType)
 	{
