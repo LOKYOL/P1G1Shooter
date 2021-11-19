@@ -21,8 +21,8 @@ void Boss_Initialize(Boss** _boss, GameScreenData* _gameScreen)
 		ParamInt* bossHealth = (ParamInt*)GetParamInSection(bossSection, "Boss_health");
 		ParamInt* bossPhaseBHealth = (ParamInt*)GetParamInSection(bossSection, "Boss_phase_b_health");
 		ParamInt* bossSpeed = (ParamInt*)GetParamInSection(bossSection, "Boss_speed");
-		ParamInt* bossShootCooldown = (ParamInt*)GetParamInSection(bossSection, "Boss_shoot_cooldown");
-		ParamInt* bossSpawnKamikazeTimer = (ParamInt*)GetParamInSection(bossSection, "Spawn_kamikaze_timer");
+		ParamFloat* bossShootCooldown = (ParamFloat*)GetParamInSection(bossSection, "Boss_shoot_cooldown");
+		ParamFloat* bossSpawnKamikazeTimer = (ParamFloat*)GetParamInSection(bossSection, "Spawn_kamikaze_timer");
 
 		Entity_Initialize((Entity*)newBoss, TYPE_ENEMY_BOSS, 
 			WINDOW_WIDTH, (WINDOW_HEIGHT - newBoss->mEntity.mDisplayZone.mSizeY) / 2, 
@@ -253,7 +253,7 @@ void Boss_Shoot_RightEye(Boss* _boss, GameScreenData* _data)
 		dir_x = -1,
 		dir_y = 0;
 
-	Proj_Initialize(&newProjectile, RandomInt(25, 30), 1,
+	Proj_Initialize(&newProjectile, 1,
 		(float)dir_x, (float)dir_y,
 		_boss->mEntity.mPosition_x + EYE_RIGHT_POS_X,
 		_boss->mEntity.mPosition_y + EYE_RIGHT_POS_Y,
@@ -278,7 +278,7 @@ void Boss_Shoot_LeftEye(Boss* _boss, GameScreenData* _data)
 	dir_x /= magnitude;
 	dir_y /= magnitude;
 
-	Proj_Initialize(&newProjectile, RandomInt(25, 40), 1,
+	Proj_Initialize(&newProjectile, 1,
 		(float)dir_x, (float)dir_y,
 		_boss->mEntity.mPosition_x + EYE_LEFT_POS_X,
 		_boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,

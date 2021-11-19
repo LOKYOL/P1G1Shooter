@@ -23,7 +23,7 @@ int GameScreenInit(Game* _game, GameState* _state)
 	data->mAllEntities = DVectorCreate();
 	DVectorInit(data->mAllEntities, sizeof(Entity*), ZERO, ZERO);
 
-	data->mParamsList = InitParamListFromIniFile(INI_PATH);
+	InitDifficulty(_game, data);
 
 	LoadSpritesFromIni(data);
 	
@@ -34,11 +34,17 @@ int GameScreenInit(Game* _game, GameState* _state)
 	data->mNextBossScore = 50; // Default value
 
 	ParamSection* gameSection = GetSection(data->mParamsList, GAMESCREEN_INIT_SECTION);
-
-	if (gameSection) {
+	
+	if (gameSection) 
+	{
 		ParamInt* bossScore = (ParamInt*)GetParamInSection(gameSection, "Boss_score");
 		data->mNextBossScore = bossScore->mValue;
 
+		ParamInt* fg = (ParamInt*)GetParamInSection(gameSection, "Foreground");
+		ParamInt* bg = (ParamInt*)GetParamInSection(gameSection, "Background");
+
+		data->mFG = fg->mValue;
+		data->mBG = bg->mValue;
 	}
 
 	data->mGameSpawnObstacleTimer = ZERO;
@@ -52,14 +58,28 @@ int GameScreenInit(Game* _game, GameState* _state)
 	return 0;
 }
 
+void InitDifficulty(Game* _game, GameScreenData* _data)
+{
+	if (_game->mDifficulty == 0)
+	{											
+		_data->mParamsList = InitParamListFromIniFile(INI_PATH_CLASSIC_MODE);	// Classic Mode difficulty
+	}
+	else
+	{																		
+		_data->mParamsList = InitParamListFromIniFile(INI_PATH_SOULS_MODE);		// Souls Mode difficulty
+	}
+}
+
 void LoadSpritesFromIni(GameScreenData* _data)
 {
 	ParamSection* spritesSection = GetSection(_data->mParamsList, "Sprites");
 
-	if (spritesSection) {
+	if (spritesSection) 
+	{
 		ParamInt* spritesSize = (ParamInt*)GetParamInSection(spritesSection, "SIZEOF_SPRITES_NAMES");
 
-		if (spritesSize) {
+		if (spritesSize) 
+		{
 			_data->mSprites = (DisplayZone*)malloc(sizeof(DisplayZone) * spritesSize->mValue);
 
 			DisplayZone* curDisplayZone = NULL;
@@ -98,7 +118,8 @@ int GameScreenClose(Game* _game, GameState* _state)
 
 	ParamSection* spritesSection = GetSection(data->mParamsList, "Sprites");
 
-	if (spritesSection) {
+	if (spritesSection)
+	{
 		ParamInt* spritesSize = (ParamInt*)GetParamInSection(spritesSection, "SIZEOF_SPRITES_NAMES");
 
 		for (int i = ZERO; i < spritesSize->mValue; i++)
@@ -124,6 +145,8 @@ int GameScreenClose(Game* _game, GameState* _state)
 int GameScreenUpdate(Game* _game, GameState* _state)
 {
 	GameScreenData* data = _state->mData;
+
+	ClearBuffer(_game->mDisplaySettings, data->mFG, data->mBG, 178);
 
 	SpawnEntity(_game, data);
 
@@ -201,10 +224,14 @@ void HandleEntitiesCollision(Entity* _entityA, Entity* _entityB, Game* _game)
 	if (_entityB && CompareCollision(_entityA, _entityB))
 	{
 		if (_entityA->mOnCollide)
+		{
 			_entityA->mOnCollide(_entityA, _entityB, _game);
+		}
 
 		if (_entityB->mOnCollide)
+		{
 			_entityB->mOnCollide(_entityB, _entityA, _game);
+		}
 
 		HandleScore(_entityA, _entityB, _game);
 	}

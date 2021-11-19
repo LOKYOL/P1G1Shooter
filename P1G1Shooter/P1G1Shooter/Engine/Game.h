@@ -33,7 +33,8 @@ typedef struct Game
 	double				mGameDt;
 
 	unsigned int		mScore;
-	
+
+	unsigned short		mDifficulty;
 }Game;
 
 /// <summary>

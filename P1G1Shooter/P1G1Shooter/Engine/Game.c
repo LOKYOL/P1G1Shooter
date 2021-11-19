@@ -34,6 +34,8 @@ void	InitGame(Game* _game)
 
 	InitSoundManager(_game->mSoundManager);
 
+	_game->mDifficulty = 0;
+
 	PushTitleScreen(_game);
 }
 
@@ -59,8 +61,6 @@ int		MainLoop(Game* _game)
 	double currentTime = GetTime();
 	_game->mGameDt = currentTime - _game->mGameTime;
 	_game->mGameTime = currentTime;
-	
-	ClearBuffer(_game->mDisplaySettings, BLACK, BLUE, 178);
 
 	UpdateAllInputs(_game->mInputs);
 

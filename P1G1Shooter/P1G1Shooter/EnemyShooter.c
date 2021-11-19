@@ -19,7 +19,7 @@ void EnemyShooter_Initialize(EnemyShooter** _enemy,	GameScreenData* _gameScreen)
 		ParamInt* shooterHealth = (ParamInt*)GetParamInSection(shooterSection, "Health_min");
 		ParamInt* minShooterSpeed = (ParamInt*)GetParamInSection(shooterSection, "Speed_min");
 		ParamInt* maxShooterSpeed = (ParamInt*)GetParamInSection(shooterSection, "Speed_max");
-		ParamInt* ShootCooldown = (ParamInt*)GetParamInSection(shooterSection, "Shoot_cooldown");
+		ParamFloat* ShootCooldown = (ParamFloat*)GetParamInSection(shooterSection, "Shoot_cooldown");
 
 		Entity_Initialize(&newEnemy->mEntity, TYPE_ENEMY_SHOOTER,
 		WINDOW_WIDTH, rand() % (WINDOW_HEIGHT - newEnemy->mEntity.mDisplayZone.mSizeY),

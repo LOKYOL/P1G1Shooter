@@ -7,7 +7,9 @@
 #include "EndScreen.h"
 #include "Engine/Game.h"
 
-#define INI_PATH "Assets/GameScreen.ini"
+#define INI_PATH_CLASSIC_MODE "Assets/ClassicMode.ini"
+#define INI_PATH_SOULS_MODE "Assets/SoulsMode.ini"
+
 #define GAMESCREEN_INIT_SECTION "GameScreen"
 
 #define PushGameScreen(game)	GameState gameScreen; \
@@ -33,6 +35,9 @@ typedef struct GameScreenData
 	double				mGameSpawnObstacleTimer;
 	double				mGameSpawnEnemyTimer;
 	double				mGameSpawnEnemyKamikazeTimer;
+
+	unsigned char		mFG;
+	unsigned char		mBG;
 }GameScreenData;
 
 /// <summary>
@@ -42,6 +47,8 @@ typedef struct GameScreenData
 /// <param name="state">Current gamestate</param>
 /// <returns>0 if successful</returns>
 int GameScreenInit(struct Game* game, struct GameState* state);
+
+void InitDifficulty(Game* game, GameScreenData* data);
 
 void LoadSpritesFromIni(GameScreenData* data);
 

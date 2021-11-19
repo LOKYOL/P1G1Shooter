@@ -15,10 +15,11 @@ int TitleScreenInit(struct Game* _game, struct GameState* _state)
 
 	InitDisplayZone(datascreen->mOptionsZone, 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT, 0);
 
-	datascreen->mNbOptions = 2;
+	datascreen->mNbOptions = 3;
 	datascreen->mOptions = malloc(sizeof(char*) * datascreen->mNbOptions);
-	datascreen->mOptions[0] = "New Game";
-	datascreen->mOptions[1] = "Exit";
+	datascreen->mOptions[0] = "Classic Mode";
+	datascreen->mOptions[1] = "Souls Mode";
+	datascreen->mOptions[2] = "Exit";
 
 	datascreen->mTempClock = 0;
 	datascreen->mCurrentColor = 1;
@@ -87,7 +88,7 @@ char HandleKeyPress(Game* _game, TitleScreenData* _data)
 	{
 		EnterKeyPressed(_game, _data);
 
-		return _data->mCurrentSelector;
+		return _data->mCurrentSelector == (_data->mNbOptions - 1);
 	}
 	else
 	{
@@ -116,6 +117,12 @@ void EnterKeyPressed(struct Game* _game, TitleScreenData* _data)
 	switch (_data->mCurrentSelector)
 	{
 	case 0:
+		_game->mDifficulty = 0;									// Choose Classic Mode
+		PushGamescreen(_game);
+		Play_Sound("new_game.wav", _game->mSoundManager);
+		break;
+	case 1:
+		_game->mDifficulty = 1;									// Choose Souls Mode
 		PushGamescreen(_game);
 		Play_Sound("new_game.wav", _game->mSoundManager);
 		break;

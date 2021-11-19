@@ -20,6 +20,8 @@ int BossScreenUpdate(Game* _game, GameState* _gameState)
 	BossScreenData* data = _gameState->mData;
 	GameScreenData* gameData = data->mGameScreenData;
 
+	ClearBuffer(_game->mDisplaySettings, gameData->mFG, gameData->mBG, 178);
+
 	// Update Boss
 	data->mBoss->mEntity.mUpdate(data->mBoss, _game, gameData);
 	UpdateEntity(_game, gameData);
