@@ -36,6 +36,7 @@ int TitleScreenInit(struct Game* game, struct GameState* state)
 	datascreen->mTitleAsciiZone->mPosY = 32;
 	return 0;
 }
+
 int TitleScreenClose(struct Game* game, struct GameState* state)
 {
 	TitleScreenData* datascreen = (TitleScreenData*)state->mData;
@@ -61,40 +62,8 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 
 	ClearBuffer(game->mDisplaySettings, WHITE, BLACK, ' ');
 
-	if (KeyPressStart(*game->mInputs, VK_RETURN) || KeyPressStart(*game->mInputs, VK_SPACE))
-	{
-		switch (datascreen->mCurrentSelector)
-		{
-		case 0:
-			PushGamescreen(game);
-			Play_Sound("new_game.wav", game->mSoundManager);
-			break;
-		case 1:
-			return 1;
-			break;
-		default:
-			break;
-		}
-	}
-	else
-	{
-		int selector = datascreen->mCurrentSelector;
-		if (KeyPressStart(*game->mInputs, VK_DOWN) || KeyPressStart(*game->mInputs, 'S'))
-		{
-			selector++;
-			selector %= datascreen->mNbOptions;
-			Play_Sound("click.wav", game->mSoundManager);
-		}
-		if (KeyPressStart(*game->mInputs, VK_UP) || KeyPressStart(*game->mInputs, 'Z'))
-		{
-			selector--;
-			selector = (selector + datascreen->mNbOptions) % datascreen->mNbOptions;
-			Play_Sound("click.wav", game->mSoundManager);
-		}
-		datascreen->mCurrentSelector = selector;
-
-		PrintOptions(datascreen);
-	}
+	if (HandleKeyPress(game, datascreen))
+		return 1;
 
 	FlushDisplayZone(game->mDisplaySettings, datascreen->mOptionsZone);
 	FlushDisplayZone(game->mDisplaySettings, datascreen->mKeybindsZone);
@@ -109,6 +78,70 @@ int TitleScreenUpdate(struct Game* game, struct GameState* state)
 	FlushDisplayZone(game->mDisplaySettings, datascreen->mTitleAsciiZone);
 
 	return 0;
+}
+
+char HandleKeyPress(Game* _game, TitleScreenData* _data)
+{
+	if (KeyPressStart(*_game->mInputs, VK_RETURN) || 
+		KeyPressStart(*_game->mInputs, VK_SPACE))
+	{
+		EnterKeyPressed(_game, _data);
+
+		return _data->mCurrentSelector;
+	}
+	else
+	{
+		if (KeyPressStart(*_game->mInputs, VK_DOWN) || 
+			KeyPressStart(*_game->mInputs, 'S'))
+		{
+			SelectorDown(_game, _data);
+		}
+
+		if (KeyPressStart(*_game->mInputs, VK_UP) || KeyPressStart(*_game->mInputs, 'Z'))
+		{
+			SelectorUp(_game, _data);
+		}
+
+		PrintOptions(_data);
+	}
+
+	return 0;
+}
+
+void EnterKeyPressed(struct Game* _game, TitleScreenData* _data)
+{
+	switch (_data->mCurrentSelector)
+	{
+	case 0:
+		PushGamescreen(_game);
+		Play_Sound("new_game.wav", _game->mSoundManager);
+		break;
+	default: break;
+	}
+}
+
+void SelectorDown(struct Game* _game, TitleScreenData* _data)
+{
+	int selector = _data->mCurrentSelector;
+
+	selector++;
+	selector %= _data->mNbOptions;
+
+	_data->mCurrentSelector = selector;
+
+	Play_Sound("click.wav", _game->mSoundManager);
+}
+
+void SelectorUp(struct Game* _game, TitleScreenData* _data)
+{
+	int selector = _data->mCurrentSelector;
+
+	selector--;
+	selector = (selector + _data->mNbOptions) % _data->mNbOptions;
+
+	_data->mCurrentSelector = selector;
+
+	Play_Sound("click.wav", _game->mSoundManager);
 }
 
 void PrintOptions(TitleScreenData* _datascreen)

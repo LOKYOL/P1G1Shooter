@@ -108,15 +108,7 @@ void Boss_PhaseB_Update(Boss* _boss, Game* _game, GameScreenData* _data)
 	{
 		_boss->mSpawnKamikazeCooldown -= ENEMY_KAMIKAZE_SPAWN_TIMER;
 
-		if (rand() % 2)
-		{
-			Boss_SpawnKamikaze(_boss, _game, _data);
-		}
-		else
-		{
-			Boss_SpawnShooter(_boss, _game, _data);
-		}
-		_boss->mSpawnKamikazeCooldown = SPAWN_KAMIKAZE_TIMER;
+		Boss_Spawn_RandomEnemy(_boss, _data, _game);
 	}
 	else
 	{
@@ -130,15 +122,26 @@ void Boss_PhaseB_Update(Boss* _boss, Game* _game, GameScreenData* _data)
 		// SPRITE HITTED
 		if (_boss->mHitTimer <= 0)
 		{
-			_boss->mEntity.mDisplayZone.mBuffer =
-				_data->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
+			_boss->mEntity.mDisplayZone.mBuffer = _data->mSprites[TYPE_ENEMY_BOSS + 2].mBuffer;
 		}
 		else
 		{
-			_boss->mEntity.mDisplayZone.mBuffer =
-				_data->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
+			_boss->mEntity.mDisplayZone.mBuffer = _data->mSprites[TYPE_ENEMY_BOSS + 1].mBuffer;
 		}
 	}
+}
+
+void Boss_Spawn_RandomEnemy(Boss* _boss, GameScreenData* _data, Game* _game)
+{
+	if (rand() % 2)
+	{
+		Boss_SpawnKamikaze(_boss, _game, _data);
+	}
+	else
+	{
+		Boss_SpawnShooter(_boss, _game, _data);
+	}
+	_boss->mSpawnKamikazeCooldown = SPAWN_KAMIKAZE_TIMER;
 }
 
 void Boss_Movement_EnterScreen(Boss* boss, Game* game, GameScreenData* data)
@@ -231,46 +234,59 @@ void Boss_Shoot(Boss* boss, GameScreenData* _gameScreen)
 
 	if (rand() % 2)
 	{
-		double
-			dir_x = _gameScreen->mPlayer->mEntity.mPosition_x - 
-			(boss->mEntity.mPosition_x + EYE_LEFT_POS_X),
-			dir_y = _gameScreen->mPlayer->mEntity.mPosition_y - 
-			(boss->mEntity.mPosition_y + EYE_LEFT_POS_Y);
-
-		float magnitude = sqrt((dir_x * dir_x) + (dir_y * dir_y));
-
-		dir_x /= magnitude;
-		dir_y /= magnitude;
-
-		Proj_Initialize(&newProjectile, RandomInt(25, 40), 1,
-			(float)dir_x,(float)dir_y,
-			boss->mEntity.mPosition_x + EYE_LEFT_POS_X,
-			boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
-			TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
-			Projectile_Movement_Standard,
-			Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
-
-		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
+		Boss_Shoot_LeftEye(boss, _gameScreen);
 	}
 
 	if (rand() % 2)
 	{
-		double
-			dir_x = -1,
-			dir_y = 0;
-
-		Proj_Initialize(&newProjectile, RandomInt(25, 30), 1,
-			(float)dir_x, (float)dir_y,
-			boss->mEntity.mPosition_x + EYE_RIGHT_POS_X,
-			boss->mEntity.mPosition_y + EYE_RIGHT_POS_Y,
-			TYPE_ENEMY_PROJECTILE,TYPE_ENEMY_PROJECTILE, _gameScreen,
-			Projectile_Movement_Standard,
-			Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
-
-		DVectorPushBack(_gameScreen->mAllEntities, &newProjectile);
+		Boss_Shoot_RightEye(boss, _gameScreen);
 	}
 
 	boss->mShootCooldown = BOSS_SHOOT_COOLDOWN;
+}
+
+void Boss_Shoot_RightEye(Boss* _boss, GameScreenData* _data)
+{
+	Projectile* newProjectile;
+
+	double
+		dir_x = -1,
+		dir_y = 0;
+
+	Proj_Initialize(&newProjectile, RandomInt(25, 30), 1,
+		(float)dir_x, (float)dir_y,
+		_boss->mEntity.mPosition_x + EYE_RIGHT_POS_X,
+		_boss->mEntity.mPosition_y + EYE_RIGHT_POS_Y,
+		TYPE_ENEMY_PROJECTILE, TYPE_ENEMY_PROJECTILE, _data,
+		Projectile_Movement_Standard,
+		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
+
+	DVectorPushBack(_data->mAllEntities, &newProjectile);
+}
+
+void Boss_Shoot_LeftEye(Boss* _boss, GameScreenData* _data)
+{
+	Projectile* newProjectile;
+
+	double
+		dir_x = _data->mPlayer->mEntity.mPosition_x -
+		(_boss->mEntity.mPosition_x + EYE_LEFT_POS_X),
+		dir_y = _data->mPlayer->mEntity.mPosition_y -
+		(_boss->mEntity.mPosition_y + EYE_LEFT_POS_Y);
+
+	float magnitude = sqrt((dir_x * dir_x) + (dir_y * dir_y));
+	dir_x /= magnitude;
+	dir_y /= magnitude;
+
+	Proj_Initialize(&newProjectile, RandomInt(25, 40), 1,
+		(float)dir_x, (float)dir_y,
+		_boss->mEntity.mPosition_x + EYE_LEFT_POS_X,
+		_boss->mEntity.mPosition_y + EYE_LEFT_POS_Y,
+		TYPE_ENEMY_PROJECTILE, TYPE_ENEMY_PROJECTILE, _data,
+		Projectile_Movement_Standard,
+		Projectile_Update, Projectile_OnCollide, Projectile_Destroy);
+
+	DVectorPushBack(_data->mAllEntities, &newProjectile);
 }
 
 void Boss_SpawnKamikaze(Boss* _boss, Game* _game, GameScreenData* _gameScreen)

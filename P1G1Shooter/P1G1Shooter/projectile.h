@@ -56,6 +56,8 @@ void Projectile_Movement_Standard(Projectile * proj, Game* game, GameScreenData*
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Projectile_Movement_AimAssist(Projectile * proj, Game* game, GameScreenData* gameScreen);
 
+void ApplyAimAssist(Projectile* proj, Entity* minEntity, double minDistance, Game* game);
+
 /// <summary>
 /// Move the current projectile
 /// </summary>

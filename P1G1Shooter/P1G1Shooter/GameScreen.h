@@ -93,6 +93,10 @@ void HandleEntityCollision(Entity* entity, Entity** list, int length, Game* game
 
 void HandleEntitiesCollision(Entity* entityA, Entity* entityB, Game* game);
 
+void HandleScore(Entity* entityA, Entity* entityB, Game* game);
+
+unsigned int GetScoreOfEntity(Entity* entity);
+
 /// <summary>
 /// Check if 2 entities are colliding
 /// </summary>

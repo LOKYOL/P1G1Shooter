@@ -51,6 +51,13 @@ int TitleScreenClose(struct Game* game, struct GameState* state);
 /// <returns>0 if no error</returns>
 int TitleScreenUpdate(struct Game* game, struct GameState* state);
 
+char HandleKeyPress(struct Game* game, TitleScreenData* data);
+
+void EnterKeyPressed(struct Game* game, TitleScreenData* data);
+
+void SelectorDown(struct Game* game, TitleScreenData* data);
+void SelectorUp(struct Game* game, TitleScreenData* data);
+
 /// <summary>
 /// Prints every menu options
 /// </summary>

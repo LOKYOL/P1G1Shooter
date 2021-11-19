@@ -57,17 +57,7 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	move_x = -abs(posPlayer_x - posEnemy_x);
 	move_y = (double)posPlayer_y - posEnemy_y;
 
-	if (abs((int)move_y) > abs((int)move_x))
-	{
-		if (move_y > 0)
-		{
-			move_y = -move_x;
-		}
-		else
-		{
-			move_y = move_x;
-		}
-	}
+	ClampDiagonalMovement(&move_x, &move_y);
 
 	int minDistanceBase = _enemy->mEntity.mDisplayZone.mSizeX + 5;
 
@@ -91,8 +81,8 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 
 	if (minDistance < minDistanceBase)
 	{
-		double height = mostNear->mPosition_y + (mostNear->mDisplayZone.mSizeY / 2);
-		height -= _enemy->mEntity.mPosition_y + (_enemy->mEntity.mDisplayZone.mSizeY / 2);
+		double height = Entity_GetYPosition(mostNear);
+		height -= Entity_GetYPosition(_enemy);
 
 		if (height < 0)
 		{
@@ -105,10 +95,7 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	}
 
 	// Clamp movement
-	double movement = _enemy->mEntity.mSpeed * _game->mGameDt;
-	double magnitude = sqrt(pow(move_x, 2) + pow(move_y, 2));
-	move_x = move_x / magnitude * movement;
-	move_y = move_y / magnitude * movement;
+	ClampMovement(_enemy, &move_x, &move_y, _game);
 
 	// Apply movement
 	Entity_Move(&_enemy->mEntity, move_x, move_y);
@@ -117,6 +104,38 @@ void Enemy_UpdateMovement(EnemyKamikaze* _enemy, GameScreenData* _gameScreen, Ga
 	{
 		Entity_Kill((Entity*)_enemy);
 	}
+}
+
+void ClampDiagonalMovement(double* _moveX, double* _moveY)
+{
+	double 
+		move_x = *_moveX, 
+		move_y = *_moveY;
+
+	if (abs((int)move_y) > abs((int)move_x))
+	{
+		if (move_y > 0)
+		{
+			move_y = -move_x;
+		}
+		else
+		{
+			move_y = move_x;
+		}
+	}
+
+	*_moveX = move_x;
+	*_moveY = move_y;
+}
+
+void ClampMovement(EnemyKamikaze* _enemy, double* _moveX, double* _moveY, Game* _game)
+{
+	double move_x = *_moveX, move_y = *_moveY;
+
+	double movement = _enemy->mEntity.mSpeed * _game->mGameDt;
+	double magnitude = sqrt(pow(move_x, 2) + pow(move_y, 2));
+	*_moveX = move_x / magnitude * movement;
+	*_moveY = move_y / magnitude * movement;
 }
 
 void Enemy_OnCollide(EnemyKamikaze* _current, Entity* _entity, Game* game)
