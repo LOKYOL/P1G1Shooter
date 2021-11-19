@@ -234,12 +234,12 @@ void Boss_Shoot(Boss* _boss, GameScreenData* _gameScreen)
 
 	if (rand() % 2)
 	{
-		Boss_Shoot_LeftEye(boss, _gameScreen);
+		Boss_Shoot_LeftEye(_boss, _gameScreen);
 	}
 
 	if (rand() % 2)
 	{
-		Boss_Shoot_RightEye(boss, _gameScreen);
+		Boss_Shoot_RightEye(_boss, _gameScreen);
 	}
 
 	_boss->mShootCooldown = BOSS_SHOOT_COOLDOWN;

@@ -58,24 +58,24 @@ int TitleScreenClose(struct Game* _game, struct GameState* _state)
 
 int TitleScreenUpdate(struct Game* _game, struct GameState* _state)
 {
-	TitleScreenData* datascreen = (TitleScreenData*)_state->mData;
+	TitleScreenData* data = (TitleScreenData*)_state->mData;
 
 	ClearBuffer(_game->mDisplaySettings, WHITE, BLACK, ' ');
 
-	if (HandleKeyPress(game, datascreen))
+	if (HandleKeyPress(_game, data))
 		return 1;
 
-	FlushDisplayZone(game->mDisplaySettings, datascreen->mOptionsZone);
-	FlushDisplayZone(game->mDisplaySettings, datascreen->mKeybindsZone);
+	FlushDisplayZone(_game->mDisplaySettings, data->mOptionsZone);
+	FlushDisplayZone(_game->mDisplaySettings, data->mKeybindsZone);
 
-	if (datascreen->mTempClock < clock() - 400) {
-		datascreen->mCurrentColor++;
-		if (datascreen->mCurrentColor >= 15) { datascreen->mCurrentColor = 1; }
-		datascreen->mTempClock = clock();
-		SetTitleColor(datascreen->mTitleAsciiZone, datascreen->mCurrentColor, 0);
+	if (data->mTempClock < clock() - 400) {
+		data->mCurrentColor++;
+		if (data->mCurrentColor >= 15) { data->mCurrentColor = 1; }
+		data->mTempClock = clock();
+		SetTitleColor(data->mTitleAsciiZone, data->mCurrentColor, 0);
 	}
 
-	FlushDisplayZone(game->mDisplaySettings, datascreen->mTitleAsciiZone);
+	FlushDisplayZone(_game->mDisplaySettings, data->mTitleAsciiZone);
 
 	return 0;
 }
@@ -105,8 +105,8 @@ char HandleKeyPress(Game* _game, TitleScreenData* _data)
 		PrintOptions(_data);
 	}
 
-	FlushDisplayZone(_game->mDisplaySettings, datascreen->mOptionsZone);
-	FlushDisplayZone(_game->mDisplaySettings, datascreen->mKeybindsZone);
+	FlushDisplayZone(_game->mDisplaySettings, _data->mOptionsZone);
+	FlushDisplayZone(_game->mDisplaySettings, _data->mKeybindsZone);
 	
 	return 0;
 }
