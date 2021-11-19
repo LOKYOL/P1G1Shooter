@@ -5,6 +5,8 @@
 
 #define ENEMYS_INIT_SECTION "EnemyShooter"
 
+#define ENEMY_SHOOTER_DIRECTION_COOLDOWN	1
+
 typedef struct EnemyShooter
 {
 	Entity	mEntity;

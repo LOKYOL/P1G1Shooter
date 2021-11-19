@@ -63,9 +63,12 @@ void Boss_PhaseA_Update(Boss* boss, Game* game, struct GameScreenData* data);
 
 void Boss_PhaseB_Update(Boss* boss, Game* game, struct GameScreenData* data);
 
+void Boss_Spawn_RandomEnemy(Boss* boss, GameScreenData* data, Game* game);
+
 // MOVEMENTS PHASES
 
 void Boss_Movement_EnterScreen(Boss* boss, Game* game, struct GameScreenData* data);
+
 void Boss_Movement_Re_EnterScreen(Boss* boss, Game* game, struct GameScreenData* data);
 
 /// <summary>
@@ -85,10 +88,13 @@ void Boss_Movement_Dash(Boss* boss, Game* game, struct GameScreenData* gameScree
 /// <param name="gameScreen">Datas bind to the game state</param>
 void Boss_Shoot(Boss* boss, struct GameScreenData* gameScreen);
 
-void Boss_SpawnKamikaze(Boss* boss, Game* game, struct GameScreenData* gameScreen);
-void Boss_SpawnShooter(Boss* boss, Game* game, struct GameScreenData* gameScreen);
+void Boss_Shoot_RightEye(Boss* boss, struct GameScreenData* data);
 
-void Boss_TakeDamages(Boss* boss, float damages);
+void Boss_Shoot_LeftEye(Boss* boss, struct GameScreenData* data);
+
+void Boss_SpawnKamikaze(Boss* boss, Game* game, struct GameScreenData* gameScreen);
+
+void Boss_SpawnShooter(Boss* boss, Game* game, struct GameScreenData* gameScreen);
 
 void Boss_OnCollide(Boss* current, Entity* entity, Game* game);
 

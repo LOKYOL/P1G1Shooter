@@ -63,16 +63,15 @@ void EnemyShooter_UpdateMovement(EnemyShooter* _enemy, GameScreenData* _gameScre
 	}
 	else
 	{
-		_enemy->mChangeDirectionCooldown = 1;
+		_enemy->mChangeDirectionCooldown = ENEMY_SHOOTER_DIRECTION_COOLDOWN;
 
-		_enemy->mCurrentDirectionX = (rand() % 3) - 1;
-		_enemy->mCurrentDirectionY = (rand() % 3) - 1;
+		_enemy->mCurrentDirectionX = RandomInt(-1, 1);
+		_enemy->mCurrentDirectionY = RandomInt(-1, 1);
 	}
 
 	move_y = _enemy->mCurrentDirectionY;
 	move_x = _enemy->mCurrentDirectionX;
 
-	// Not shooting until moved enough to the left
 	if (_enemy->mEntity.mPosition_x < WINDOW_WIDTH / 2)
 	{
 		move_x += 2;

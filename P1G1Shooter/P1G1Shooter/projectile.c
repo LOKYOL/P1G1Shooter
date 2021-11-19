@@ -81,34 +81,7 @@ void Projectile_Movement_AimAssist(Projectile * _proj, Game* _game, GameScreenDa
 
 	if (minEntity)
 	{
-		double 
-			targetVelocityX = Entity_GetXPosition(minEntity) - Entity_GetXPosition(_proj),
-			targetVelocityY = Entity_GetYPosition(minEntity) - Entity_GetYPosition(_proj);
-
-
-		if (minDistance <= ULTRA_AIM_ASSIST_RANGE)
-		{
-			_proj->mVelocity_x = targetVelocityX / minDistance;
-			_proj->mVelocity_y = targetVelocityY / minDistance;
-		}
-		else
-		{
-			double targetMagnitude = minDistance;
-
-			targetVelocityX /= targetMagnitude * targetMagnitude;
-			targetVelocityY /= targetMagnitude * targetMagnitude;
-
-
-			_proj->mVelocity_x += targetVelocityX * _game->mGameDt * AIM_ASSIST_RANGE;
-			_proj->mVelocity_y += targetVelocityY * _game->mGameDt * AIM_ASSIST_RANGE;
-
-			targetMagnitude =
-				sqrt((_proj->mVelocity_x * _proj->mVelocity_x) +
-					(_proj->mVelocity_y * _proj->mVelocity_y));
-
-			_proj->mVelocity_x /= targetMagnitude;
-			_proj->mVelocity_y /= targetMagnitude;
-		}
+		ApplyAimAssist(_proj, minEntity, minDistance, _game);
 	}
 
 	Projectile_Move(_proj, _game->mGameDt);
@@ -116,6 +89,37 @@ void Projectile_Movement_AimAssist(Projectile * _proj, Game* _game, GameScreenDa
 	if (_proj->mEntity.mPosition_x < -5 || _proj->mEntity.mPosition_x > (double)(WINDOW_WIDTH + 5))
 	{
 		Entity_Kill(_proj);
+	}
+}
+
+void ApplyAimAssist(Projectile* _proj, Entity* _minEntity, double _minDistance, Game* _game)
+{
+	double
+		targetVelocityX = Entity_GetXPosition(_minEntity) - Entity_GetXPosition(_proj),
+		targetVelocityY = Entity_GetYPosition(_minEntity) - Entity_GetYPosition(_proj);
+
+	if (_minDistance <= ULTRA_AIM_ASSIST_RANGE)
+	{
+		_proj->mVelocity_x = targetVelocityX / _minDistance;
+		_proj->mVelocity_y = targetVelocityY / _minDistance;
+	}
+	else
+	{
+		double targetMagnitude = _minDistance;
+
+		targetVelocityX /= targetMagnitude * targetMagnitude;
+		targetVelocityY /= targetMagnitude * targetMagnitude;
+
+
+		_proj->mVelocity_x += targetVelocityX * _game->mGameDt * AIM_ASSIST_RANGE;
+		_proj->mVelocity_y += targetVelocityY * _game->mGameDt * AIM_ASSIST_RANGE;
+
+		targetMagnitude =
+			sqrt((_proj->mVelocity_x * _proj->mVelocity_x) +
+				(_proj->mVelocity_y * _proj->mVelocity_y));
+
+		_proj->mVelocity_x /= targetMagnitude;
+		_proj->mVelocity_y /= targetMagnitude;
 	}
 }
 

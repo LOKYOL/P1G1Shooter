@@ -81,7 +81,11 @@ void ClampPlayerPos(Player* player, double* posX, double* posY);
 /// <param name="player">Player to update</param>
 /// <param name="gameScreen">Datas bind to the game state</param>
 /// <param name="gameStruct">Current game</param>
-void Player_Shoot(Player* player, GameScreenData* gameScreen, Game* gameStruct);
+void Player_Shoot(Player* player, GameScreenData* data, Game* game);
+
+void Player_Shoot_Standard(Player* player, GameScreenData* data, Game* game);
+
+void Player_Shoot_AimAssist(Player* player, GameScreenData* data, Game* game);
 
 /// <summary>
 /// Updates the overshoot display of the player
@@ -106,6 +110,8 @@ void DrawBatteryInDisplayZone(Player* player);
 /// </summary>
 /// <param name="player">Player to check</param>
 void DrawHealthInDisplayZone(Player* player);
+
+void Player_TakeDamages(Player* player, Game* game);
 
 /// <summary>
 /// Free components of a player and destroy him

@@ -206,39 +206,32 @@ void HandleEntitiesCollision(Entity* _entityA, Entity* _entityB, Game* _game)
 		if (_entityB->mOnCollide)
 			_entityB->mOnCollide(_entityB, _entityA, _game);
 
-		// SCORE
+		HandleScore(_entityA, _entityB, _game);
+	}
+}
 
-		if (_entityA->mCurrentHealth == ZERO && _entityA->mEntityType == TYPE_PLAYER_PROJECTILE)
-		{
-			if (_entityB->mEntityType == TYPE_ENEMY_SHOOTER)
-			{
-				//score += 3
-				_game->mScore += 3;
-			}
-			else if (_entityB->mEntityType == TYPE_ENEMY_KAMIKAZE)
-			{
-				//score += 4
-				_game->mScore += 4;
-			}
-		}
+void HandleScore(Entity* _entityA, Entity* _entityB, Game* _game)
+{
+	if (_entityB->mCurrentHealth == 0 && _entityB->mEntityType == TYPE_PLAYER_PROJECTILE)
+	{
+		_game->mScore += GetScoreOfEntity(_entityA);
+	}
+	else if (_entityA->mCurrentHealth == 0 && _entityA->mEntityType == TYPE_PLAYER_PROJECTILE)
+	{
+		_game->mScore += GetScoreOfEntity(_entityB);
+	}
+}
 
-		if (_entityB->mCurrentHealth == ZERO && _entityB->mEntityType == TYPE_PLAYER_PROJECTILE)
-		{
-			if (_entityA->mEntityType == TYPE_ENEMY_SHOOTER)
-			{
-				_game->mScore += 3;
-				//score += 3
-			}
-			else if (_entityA->mEntityType == TYPE_ENEMY_KAMIKAZE)
-			{
-				_game->mScore += 4;
-				//score += 4
-			}
-			else if (_entityA->mEntityType == TYPE_OBSTACLE)
-			{
-				_game->mScore += 1;
-			}
-		}
+unsigned int GetScoreOfEntity(Entity* _entity)
+{
+	EntityType type = _entity->mEntityType;
+
+	switch (_entity->mEntityType)
+	{
+	case TYPE_OBSTACLE: return 1;
+	case TYPE_ENEMY_SHOOTER: return 3;
+	case TYPE_ENEMY_KAMIKAZE: return 4;
+	default: return 0;
 	}
 }
 

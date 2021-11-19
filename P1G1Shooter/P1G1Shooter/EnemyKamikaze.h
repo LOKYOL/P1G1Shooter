@@ -34,6 +34,10 @@ void Enemy_Update(void* enemy, Game* game, GameScreenData* gameScreen);
 /// <param name="game">Current game</param>
 void Enemy_UpdateMovement(EnemyKamikaze* enemy, GameScreenData* gameScreen, Game* game);
 
+void ClampDiagonalMovement(double* moveX, double* moveY);
+
+void ClampMovement(EnemyKamikaze* enemy, double* moveX, double* moveY, Game* game);
+
 /// <summary>
 /// Check collision of an ennemy kamikaze
 /// </summary>
