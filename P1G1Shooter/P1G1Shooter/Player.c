@@ -186,7 +186,7 @@ void Player_Shoot(Player* _player, GameScreenData* _data, Game* _game)
 void Player_Shoot_Standard(Player* _player, GameScreenData* _gameScreen, Game* _gameStruct)
 {
 	Projectile* newProjectile;
-	Proj_Initialize(&newProjectile, 40, 1, 1, 0,
+	Proj_Initialize(&newProjectile, 1, 1, 0,
 		_player->mEntity.mPosition_x + 7,
 		_player->mEntity.mPosition_y,
 		TYPE_PLAYER_PROJECTILE,
@@ -201,7 +201,7 @@ void Player_Shoot_AimAssist(Player* _player, GameScreenData* _gameScreen, Game* 
 {
 	Projectile* newProjectile;
 
-	Proj_Initialize(&newProjectile, 40, 1, 1, 0,
+	Proj_Initialize(&newProjectile, 1, 1, 0,
 		_player->mEntity.mPosition_x + 7,
 		_player->mEntity.mPosition_y,
 		TYPE_PLAYER_PROJECTILE,

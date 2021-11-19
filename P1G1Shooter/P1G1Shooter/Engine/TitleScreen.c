@@ -123,9 +123,6 @@ void EnterKeyPressed(struct Game* _game, TitleScreenData* _data)
 	}
 }
 
-/*<<<<<<< HEAD
-	FlushDisplayZone(_game->mDisplaySettings, datascreen->mTitleAsciiZone);
-=======*/
 void SelectorDown(struct Game* _game, TitleScreenData* _data)
 {
 	int selector = _data->mCurrentSelector;
